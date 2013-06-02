@@ -32,3 +32,5 @@ It is **vanilla js**.
 
 ## Demo page
     
+The [demo page](http://imazen.github.io/slimage/demo.html
+) uses PureCSS for the responsive grid, slimage.js to modify the URIs, and ImageResizer for Restful Image Processing.
