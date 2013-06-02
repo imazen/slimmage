@@ -3,11 +3,18 @@
     "use strict";
 
     w.slimage = {};
- 
+    w.slimage.nodesToArray = function (nodeList){
+      var array = [];
+      // iterate backwards ensuring that length is an UInt32
+      for (var i = nodeList.length >>> 0; i--;) { 
+        array[i] = nodeList[i];
+      }
+      return array;
+    };
     w.slimage.adjustImageSrcWithData = function(img, originalSrc, wImg){
         var trueWidth = wImg.offsetWidth;
         wImg.parentNode.removeChild(wImg);
-        
+
         if (window.devicePixelRatio) {
             trueWidth *= window.devicePixelRatio;
         }
@@ -17,7 +24,15 @@
         //Minimize variants for caching improvements; round up to nearest multiple of 160
         maxwidth = maxwidth - (maxwidth % 160) + 160; //Will limit to 13 variations
 
-        img.src =  originalSrc.replace(/width\s*=\s*\d+/i,"width=" + maxwidth);
+
+
+        var oldpixels = img.getAttribute("data-pixel-width") | 0;
+
+        if (maxwidth > oldpixels){
+            //Never request a smaller image once the larger one has already started loading
+            img.src =  originalSrc.replace(/width\s*=\s*\d+/i,"width=" + maxwidth);
+            img.setAttribute("data-pixel-width",maxwidth);
+        }
     };
     
     w.slimage.adjustImageSrc = function (img, originalSrc) {
@@ -28,6 +43,7 @@
         var wImg = img.cloneNode();
         wImg.src="";
         wImg.style.paddingBottom="-1px";
+        wImg.removeAttribute("data-ri");
         img.parentNode.insertBefore(wImg,img);
 
         var imgLoaded = function(){
@@ -49,7 +65,7 @@
         
         if (console) console.log("Scanning for noscript tags, updating images");
         //1. Copy images out of noscript tags, but hide 'src' attribute as data-src
-        var n = w.document.getElementsByTagName("noscript");
+        var n = w.slimage.nodesToArray(w.document.getElementsByTagName("noscript"));
         for (var i = 0, il = n.length; i < il; i++) {
             var ns = n[i];
             if (ns.getAttribute("data-ri") !== null){
@@ -69,20 +85,18 @@
                     ci.setAttribute("data-ri", true);
                     ns.parentNode.insertBefore(ci, ns);
                 }
+                //2. Remove old noscript tags
+                ns.parentNode.removeChild(ns);
             }
         }
-        //2. Remove old noscript tags
-        for (var i = 0, il = n.length; i < il; i++) {
-            if (n[i].getAttribute("data-ri") !== null){    
-                n[i].parentNode.removeChild(n[i]);
-            }
-        }
-
+        
         //3. Find images with data-ri and run adjustImageSrc.
-        var images = w.document.getElementsByTagName("img");
+        var images = w.slimage.nodesToArray(w.document.getElementsByTagName("img"));
         for (var i = 0, il = images.length; i < il; i++) {
             if (images[i].getAttribute("data-ri") !== null) {
+                var originalSrc = images[i].getAttribute("data-src") || images[i].src;
                 w.slimage.adjustImageSrc(images[i], images[i].getAttribute("data-src") || images[i].src);
+                if (console) console.log ("Slimming " + originalSrc);
             }
         }
     };
