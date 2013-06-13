@@ -1,8 +1,8 @@
-SlimImage (slimage.js)
+Slimmage.js
 =======
 
 Context-friendly responsive image solution
-SlimImage (slimage.js) is focused on full-stack responsive imaging. It requires an RIAPI-compliant backend to perform on-demand resizing.
+Slimmage is focused on full-stack responsive imaging. It requires an RIAPI-compliant backend to perform on-demand resizing.
 
 It is **CSS-friendly** - your sizing logic stays in your CSS files, and you can use media queries.
 
@@ -18,7 +18,7 @@ It is **vanilla js**.
 
 ## Sample markup
 
-    <noscript data-ri>
+    <noscript data-slimmage>
       <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
     </noscript>
     
@@ -32,5 +32,5 @@ It is **vanilla js**.
 
 ## Demo page
     
-The [demo page](http://imazen.github.io/slimage/demo.html
+The [demo page](http://imazen.github.io/slimmage/demo.html
 ) uses PureCSS for the responsive grid, slimage.js to modify the URIs, and ImageResizer for Restful Image Processing.
