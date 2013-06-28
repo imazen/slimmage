@@ -12,7 +12,7 @@ It is **CDN-smart** - images are sized in intervals of 160px to minimize the num
 
 It **degrades gracefully** without javascript, or on older browsers.
 
-It is **accessbile* - the standard `<img>` tag is used. 
+It is **accessbile** - the standard `<img>` tag is used. 
 
 It is **vanilla js**.
 
@@ -34,3 +34,8 @@ It is **vanilla js**.
     
 The [demo page](http://imazen.github.io/slimmage/demo.html
 ) uses PureCSS for the responsive grid, slimage.js to modify the URIs, and ImageResizer for Restful Image Processing.
+
+
+### Notes
+
+* Slimmage depends on finding "width=[number]" in the image URL. If it's not there, nothing will work.
