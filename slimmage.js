@@ -2,7 +2,21 @@
     // Enable strict mode
     "use strict";
 
-    w.slimage = {};
+    w.slimage = w.slimage || {};
+    w.slimage.settings || {};
+    w.slimage.beginWebPTest = function(){
+        if (!w.slimage.settings.serverHasWebP) return;
+        if (w.slimage._testingWebP) return;
+        w.slimage._testingWebP = true;
+
+        var WebP=new Image();
+        WebP.onload=WebP.onerror=function(){
+            w.slimage.webp = (WebP.height==2);
+        };
+        WebP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+    };
+
+
     w.slimage.nodesToArray = function (nodeList) {
         var array = [];
         // iterate backwards ensuring that length is an UInt32
@@ -15,8 +29,11 @@
         var trueWidth = wImg.offsetWidth;
         wImg.parentNode.removeChild(wImg);
 
+        var quality = w.slimage.webp ? 78 : 90; 
         if (window.devicePixelRatio) {
             trueWidth *= window.devicePixelRatio;
+            if (window.devicePixelRatio > 1.49) quality = w.slimage.webp ? 65 : 80;
+
         }
 
         var maxwidth = Math.min(2048, trueWidth); //Limit size to 2048.
@@ -30,7 +47,9 @@
 
         if (maxwidth > oldpixels) {
             //Never request a smaller image once the larger one has already started loading
-            img.src = originalSrc.replace(/width\s*=\s*\d+/i, "width=" + maxwidth);
+            var newSrc = originalSrc.replace(/width\s*=\s*\d+/i, "width=" + maxwidth).replace(/quality=[0-9]+/i,"quality=" + quality);
+            if (w.slimage.webp) newSrc = newSrc.replace(/format=[a-z]+/i,"format=webp");
+            img.src =  newSrc; 
             img.setAttribute("data-pixel-width", maxwidth);
         }
     };
@@ -115,4 +134,6 @@
     } else if (w.attachEvent) {
         w.attachEvent("onload", h);
     }
+    //test for webp support
+    w.slimage.beginWebPTest();
 }(this));
