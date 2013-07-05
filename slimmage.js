@@ -5,8 +5,7 @@
     w.slimage = w.slimage || {};
     w.slimage.settings || {};
     w.slimage.beginWebPTest = function(){
-        if (!w.slimage.settings.serverHasWebP) return;
-        if (w.slimage._testingWebP) return;
+        if (!w.slimage.settings.serverHasWebP || w.slimage._testingWebP) return;
         w.slimage._testingWebP = true;
 
         var WebP=new Image();
@@ -26,28 +25,24 @@
         return array;
     };
     w.slimage.adjustImageSrcWithData = function (img, originalSrc, wImg) {
-        var trueWidth = wImg.offsetWidth;
-        wImg.parentNode.removeChild(wImg);
+        var dpr = window.devicePixelRatio || 1;
+        var trueWidth = wImg.offsetWidth * dpr;
+        wImg.parentNode.removeChild(wImg); //Get rid of test image
 
-        var quality = w.slimage.webp ? 78 : 90; 
-        if (window.devicePixelRatio) {
-            trueWidth *= window.devicePixelRatio;
-            if (window.devicePixelRatio > 1.49) quality = w.slimage.webp ? 65 : 80;
+        var quality = (dpr > 1.49) ? 90 : 80;
 
-        }
+        if (w.slimage.webp) quality = dpr > 1.49 ? 65 : 78;
 
         var maxwidth = Math.min(2048, trueWidth); //Limit size to 2048.
 
         //Minimize variants for caching improvements; round up to nearest multiple of 160
         maxwidth = maxwidth - (maxwidth % 160) + 160; //Will limit to 13 variations
 
-
-
         var oldpixels = img.getAttribute("data-pixel-width") | 0;
 
         if (maxwidth > oldpixels) {
             //Never request a smaller image once the larger one has already started loading
-            var newSrc = originalSrc.replace(/width\s*=\s*\d+/i, "width=" + maxwidth).replace(/quality=[0-9]+/i,"quality=" + quality);
+            var newSrc = originalSrc.replace(/width=\d+/i, "width=" + maxwidth).replace(/quality=[0-9]+/i,"quality=" + quality);
             if (w.slimage.webp) newSrc = newSrc.replace(/format=[a-z]+/i,"format=webp");
             img.src =  newSrc; 
             img.setAttribute("data-pixel-width", maxwidth);
@@ -89,11 +84,24 @@
         for (var i = 0, il = n.length; i < il; i++) {
             var ns = n[i];
             if (ns.getAttribute("data-ri") !== null || ns.getAttribute("data-slimmage") !== null) {
-                //noscript isn't part of DOM, so we have to recreate it, unescaping html, src->data-src 
+                
                 var div = w.document.createElement('div');
-                div.innerHTML = ns.innerHTML.replace(/\s+src\s*=\s*(['"])/i, " data-src=$1").
-                    replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-
+                var contents = (ns.textContent || ns.innerHTML);
+                if (!contents){
+                    //IE doesn't let us touch noscript, so we have to use attributes.
+                    var img = new Image();
+                    for (var ai = 0; ai < ns.attributes.length; ai++) {
+                        var a = ns.attributes[i];
+                        if (a.specified && a.name.indexOf("data-img") == 0){
+                            img.setAttribute(a.name.slice(8 - a.name.length),a.value);
+                        }
+                    }
+                    div.appendChild(img);
+                }else{
+                    //noscript isn't part of DOM, so we have to recreate it, unescaping html, src->data-src 
+                    div.innerHTML = contents.replace(/\s+src\s*=\s*(['"])/i, " data-src=$1").
+                        replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+                }
 
                 var childImages = div.getElementsByTagName("img");
                 for (var j = 0, jl = childImages.length; j < jl; j++) {
@@ -110,7 +118,7 @@
             }
         }
 
-        //3. Find images with data-ri and run adjustImageSrc.
+        //3. Find images with data-slimmage and run adjustImageSrc.
         var images = w.slimage.nodesToArray(w.document.getElementsByTagName("img"));
         for (var i = 0, il = images.length; i < il; i++) {
             if (images[i].getAttribute("data-slimmage") !== null) {
