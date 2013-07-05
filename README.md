@@ -16,6 +16,19 @@ It is **accessbile** - the standard `<img>` tag is used.
 
 It is **vanilla js**.
 
+## Demo page
+    
+The [demo page](http://imazen.github.io/slimmage/demo.html
+) uses PureCSS for the responsive grid, slimmage.js to modify the URIs, and ImageResizer for Restful Image Processing.
+
+
+### Notes
+
+* Slimmage depends on finding "width=[number]" in the image URL. If it's not there, nothing will work.
+* It can also adjust compression quality based on device pixel ratio, if "quality=[number]" is present.
+* If WebP is enabled, it can automatically detect and request WebP images instead.
+
+
 ## Sample markup
 
     <noscript data-slimmage>
@@ -29,13 +42,30 @@ It is **vanilla js**.
     <script src="/slimage.js" ></script>
     
     
+## Sample markup with IE7/8 support
 
-## Demo page
+    <noscript data-slimmage data-img-class="halfsize" data-img-src="http://z.zr.io/ri/1s.jpg?width=150">
+      <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
+    </noscript>
+
+## Sample markup with IE7/8 fallback
+
+    <!--[if !IE]>--><noscript data-slimmage><!--<![endif]-->
+      <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
+    <!--[if !IE]>--></noscript><!--<![endif]-->
     
-The [demo page](http://imazen.github.io/slimmage/demo.html
-) uses PureCSS for the responsive grid, slimage.js to modify the URIs, and ImageResizer for Restful Image Processing.
+## Sammple markup with WebP and quality adjustment enabled
 
-
-### Notes
-
-* Slimmage depends on finding "width=[number]" in the image URL. If it's not there, nothing will work.
+    <noscript data-slimmage>
+      <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150&format=jpg&quality=90" />
+    </noscript>
+    
+    <style type="text/css">
+      img.halfsize {max-width:50%;}
+    </style>
+    
+    <script type="text/javascript">
+        window.slimage = {settings: {serverHasWebP:true}};
+    </script>
+    <script src="/slimage.js" ></script>
+    
