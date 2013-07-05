@@ -124,7 +124,7 @@
         for (var i = 0, il = images.length; i < il; i++) {
             if (images[i].getAttribute("data-slimmage") !== null) {
                 var originalSrc = images[i].getAttribute("data-src") || images[i].src;
-                w.slimage.adjustImageSrc(images[i], images[i].getAttribute("data-src") || images[i].src);
+                w.slimage.adjustImageSrc(images[i], originalSrc);
                 log("Slimming " + originalSrc);
             }
         }
