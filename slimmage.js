@@ -92,8 +92,8 @@
                     var img = new Image();
                     for (var ai = 0; ai < ns.attributes.length; ai++) {
                         var a = ns.attributes[ai];
-                        if (a && a.specified && a.name.indexOf("data-img") == 0){
-                            img.setAttribute(a.name.slice(8 - a.name.length),a.value);
+                        if (a && a.specified && a.name.indexOf("data-img-") == 0){
+                            img.setAttribute(a.name.slice(9 - a.name.length),a.value);
                         }
                     }
                     div.appendChild(img);
