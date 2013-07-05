@@ -54,7 +54,7 @@ The [demo page](http://imazen.github.io/slimmage/demo.html
       <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
     <!--[if !IE]>--></noscript><!--<![endif]-->
     
-## Sammple markup with WebP and quality adjustment enabled
+## Sample markup with WebP and quality adjustment enabled
 
     <noscript data-slimmage>
       <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150&format=jpg&quality=90" />
