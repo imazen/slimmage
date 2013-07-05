@@ -4,6 +4,7 @@
 
     w.slimage = w.slimage || {};
     w.slimage.settings || {};
+    var log = w.window.console || function(){};
     w.slimage.beginWebPTest = function(){
         if (!w.slimage.settings.serverHasWebP || w.slimage._testingWebP) return;
         w.slimage._testingWebP = true;
@@ -78,7 +79,7 @@
             return;
         }
 
-        if (console) console.log("Scanning for noscript tags, updating images");
+        log("Scanning for noscript tags, updating images");
         //1. Copy images out of noscript tags, but hide 'src' attribute as data-src
         var n = w.slimage.nodesToArray(w.document.getElementsByTagName("noscript"));
         for (var i = 0, il = n.length; i < il; i++) {
@@ -124,7 +125,7 @@
             if (images[i].getAttribute("data-slimmage") !== null) {
                 var originalSrc = images[i].getAttribute("data-src") || images[i].src;
                 w.slimage.adjustImageSrc(images[i], images[i].getAttribute("data-src") || images[i].src);
-                if (console) console.log("Slimming " + originalSrc);
+                log("Slimming " + originalSrc);
             }
         }
     };
