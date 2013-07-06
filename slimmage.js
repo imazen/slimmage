@@ -62,14 +62,20 @@
         wImg.onload=function(){
             w.slimage.adjustImageSrcWithData(img, originalSrc, wImg);
         };
-        //Kill this temp image if it takes > 100ms to load the image (since .onload is unreliable)
+        //Kill this temp image if it takes > 50ms to load the image (since .onload is unreliable)
         setTimeout(function(){
             if (wImg.getAttribute("data-deleted") || !wImg.parentNode) return;
-            wImg.onload = null;
-            wImg.parentNode.removeChild(wImg);
-            img.src = originalSrc;
-            log("Slimmage: Failed to calculate size for " + originalSrc)
-        },100);
+
+            if (wImg.width = 4000) {
+                log("Slimmage: onload failed to fire, used timeout: " + originalSrc)
+                w.slimage.adjustImageSrcWithData(img, originalSrc, wImg);
+            }else{
+                wImg.onload = null;
+                wImg.parentNode.removeChild(wImg);
+                img.src = originalSrc;
+                log("Slimmage: Failed to calculate size for " + originalSrc)
+            }
+        },50);
         //Load a 4,000 pixel wide image, see what the resulting true width is.
         wImg.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAD6AAAAABCAAAAADvHA58AAAACXZwQWcAAA+gAAAAAQDjne1PAAAAG0lEQVRIx+3BIQEAAAACIP+f1hkWIAUAAADuBuaLkULU/NTrAAAAAElFTkSuQmCC";
     };
