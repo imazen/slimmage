@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>Test browser implementations of .getCalculatedStyle and .currentStyle</title>
+  <style type="text/css">
+    #image1 { max-width: 20px;}
+    #image2 {max-width:20%;}
+    #image3 {max-width:2em;}
+    #image4 {max-width:1cm;}
+    #image5 {max-width:1in;}
+  </style>
+</head>
+
+<body>
+  <pre id="report"></pre>
+  <img src="http://z.zr.io/ri/fix1.jpg" id="image1"/>
+  <img src="http://z.zr.io/ri/fix1.jpg" id="image2"/>
+  <img src="http://z.zr.io/ri/fix1.jpg" id="image3"/>
+  <img src="http://z.zr.io/ri/fix1.jpg" id="image4"/>
+  <img src="http://z.zr.io/ri/fix1.jpg" id="image5"/>
+  <script type="text/javascript">
+    var checkStyle = function(){
+      var r = document.getElementById("report");
+      for (var i =1; i < 6; i++){
+          var img = document.getElementById("image" + i);
+          if (window.getComputedStyle){
+              var style = window.getComputedStyle(img, null);
+              r.innerHTML += "\n" + i + ": getComputedStyle.max-width:" + style["max-width"] + "\t maxWidth:" + style.maxWidth;
+          }
+          if (img.currentStyle){
+              var style = img.currentStyle;
+              r.innerHTML += "\n" + i + ": currentStyle.max-width:" + style["max-width"] + "\t maxWidth:" + style.maxWidth;
+          }
+      } 
+
+    };
+    var h = checkStyle;
+    var w = window;
+    // Run on resize and domready (w.load as a fallback)
+    if (w.addEventListener) {
+        w.addEventListener("resize", function () { h(200); }, false);
+        w.addEventListener("DOMContentLoaded", function () {
+            h();
+            // Run once only
+            w.removeEventListener("load", h, false);
+        }, false);
+        w.addEventListener("load", h, false);
+    } else if (w.attachEvent) {
+        w.attachEvent("onload", h);
+    }
+
+  </script>
