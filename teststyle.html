@@ -26,12 +26,12 @@
           var img = document.getElementById("image" + i);
           if (window.getComputedStyle){
               var style = window.getComputedStyle(img, null);
-              r.innerHTML += "\r\n" + i + ": getComputedStyle.max-width:" + style["max-width"] + "\t maxWidth:" + style.maxWidth;
+              //r.innerHTML += "\r\n" + i + ": getComputedStyle.max-width:" + style["max-width"] + "\t maxWidth:" + style.maxWidth;
               r.innerHTML += "\r\n" + i + ": getComputedStyle.getPropertyValue(max-width):" + style.getPropertyValue("max-width")
 
-              try{r.innerHTML += "\r\n" + i + ": getComputedStyle.getPropertyCSSValue as float:" + style.getPropertyCSSValue("max-width").getFloatValue(5);}catch(e){
+              /*try{r.innerHTML += "\r\n" + i + ": getComputedStyle.getPropertyCSSValue as float:" + style.getPropertyCSSValue("max-width").getFloatValue(5);}catch(e){
                 r.innerHTML += "\r\n - Failed to get float";
-              }
+              }*/
           }
 
           if (img.currentStyle){
