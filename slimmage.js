@@ -4,7 +4,7 @@
 
     w.slimage = w.slimage || {};
     w.slimage.settings || {};
-    var log = function(){w.console && w.console.log.apply(w.console,arguments);};
+    var log = function(){ if (typeof w.console ! = "undefined") w.console.log.apply(w.console,arguments);};
     w.slimage.beginWebPTest = function(){
         if (!w.slimage.settings.serverHasWebP || w.slimage._testingWebP) return;
         w.slimage._testingWebP = true;
