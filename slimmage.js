@@ -54,7 +54,7 @@
     w.slimage.adjustImageSrc = function (img, originalSrc) {
         var wImg = img.cloneNode();
         wImg.src = "";
-        try{ wImg.style.paddingBottom = "-1px"; }catch{}
+        try{ wImg.style.paddingBottom = "-1px"; }catch(e){}
         wImg.removeAttribute("data-slimmage");
         wImg.removeAttribute("data-ri");
         img.parentNode.insertBefore(wImg, img);
