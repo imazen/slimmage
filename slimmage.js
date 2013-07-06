@@ -4,7 +4,7 @@
 
     w.slimage = w.slimage || {};
     w.slimage.settings || {};
-    var log = function(){ if (typeof w.console ! = "undefined") w.console.log.apply(w.console,arguments);};
+    var log = function(){ if (typeof(w.console) != "undefined") w.console.log.apply(w.console,arguments);};
     w.slimage.beginWebPTest = function(){
         if (!w.slimage.settings.serverHasWebP || w.slimage._testingWebP) return;
         w.slimage._testingWebP = true;
@@ -28,6 +28,7 @@
     w.slimage.adjustImageSrcWithData = function (img, originalSrc, wImg) {
         var dpr = window.devicePixelRatio || 1;
         var trueWidth = wImg.offsetWidth * dpr;
+        wImg.setAttribute("data-deleted",true);
         wImg.parentNode.removeChild(wImg); //Get rid of test image
 
         var quality = (dpr > 1.49) ? 90 : 80;
@@ -61,6 +62,14 @@
         wImg.onload=function(){
             w.slimage.adjustImageSrcWithData(img, originalSrc, wImg);
         };
+        //Kill this temp image if it takes > 100ms to load the image (since .onload is unreliable)
+        setTimeout(function(){
+            if (wImg.getAttribute("data-deleted") || !wImg.parentNode) return;
+            wImg.onload = null;
+            wImg.parentNode.removeChild(wImg);
+            img.src = originalSrc;
+            log("Slimmage: Failed to calculate size for " + originalSrc)
+        },100);
         //Load a 4,000 pixel wide image, see what the resulting true width is.
         wImg.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAD6AAAAABCAAAAADvHA58AAAACXZwQWcAAA+gAAAAAQDjne1PAAAAG0lEQVRIx+3BIQEAAAACIP+f1hkWIAUAAADuBuaLkULU/NTrAAAAAElFTkSuQmCC";
     };
