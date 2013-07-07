@@ -2,7 +2,7 @@
 
 Your wait for a sane, easily managed path to responsive images has now ended.
 
-**With Slimmage, your *CSS* controls which image size is downloaded, not your HTML**
+**With Slimmage, *CSS* controls which image size is downloaded, not HTML**
 
 
 * **Media queries, breakpoints, nested percentages, & `max-width` work as expected**.
@@ -12,54 +12,57 @@ Your wait for a sane, easily managed path to responsive images has now ended.
 * **Massive bandwidth reduction. No duplicate requests. Can auto-enable WebP and adjust compression based on pixel density**
 * **Works with any [RIAPI-compliant](http://riapi.org) backend. [ImageResizer](http://imageresizing.net) is preferred.**
 
-Tested on IE6+, Firefox 3.6+, Opera 11+, Safari 5+, Chrome 14+, Opera Mobile, and a dozen mobile Webkit browsers. In theory we should be supporting over 99.5% of browsers.
+Tested on IE6-10, Firefox 3.6-23, Opera 11-12, Safari 5-6, Chrome 14-28, Opera Mobile, and over a dozen mobile Webkit browsers. Essentially everything [supported by BrowserStack](http://www.browserstack.com/screenshots). In theory we should be supporting over 99.5% of browsers.
 
 MIT/Apache dual licensed by [Imazen](http://imazen.io).
 
 ## Demo page
     
 The (kinda lousy) [demo page](http://imazen.github.io/slimmage/demo.html
-) uses PureCSS for the responsive grid, slimmage.js to modify the URIs, and ImageResizer for Restful Image Processing.
+) uses PureCSS for the responsive grid, slimmage.js to modify the URIs, and ImageResizer for RESTful Image Processing.
 
 ## Sample markup
 
-    <noscript data-slimmage>
-      <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
-    </noscript>
-    
-    <style type="text/css">
-      img.halfsize {max-width:50%;}
-    </style>
-    
-    <script src="/slimmage.js" ></script>
-    
+```html
+<noscript data-slimmage>
+  <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
+</noscript>
+
+<style type="text/css">
+  img.halfsize {max-width:50%;}
+</style>
+
+<script src="/slimmage.js" ></script>
+```    
     
 ## Sample markup with IE6/7/8 support
 
 IE6, 7, & 8 are unable to access the contents of a noscript tag, and we are therefore required to duplicate the attributes.
 If you didn't care about non-javascript enabled users, you could drop the inner `img` element, but we wouldn't advise it.
 
-    <noscript data-slimmage data-img-class="halfsize" data-img-src="http://z.zr.io/ri/1s.jpg?width=150">
-      <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
-    </noscript>
-
+```html
+<noscript data-slimmage data-img-class="halfsize" data-img-src="http://z.zr.io/ri/1s.jpg?width=150">
+  <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
+</noscript>
+```
 
 ## Sample markup with WebP and quality adjustment enabled, console logging disabled.
 
-    <noscript data-slimmage>
-      <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150&format=jpg&quality=90" />
-    </noscript>
-    
-    <style type="text/css">
-      img.halfsize {max-width:50%;}
-    </style>
-    
-    <script type="text/javascript">
-        window.slimmage = {tryWebP:true, verbose:false};
-    </script>
-    <script src="/slimmage.js" ></script>
-    
-  
+```html
+<noscript data-slimmage>
+  <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150&format=jpg&quality=90" />
+</noscript>
+
+<style type="text/css">
+  img.halfsize {max-width:50%;}
+</style>
+
+<script type="text/javascript">
+    window.slimmage = {tryWebP:true, verbose:false};
+</script>
+<script src="/slimmage.js" ></script>
+```
+
 
 ### Notes
 
