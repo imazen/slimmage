@@ -9,11 +9,12 @@
     #image3 {max-width:2em;}
     #image4 {max-width:1cm;}
     #image5 {max-width:1in;}
+    table td {padding-right:20px;}
   </style>
 </head>
 
 <body>
-  <pre id="report"></pre>
+  <div id="report"></div>
   <img src="http://z.zr.io/ri/fix1.jpg" id="image1"/>
   <img src="http://z.zr.io/ri/fix1.jpg" id="image2"/>
   <img src="http://z.zr.io/ri/fix1.jpg" id="image3"/>
@@ -29,14 +30,50 @@
       return val;
     };
 
+    var getCssPixels = function(target, hyphenProp){
+      var val = getCssValue(target,hyphenProp);
+
+      //We can return pixels directly, but not other units
+      if (val.slice(-2) == "px") return parseFloat(val.slice(0,-2));
+
+      //Create a temporary sibling div to resolve units into pixels.
+      var temp = document.createElement("div");
+      temp.style.overflow = temp.style.visibility = "hidden"; 
+      target.parentNode.appendChild(temp);  
+      temp.style.width = val;
+      var pixels = temp.offsetWidth;
+      target.parentNode.removeChild(temp);
+      return pixels;
+    };
+
+    var buildTable = function(jaggedArray){
+      var tab = "<table>";
+      for (var i = 0; i < jaggedArray.length; i++){
+        tab += "<tr>"
+        for (var j = 0; j < jaggedArray[i].length; j++){
+          tab += "<td>" + jaggedArray[i][j] + "</td>";
+        }
+        tab += "</tr>";
+      }
+      return tab + "</table>";
+    };
+
     var checkStyle = function(calledBy){
       var r = document.getElementById("report");
-      r.innerHTML += "\r\nCalled by " + (calledBy || "load") + "\r\n";
+      r.innerHTML += "<p>Called by " + (calledBy || "load") + "</p>";
+
+      var table = [["Raw values: "], ["Converted to pixels: "]];
+      var row = table[0];
       for (var i =1; i < 6; i++){
           var img = document.getElementById("image" + i);
-          r.innerHTML += getCssValue(img,"max-width") + "\t";
-
-      } 
+          row.push(getCssValue(img,"max-width"));
+      }
+      row = table[1];
+      for (var i =1; i < 6; i++){
+          var img = document.getElementById("image" + i);
+          row.push(getCssPixels(img,"max-width"));
+      }
+      r.innerHTML += buildTable(table);
     };
     var h = checkStyle;
     var w = window;
