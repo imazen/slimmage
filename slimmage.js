@@ -98,7 +98,7 @@
                 
                 var div = w.document.createElement('div');
                 var contents = (ns.textContent || ns.innerHTML);
-                if (!contents){
+                if (!contents || contents.replace(/[\s\t\r\n]+/,"").length == 0){
                     //IE doesn't let us touch noscript, so we have to use attributes.
                     var img = new Image();
                     for (var ai = 0; ai < ns.attributes.length; ai++) {
