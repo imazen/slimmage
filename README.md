@@ -1,7 +1,7 @@
 Slimmage.js
 =======
 
-Context-friendly responsive image solution for 99.5% of browsers.
+Context-friendly responsive image solution for 99.5% of browsers. 3KB minified; 1.5KB compressed. Adds 2ms/image javascript execution time.
 Slimmage is focused on full-stack responsive imaging. It requires an RIAPI-compliant backend to perform on-demand resizing.
 
 
@@ -15,7 +15,7 @@ It **degrades gracefully** without javascript.
 
 It is **accessbile** - the standard `<img>` tag is used. 
 
-It is **vanilla js, less than 2 KB compressed, and omly adds an extra 2ms of execution time per image.**
+It is **vanilla js**
 
 We tested it on IE6+, Firefox 3.6+, Opera 11+, Safari 5+, Chrome 14+, and a dozen mobile Webkit browsers. In theory we should be supporting 99.5% of browsers.
 
