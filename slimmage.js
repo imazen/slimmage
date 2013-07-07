@@ -4,22 +4,25 @@
     // Enable strict mode
     "use strict";
 
-    w.slimmage = w.slimmage || {};
-    if (w.slimmage.verbose === undefined) w.slimmage.verbose = true;
+    var s =  window.slimmage || {};
+    /** @expose **/
+    window.slimmage = s;
+    if (s.verbose === undefined) /** @expose **/ s.verbose = true;
+    if (s.tryWebP === undefined) /** @expose **/ s.tryWebP = false;
 
-    var log = function(){ if (typeof(w.console) != "undefined" && w.slimmage.verbose) w.console.log.apply(w.console,arguments);};
-    w.slimmage.beginWebPTest = function(){
-        if (!w.slimmage.tryWebP || w.slimmage._testingWebP) return;
-        w.slimmage._testingWebP = true;
+    var log = function(){ if (typeof(w.console) != "undefined" && s.verbose) w.console.log.apply(w.console,arguments);};
+    s.beginWebPTest = function(){
+        if (!s.tryWebP || s._testingWebP) return;
+        s._testingWebP = true;
 
         var WebP=new Image();
         WebP.onload=WebP.onerror=function(){
-            w.slimmage.webp = (WebP.height==2);
+            s.webp = (WebP.height==2);
         };
         WebP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
     };
-
-    w.slimmage.getCssValue = function(target, hyphenProp){
+   
+    s.getCssValue = function(target, hyphenProp){
       var val = typeof(window.getComputedStyle) != "undefined" && window.getComputedStyle(target, null).getPropertyValue(hyphenProp);
       if (!val && target.currentStyle){
         val = target.currentStyle[hyphenProp.replace(/([a-z])\-([a-z])/, function(a,b,c){ return b + c.toUpperCase();})] || target.currentStyle[hyphenProp];
@@ -27,8 +30,8 @@
       return val;
     };
 
-    w.slimmage.getCssPixels = function(target, hyphenProp){
-      var val = w.slimmage.getCssValue(target,hyphenProp);
+    s.getCssPixels = function(target, hyphenProp){
+      var val = s.getCssValue(target,hyphenProp);
 
       //We can return pixels directly, but not other units
       if (val.slice(-2) == "px") return parseFloat(val.slice(0,-2));
@@ -43,7 +46,7 @@
       return pixels;
     };
 
-    w.slimmage.nodesToArray = function (nodeList) {
+    s.nodesToArray = function (nodeList) {
         var array = [];
         // iterate backwards ensuring that length is an UInt32
         for (var i = nodeList.length >>> 0; i--;) {
@@ -52,13 +55,13 @@
         return array;
     };
     //Expects virtual, not device pixel width
-    w.slimmage.adjustImageSrcWithWidth = function (img, originalSrc, width) {
+    s.adjustImageSrcWithWidth = function (img, originalSrc, width) {
         var dpr = window.devicePixelRatio || 1;
         var trueWidth = width * dpr;
 
         var quality = (dpr > 1.49) ? 90 : 80;
 
-        if (w.slimmage.webp) quality = dpr > 1.49 ? 65 : 78;
+        if (s.webp) quality = dpr > 1.49 ? 65 : 78;
 
         var maxwidth = Math.min(2048, trueWidth); //Limit size to 2048.
 
@@ -70,28 +73,28 @@
         if (maxwidth > oldpixels) {
             //Never request a smaller image once the larger one has already started loading
             var newSrc = originalSrc.replace(/width=\d+/i, "width=" + maxwidth).replace(/quality=[0-9]+/i,"quality=" + quality);
-            if (w.slimmage.webp) newSrc = newSrc.replace(/format=[a-z]+/i,"format=webp");
+            if (s.webp) newSrc = newSrc.replace(/format=[a-z]+/i,"format=webp");
             img.src =  newSrc; 
             img.setAttribute("data-pixel-width", maxwidth);
             log("Slimming: updating " + newSrc)
         }
     };
-    w.slimmage.adjustImageSrc = function (img, originalSrc) {
-        w.slimmage.adjustImageSrcWithWidth(img, originalSrc, w.slimmage.getCssPixels(img, "max-width"));
+    s.adjustImageSrc = function (img, originalSrc) {
+        s.adjustImageSrcWithWidth(img, originalSrc, s.getCssPixels(img, "max-width"));
     };
 
-    w.slimmage.checkResponsiveImages = function (delay) {
-        if (w.slimmage.timeoutid > 0) w.clearTimeout(w.slimmage.timeoutid);
-        w.slimmage.timeoutid = 0;
+    s.checkResponsiveImages = function (delay) {
+        if (s.timeoutid > 0) w.clearTimeout(s.timeoutid);
+        s.timeoutid = 0;
         if (delay && delay > 0) {
-            w.slimmage.timeoutid = w.setTimeout(w.slimmage.checkResponsiveImages, delay);
+            s.timeoutid = w.setTimeout(s.checkResponsiveImages, delay);
             return;
         }
         var stopwatch = new Date().getTime();
 
         var newImages = 0;
         //1. Copy images out of noscript tags, but hide 'src' attribute as data-src
-        var n = w.slimmage.nodesToArray(w.document.getElementsByTagName("noscript"));
+        var n = s.nodesToArray(w.document.getElementsByTagName("noscript"));
         for (var i = 0, il = n.length; i < il; i++) {
             var ns = n[i];
             if (ns.getAttribute("data-slimmage") !== null) {
@@ -132,11 +135,11 @@
 
         //3. Find images with data-slimmage and run adjustImageSrc.
         var totalImages = 0;
-        var images = w.slimmage.nodesToArray(w.document.getElementsByTagName("img"));
+        var images = s.nodesToArray(w.document.getElementsByTagName("img"));
         for (var i = 0, il = images.length; i < il; i++) {
             if (images[i].getAttribute("data-slimmage") !== null) {
                 var originalSrc = images[i].getAttribute("data-src") || images[i].src;
-                w.slimmage.adjustImageSrc(images[i], originalSrc);
+                s.adjustImageSrc(images[i], originalSrc);
                 totalImages++;
             }
         }
@@ -144,7 +147,7 @@
         log("Slimmage: restored " + newImages + " images from noscript tags; sizing " + totalImages + " images. " + (new Date().getTime() - stopwatch) + "ms");
     };
 
-    var h = w.slimmage.checkResponsiveImages;
+    var h = s.checkResponsiveImages;
     // Run on resize and domready (w.load as a fallback)
     if (w.addEventListener) {
         w.addEventListener("resize", function () { h(500); }, false);
@@ -158,6 +161,5 @@
         w.attachEvent("onload", h);
     }
     //test for webp support
-    w.slimmage.beginWebPTest();
-    window.slimmage = w.slimmage;
+    s.beginWebPTest();
 }(this));
