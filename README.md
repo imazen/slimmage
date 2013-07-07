@@ -55,12 +55,7 @@ If you didn't care about non-javascript enabled users, you could drop the inner 
       <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
     </noscript>
 
-## Sample markup with IE6/7/8 fallback
 
-    <!--[if !IE]>--><noscript data-slimmage><!--<![endif]-->
-      <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
-    <!--[if !IE]>--></noscript><!--<![endif]-->
-    
 ## Sample markup with WebP and quality adjustment enabled, console logging disabled.
 
     <noscript data-slimmage>
