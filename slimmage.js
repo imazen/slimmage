@@ -16,6 +16,29 @@
         WebP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
     };
 
+    w.slimmage.getCssValue = function(target, hyphenProp){
+      var val = typeof(window.getComputedStyle) != "undefined" && window.getComputedStyle(target, null).getPropertyValue(hyphenProp);
+      if (!val && target.currentStyle){
+        val = target.currentStyle[hyphenProp.replace(/([a-z])\-([a-z])/, function(a,b,c){ return b + c.toUpperCase();})] || target.currentStyle[hyphenProp];
+      }
+      return val;
+    };
+
+    w.slimmage.getCssPixels = function(target, hyphenProp){
+      var val = w.slimmage.getCssValue(target,hyphenProp);
+
+      //We can return pixels directly, but not other units
+      if (val.slice(-2) == "px") return parseFloat(val.slice(0,-2));
+
+      //Create a temporary sibling div to resolve units into pixels.
+      var temp = document.createElement("div");
+      temp.style.overflow = temp.style.visibility = "hidden"; 
+      target.parentNode.appendChild(temp);  
+      temp.style.width = val;
+      var pixels = temp.offsetWidth;
+      target.parentNode.removeChild(temp);
+      return pixels;
+    };
 
     w.slimmage.nodesToArray = function (nodeList) {
         var array = [];
@@ -25,11 +48,10 @@
         }
         return array;
     };
-    w.slimmage.adjustImageSrcWithData = function (img, originalSrc, wImg) {
+    //Expects virtual, not device pixel width
+    w.slimmage.adjustImageSrcWithWidth = function (img, originalSrc, width) {
         var dpr = window.devicePixelRatio || 1;
-        var trueWidth = wImg.offsetWidth * dpr;
-        wImg.setAttribute("data-deleted",true);
-        wImg.parentNode.removeChild(wImg); //Get rid of test image
+        var trueWidth = width * dpr;
 
         var quality = (dpr > 1.49) ? 90 : 80;
 
@@ -51,8 +73,18 @@
             log("Slimming: updating " + newSrc)
         }
     };
-
     w.slimmage.adjustImageSrc = function (img, originalSrc) {
+        w.slimmage.adjustImageSrcWithWidth(img, originalSrc, w.slimmage.getCssPixels(img, "max-width"));
+    };
+    w.slimmage.adjustImageSrcWithData = function (img, originalSrc, wImg) {
+        var trueWidth = wImg.offsetWidth;
+        wImg.setAttribute("data-deleted",true);
+        wImg.parentNode.removeChild(wImg); //Get rid of test image
+
+        w.slimmage.adjustImageSrcWithWidth(img,originalSrc, trueWidth);
+    };
+
+    w.slimmage.adjustImageSrcOld = function (img, originalSrc) {
         var wImg = img.cloneNode();
         wImg.src = "";
         try{ wImg.style.paddingBottom = "-1px"; }catch(e){}
@@ -92,7 +124,7 @@
         var n = w.slimmage.nodesToArray(w.document.getElementsByTagName("noscript"));
         for (var i = 0, il = n.length; i < il; i++) {
             var ns = n[i];
-            if (ns.getAttribute("data-ri") !== null || ns.getAttribute("data-slimmage") !== null) {
+            if (ns.getAttribute("data-slimmage") !== null) {
                 
                 var div = w.document.createElement('div');
                 var contents = (ns.textContent || ns.innerHTML);
@@ -111,7 +143,7 @@
                     div.innerHTML = contents.replace(/\s+src\s*=\s*(['"])/i, " data-src=$1").
                         replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
                 }
-
+                //Clear source values before we add it back to the dom, ensure data-slimmage is set.
                 var childImages = div.getElementsByTagName("img");
                 for (var j = 0, jl = childImages.length; j < jl; j++) {
                     var ci = childImages[j];
