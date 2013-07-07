@@ -1,12 +1,15 @@
+/* Slimmage 0.2, use with ImageResizer. MIT/Apache2 dual licensed by Imazen */
+
 (function (w) { //w==window
     // Enable strict mode
     "use strict";
 
     w.slimmage = w.slimmage || {};
-    w.slimmage.settings || {};
-    var log = function(){ if (typeof(w.console) != "undefined") w.console.log.apply(w.console,arguments);};
+    if (w.slimmage.verbose === undefined) w.slimmage.verbose = true;
+
+    var log = function(){ if (typeof(w.console) != "undefined" && w.slimmage.verbose) w.console.log.apply(w.console,arguments);};
     w.slimmage.beginWebPTest = function(){
-        if (!w.slimmage.settings.serverHasWebP || w.slimmage._testingWebP) return;
+        if (!w.slimmage.tryWebP || w.slimmage._testingWebP) return;
         w.slimmage._testingWebP = true;
 
         var WebP=new Image();
@@ -76,41 +79,6 @@
     w.slimmage.adjustImageSrc = function (img, originalSrc) {
         w.slimmage.adjustImageSrcWithWidth(img, originalSrc, w.slimmage.getCssPixels(img, "max-width"));
     };
-    w.slimmage.adjustImageSrcWithData = function (img, originalSrc, wImg) {
-        var trueWidth = wImg.offsetWidth;
-        wImg.setAttribute("data-deleted",true);
-        wImg.parentNode.removeChild(wImg); //Get rid of test image
-
-        w.slimmage.adjustImageSrcWithWidth(img,originalSrc, trueWidth);
-    };
-
-    w.slimmage.adjustImageSrcOld = function (img, originalSrc) {
-        var wImg = img.cloneNode();
-        wImg.src = "";
-        try{ wImg.style.paddingBottom = "-1px"; }catch(e){}
-        wImg.removeAttribute("data-slimmage");
-        wImg.removeAttribute("data-ri");
-        img.parentNode.insertBefore(wImg, img);
-        wImg.onload=function(){
-            w.slimmage.adjustImageSrcWithData(img, originalSrc, wImg);
-        };
-        //Kill this temp image if it takes > 50ms to load the image (since .onload is unreliable)
-        setTimeout(function(){
-            if (wImg.getAttribute("data-deleted") || !wImg.parentNode) return;
-
-            if (wImg.width = 4000) {
-                log("Slimmage: onload failed to fire, used timeout: " + originalSrc)
-                w.slimmage.adjustImageSrcWithData(img, originalSrc, wImg);
-            }else{
-                wImg.onload = null;
-                wImg.parentNode.removeChild(wImg);
-                img.src = originalSrc;
-                log("Slimmage: Failed to calculate size for " + originalSrc)
-            }
-        },101);
-        //Load a 4,000 pixel wide image, see what the resulting true width is.
-        wImg.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAD6AAAAABCAAAAADvHA58AAAACXZwQWcAAA+gAAAAAQDjne1PAAAAG0lEQVRIx+3BIQEAAAACIP+f1hkWIAUAAADuBuaLkULU/NTrAAAAAElFTkSuQmCC";
-    };
 
     w.slimmage.checkResponsiveImages = function (delay) {
         if (w.slimmage.timeoutid > 0) w.clearTimeout(w.slimmage.timeoutid);
@@ -119,6 +87,8 @@
             w.slimmage.timeoutid = w.setTimeout(w.slimmage.checkResponsiveImages, delay);
             return;
         }
+        var stopwatch = new Date().getTime();
+
         var newImages = 0;
         //1. Copy images out of noscript tags, but hide 'src' attribute as data-src
         var n = w.slimmage.nodesToArray(w.document.getElementsByTagName("noscript"));
@@ -171,13 +141,13 @@
             }
         }
 
-        log("Slimmage: unfolded " + newImages + " images from noscript tags; began size calculations on " + totalImages + " images.");
+        log("Slimmage: restored " + newImages + " images from noscript tags; sizing " + totalImages + " images. " + (new Date().getTime() - stopwatch) + "ms");
     };
 
     var h = w.slimmage.checkResponsiveImages;
     // Run on resize and domready (w.load as a fallback)
     if (w.addEventListener) {
-        w.addEventListener("resize", function () { h(200); }, false);
+        w.addEventListener("resize", function () { h(500); }, false);
         w.addEventListener("DOMContentLoaded", function () {
             h();
             // Run once only
@@ -189,4 +159,5 @@
     }
     //test for webp support
     w.slimmage.beginWebPTest();
+    window.slimmage = w.slimmage;
 }(this));
