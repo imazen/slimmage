@@ -16,10 +16,7 @@ Tested on IE6-10, Firefox 3.6-23, Opera 11-12, Safari 5-6, Chrome 14-28, Opera M
 
 MIT/Apache dual licensed by [Imazen](http://imazen.io).
 
-## Demo page
-    
-The (kinda lousy) [demo page](http://imazen.github.io/slimmage/demo.html
-) uses PureCSS for the responsive grid, slimmage.js to modify the URIs, and ImageResizer for RESTful Image Processing.
+### [Demo page](http://imazen.github.io/slimmage/demo.html) using [PureCSS](http://purecss.io/), slimmage.js, & [ImageResizer](http://imageresizing.net).
 
 ## Sample markup
 
