@@ -1,4 +1,4 @@
-## Slimmage v0.2 - sane & simple responsive images
+## Slimmage - sane & simple responsive images
 
 Your wait for a sane, easily managed path to responsive images has now ended.
 
