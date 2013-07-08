@@ -63,7 +63,7 @@ If you didn't care about non-javascript enabled users, you could drop the inner 
 
 ### Notes
 
-* Slimmage depends on finding "width=[number]" in the image URL. If it's not there, nothing will work.
+* Slimmage requires "width=[number]" be present in the URL. This value specifies the image size when javascript is disabled, but is modified by slimmage.js under normal circumstances.
 * It can also adjust compression quality based on device pixel ratio, if "quality=[number]" is present.
 * If WebP is enabled, it can automatically detect and request WebP images instead.
 * The final `max-width` applied to the element determines which image file size is downloaded. Unlike earlier versions, a sizing image is not used, and 'width' and 'height' properties are ignored in the selection process.
