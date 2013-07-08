@@ -18,6 +18,8 @@ MIT/Apache dual licensed by [Imazen](http://imazen.io).
 
 ### [Demo page](http://imazen.github.io/slimmage/demo.html) using [PureCSS](http://purecss.io/), slimmage.js, & [ImageResizer](http://imageresizing.net).
 
+**If [you're on Windows or IIS, read this guide for the easiest implementation path](http://imageresizing.net/blog/2013/effortless-responsive-images)**
+
 ## Sample markup
 
 ```html
@@ -69,8 +71,13 @@ If you didn't care about non-javascript enabled users, you could drop the inner 
 * The final `max-width` applied to the element determines which image file size is downloaded. Unlike earlier versions, a sizing image is not used, and 'width' and 'height' properties are ignored in the selection process.
 * Images are loaded immediately after stylesheets download. Slimmage add 2ms of javascript execution time per image.
 
+**It's a good idea to use a helper method or HTML filter to generate slimmage's required markup. Everything works cross-browser today, but browser vendors have a long and venerable tradition of breaking responsive image solutions.**
 
-  
+* For IIS or ASP.NET, there's [SlimResponse](https://github.com/imazen/slimresponse), an output filter that simplifes the markup down to `<img src="image.jpg?width=150&slimmage=true" />`
+
+Feel free to fork and add links to your HTML filters/helpers here!
+
+
 ### Release notes
 
 
