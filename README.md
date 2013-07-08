@@ -62,6 +62,14 @@ If you didn't care about non-javascript enabled users, you could drop the inner 
 <script src="/slimmage.js" ></script>
 ```
 
+## Sample markup for LQIP (Low-quality image placeholders) mode
+
+**Warning - this syntax will cause 2 network requests on many browsers**
+
+```html
+<img data-slimmage="true" src="http://z.zr.io/ri/1s.jpg?width=100&format=jpg&quality=75" />
+```
+
 
 ### Notes
 
