@@ -1,4 +1,4 @@
-/* Slimmage 0.2, use with ImageResizer. MIT/Apache2 dual licensed by Imazen */
+/* Slimmage 0.2.1, use with ImageResizer. MIT/Apache2 dual licensed by Imazen */
 
 (function (w) { //w==window
     // Enable strict mode
@@ -10,7 +10,7 @@
     if (s.verbose === undefined) /** @expose **/ s.verbose = true;
     if (s.tryWebP === undefined) /** @expose **/ s.tryWebP = false;
 
-    var log = function(){ if (typeof(w.console) != "undefined" && s.verbose) w.console.log.apply(w.console,arguments);};
+    var log = function(){ if (w.slimmage.verbose && w.console && w.console.log) w.console.log.apply(w.console,arguments);};
     s.beginWebPTest = function(){
         if (!s.tryWebP || s._testingWebP) return;
         s._testingWebP = true;
