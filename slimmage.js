@@ -144,6 +144,10 @@
             }
         }
 
+        //4. Trigger custom event, "slimmage-ready"
+        var customEvent = new CustomEvent("slimmage-ready", {});
+        document.dispatchEvent(customEvent);
+
         log("Slimmage: restored " + newImages + " images from noscript tags; sizing " + totalImages + " images. " + (new Date().getTime() - stopwatch) + "ms");
     };
 
