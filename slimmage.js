@@ -59,9 +59,9 @@
         var dpr = window.devicePixelRatio || 1;
         var trueWidth = width * dpr;
 
-        var quality = (dpr > 1.49) ? 90 : 80;
+        var quality = (dpr > 1.49) ? s.defaultHighDprQuality || 90 : s.defaultQuality || 80;
 
-        if (s.webp) quality = dpr > 1.49 ? 65 : 78;
+        if (s.webp) quality = dpr > 1.49 ? s.defaultWebPHighDprQuality || 78 : s.defaultWebPQuality || 65;
 
         var maxwidth = Math.min(2048, trueWidth); //Limit size to 2048.
 
