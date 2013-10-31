@@ -56,26 +56,30 @@
     };
     //Expects virtual, not device pixel width
     s.adjustImageSrcWithWidth = function (img, originalSrc, width) {
-        var dpr = window.devicePixelRatio || 1;
-        var trueWidth = width * dpr;
-
-        var quality = (dpr > 1.49) ? s.defaultHighDprQuality || 90 : s.defaultQuality || 80;
-
-        if (s.webp) quality = dpr > 1.49 ? s.defaultWebPHighDprQuality || 78 : s.defaultWebPQuality || 65;
-
-        var maxwidth = Math.min(2048, trueWidth); //Limit size to 2048.
-
+        var data = {
+            webp: s.webp,
+            width: width,
+            dpr: window.devicePixelRatio || 1
+        }
+        data.requestedWidth = Math.min(2048, data.width * data.dpr), //Limit size to 2048.
+        data.quality = (data.dpr > 1.49) ? 90 : 80 //Default quality
+        if (s.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
+		
         //Minimize variants for caching improvements; round up to nearest multiple of 160
-        maxwidth = maxwidth - (maxwidth % 160) + 160; //Will limit to 13 variations
+        data.requestedWidth = data.requestedWidth - (data.requestedWidth % 160) + 160; //Will limit to 13 variations
 
         var oldpixels = img.getAttribute("data-pixel-width") | 0;
 
-        if (maxwidth > oldpixels) {
+        if (s.adjustImageParameters && typeof(s.adjustImageParameters) === "function") {
+            s.adjustImageParameters(data);
+        }
+
+        if (data.requestedWidth > oldpixels) {
             //Never request a smaller image once the larger one has already started loading
-            var newSrc = originalSrc.replace(/width=\d+/i, "width=" + maxwidth).replace(/quality=[0-9]+/i,"quality=" + quality);
+            var newSrc = originalSrc.replace(/width=\d+/i, "width=" + data.requestedWidth).replace(/quality=[0-9]+/i,"quality=" + data.quality);
             if (s.webp) newSrc = newSrc.replace(/format=[a-z]+/i,"format=webp");
             img.src =  newSrc; 
-            img.setAttribute("data-pixel-width", maxwidth);
+            img.setAttribute("data-pixel-width", data.requestedWidth);
             log("Slimming: updating " + newSrc)
         }
     };
