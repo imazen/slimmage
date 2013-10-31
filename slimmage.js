@@ -62,7 +62,7 @@
             dpr: window.devicePixelRatio || 1
         }
         data.requestedWidth = Math.min(2048, data.width * data.dpr), //Limit size to 2048.
-        data.quality = (data.dpr > 1.49) ? 90 : 80 //Default quality
+        data.quality = (data.dpr > 1.49) ? 80 : 90 //Default quality
         if (s.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
 		
         //Minimize variants for caching improvements; round up to nearest multiple of 160
