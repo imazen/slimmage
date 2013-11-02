@@ -102,3 +102,4 @@ Feel free to fork and add links to your HTML filters/helpers here!
 * 0.1 - Dynamically injected a twin image tag with a sizer gif (4k wide transparent gif) to let the browser calculate the desired size, then used that for the image URI.
 * 0.2 - Implemented direct reading of the calculated 'max-width' value and conversion of non-px units via a dynamic sibling div (faster and added IE6,7,8 support).
 * 0.2.1 - Fixed IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
+* 0.2.2 - Fixed another IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
