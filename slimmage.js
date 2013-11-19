@@ -144,9 +144,11 @@
             }
         }
 
-         //4. Trigger custom event, "slimmage-ready"
-         //requiers jQuery
-        $(document).trigger("slimmage-ready"); 
+        //4. Callback when ready
+        if(typeof window.slimmageReadyCallback === 'function') {
+            window.slimmageReadyCallback();
+        }
+        
         log("Slimmage: restored " + newImages + " images from noscript tags; sizing " + totalImages + " images. " + (new Date().getTime() - stopwatch) + "ms");
     };
 
