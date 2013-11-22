@@ -149,10 +149,6 @@
         if(typeof s.readyCallback === 'function') {
             s.readyCallback();
         }
-
-        if(typeof window.slimmageReadyCallback === 'function') {
-            window.slimmageReadyCallback();
-        }
         
         log("Slimmage: restored " + newImages + " images from noscript tags; sizing " + totalImages + " images. " + (new Date().getTime() - stopwatch) + "ms");
     };
