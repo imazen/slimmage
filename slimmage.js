@@ -9,7 +9,7 @@
     window.slimmage = s;
     if (s.verbose === undefined) /** @expose **/ s.verbose = true;
     if (s.tryWebP === undefined) /** @expose **/ s.tryWebP = false;
-    if (s.s.readyCallback === undefined) /** @expose **/ s.s.readyCallback = null;
+    if (s.readyCallback === undefined) /** @expose **/ s.readyCallback = null;
 
     var log = function(){ if (w.slimmage.verbose && w.console && w.console.log) try {w.console.log.apply(w.console,arguments);}catch(e){}};
     s.beginWebPTest = function(){
@@ -146,6 +146,10 @@
         }
 
         //4. Callback when ready
+        if(typeof s.readyCallback === 'function') {
+            s.readyCallback();
+        }
+
         if(typeof window.slimmageReadyCallback === 'function') {
             window.slimmageReadyCallback();
         }
