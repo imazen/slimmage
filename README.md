@@ -12,6 +12,8 @@ Your wait for a sane, easily managed path to responsive images has now ended.
 * **Massive bandwidth reduction. No duplicate requests. Can auto-enable WebP and adjust compression based on pixel density**
 * **Works with any [RIAPI-compliant](http://riapi.org) backend. [ImageResizer](http://imageresizing.net) is preferred.**
 
+Handles any viewport size and pixel density with ease. Yes, retina and retina-like displays are supported.
+
 Tested on IE6-10, Firefox 3.6-23, Opera 11-12, Safari 5-6, Chrome 14-28, Opera Mobile, and over a dozen mobile Webkit browsers. Essentially everything [supported by BrowserStack](http://www.browserstack.com/screenshots). In theory we should be supporting over 99.5% of browsers.
 
 MIT/Apache dual licensed by [Imazen](http://imazen.io).
