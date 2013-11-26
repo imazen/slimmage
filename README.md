@@ -105,3 +105,4 @@ Feel free to fork and add links to your HTML filters/helpers here!
 * 0.2 - Implemented direct reading of the calculated 'max-width' value and conversion of non-px units via a dynamic sibling div (faster and added IE6,7,8 support).
 * 0.2.1 - Fixed IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
 * 0.2.2 - Fixed another IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
+* 0.2.3 - Added `window.slimmage.readyCallback` callback - occurs after first adjustment of all images. Added `s.adjustImageParameters(data)` to allow size/quality/format customization. Fixed incorrect quality calculation bug. All code contributed by Per Osbäck and Ola Andersson! Release tested on BrowserStack.
