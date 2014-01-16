@@ -10,19 +10,56 @@
     if (s.verbose === undefined) /** @expose **/ s.verbose = true;
     if (s.tryWebP === undefined) /** @expose **/ s.tryWebP = false;
     if (s.readyCallback === undefined) /** @expose **/ s.readyCallback = null;
+    if (s.webpFeature === undefined) /** @expose **/ s.webpFeature = [ "lossy", "lossless", "alpha", "animation" ];
 
     var log = function(){ if (w.slimmage.verbose && w.console && w.console.log) try {w.console.log.apply(w.console,arguments);}catch(e){}};
-    s.beginWebPTest = function(){
+       
+    s.checkWebpFeature = function (feature, callback) {
+        //credits to, https://developers.google.com/speed/webp/faq#how_can_i_detect_browser_support_using_javascript
+        var testImages = {
+            lossy: "UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA",//basic webp
+            lossless: "UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==",
+            alpha: "UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==",
+            animation: "UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA"
+        };
+
+        var img = new Image();
+        img.onload = function () {
+            var result = (img.width > 0) && (img.height > 0);
+            callback(feature, result);
+        };
+        img.onerror = function () {
+            callback(feature, false);
+        };
+        img.src = "data:image/webp;base64," + testImages[feature];
+    };
+
+    s.beginWebPTest = function() {
         if (!s.tryWebP || s._testingWebP) return;
         s._testingWebP = true;
-
-        var WebP=new Image();
-        WebP.onload=WebP.onerror=function(){
-            s.webp = (WebP.height==2);
+        
+        var supported = [];
+        
+        var isAllTrue = function(array) {
+            for(var i in array)
+                if(!array[i]) {
+                   return false;
+                }
+            return true;
         };
-        WebP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+
+        for(var key in s.webpFeature) {
+            s.checkWebpFeature(s.webpFeature[key], function(feature, value) {
+                log("Slimmage: webp " + feature + " feature is " + (value? "supported":"unsupported"));
+                supported.push(value);
+
+                if(supported.length == s.webpFeature.length) {
+                    s.webp = isAllTrue(supported);
+                }
+            });
+        }
     };
-   
+
     s.getCssValue = function(target, hyphenProp){
       var val = typeof(window.getComputedStyle) != "undefined" && window.getComputedStyle(target, null).getPropertyValue(hyphenProp);
       if (!val && target.currentStyle){
@@ -36,6 +73,11 @@
 
       //We can return pixels directly, but not other units
       if (val.slice(-2) == "px") return parseFloat(val.slice(0,-2));
+
+      // IE 8 will return "none" for max-width when not set.
+      // However, "none" is not a valid value for the "width" style
+      // and will cause an exception.
+      val === "none" && (val = "");
 
       //Create a temporary sibling div to resolve units into pixels.
       var temp = document.createElement("div");
@@ -60,12 +102,13 @@
         var data = {
             webp: s.webp,
             width: width,
-            dpr: window.devicePixelRatio || 1
+            dpr: window.devicePixelRatio || 1,
+            src: originalSrc
         }
         data.requestedWidth = Math.min(2048, data.width * data.dpr), //Limit size to 2048.
         data.quality = (data.dpr > 1.49) ? 80 : 90 //Default quality
-        if (s.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
-		
+        if (data.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
+        
         //Minimize variants for caching improvements; round up to nearest multiple of 160
         data.requestedWidth = data.requestedWidth - (data.requestedWidth % 160) + 160; //Will limit to 13 variations
 
@@ -78,10 +121,10 @@
         if (data.requestedWidth > oldpixels) {
             //Never request a smaller image once the larger one has already started loading
             var newSrc = originalSrc.replace(/width=\d+/i, "width=" + data.requestedWidth).replace(/quality=[0-9]+/i,"quality=" + data.quality);
-            if (s.webp) newSrc = newSrc.replace(/format=[a-z]+/i,"format=webp");
-            img.src =  newSrc; 
+            if (data.webp) newSrc = newSrc.replace(/format=[a-z]+/i, "format=webp");
+            img.src = newSrc; 
             img.setAttribute("data-pixel-width", data.requestedWidth);
-            log("Slimming: updating " + newSrc)
+            log("Slimming: updating " + newSrc);
         }
     };
     s.adjustImageSrc = function (img, originalSrc) {
