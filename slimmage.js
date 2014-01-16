@@ -97,12 +97,11 @@
         var data = {
             webp: s.webp,
             width: width,
-            dpr: window.devicePixelRatio || 1,
-            src: originalSrc
+            dpr: window.devicePixelRatio || 1
         }
         data.requestedWidth = Math.min(2048, data.width * data.dpr), //Limit size to 2048.
         data.quality = (data.dpr > 1.49) ? 80 : 90 //Default quality
-        if (data.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
+        if (s.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
         
         //Minimize variants for caching improvements; round up to nearest multiple of 160
         data.requestedWidth = data.requestedWidth - (data.requestedWidth % 160) + 160; //Will limit to 13 variations
@@ -116,10 +115,10 @@
         if (data.requestedWidth > oldpixels) {
             //Never request a smaller image once the larger one has already started loading
             var newSrc = originalSrc.replace(/width=\d+/i, "width=" + data.requestedWidth).replace(/quality=[0-9]+/i,"quality=" + data.quality);
-            if (data.webp) newSrc = newSrc.replace(/format=[a-z]+/i, "format=webp");
-            img.src = newSrc; 
+            if (s.webp) newSrc = newSrc.replace(/format=[a-z]+/i,"format=webp");
+            img.src =  newSrc; 
             img.setAttribute("data-pixel-width", data.requestedWidth);
-            log("Slimming: updating " + newSrc);
+            log("Slimming: updating " + newSrc)
         }
     };
     s.adjustImageSrc = function (img, originalSrc) {
