@@ -10,6 +10,10 @@
     if (s.verbose === undefined) /** @expose **/ s.verbose = true;
     if (s.tryWebP === undefined) /** @expose **/ s.tryWebP = false;
     if (s.readyCallback === undefined) /** @expose **/ s.readyCallback = null;
+    if (s.maxWidth === undefined) /** @expose **/ s.maxWidth = 2048;
+    if (s.widthStep === undefined) /** @expose **/ s.widthStep = 160;
+    if (s.quality === undefined) /** @expose **/ s.quality = 90;
+    if (s.retinaQuality === undefined) /** @expose **/ s.retinaQuality = 80;
 
     var log = function(){ if (w.slimmage.verbose && w.console && w.console.log) try {w.console.log.apply(w.console,arguments);}catch(e){}};
     s.beginWebPTest = function(){
@@ -62,12 +66,12 @@
             width: width,
             dpr: window.devicePixelRatio || 1
         }
-        data.requestedWidth = Math.min(2048, data.width * data.dpr), //Limit size to 2048.
-        data.quality = (data.dpr > 1.49) ? 80 : 90 //Default quality
+        data.requestedWidth = Math.min(s.maxWidth, data.width * data.dpr), //Limit size to maxWidth.
+        data.quality = (data.dpr > 1.49) ? s.retinaQuality : s.quality; //Default quality
         if (s.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
 		
-        //Minimize variants for caching improvements; round up to nearest multiple of 160
-        data.requestedWidth = data.requestedWidth - (data.requestedWidth % 160) + 160; //Will limit to 13 variations
+        //Minimize variants for caching improvements; round up to nearest multiple of widthStep
+        data.requestedWidth = data.requestedWidth - (data.requestedWidth % s.widthStep) + s.widthStep; //Will limit to 13 variations
 
         var oldpixels = img.getAttribute("data-pixel-width") | 0;
 
