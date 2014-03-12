@@ -12,6 +12,8 @@
     if (s.readyCallback === undefined) /** @expose **/ s.readyCallback = null;
     if (s.maxWidth === undefined) /** @expose **/ s.maxWidth = 2048;
     if (s.widthStep === undefined) /** @expose **/ s.widthStep = 160;
+    if (s.quality === undefined) /** @expose **/ s.quality = 90;
+    if (s.retinaQuality === undefined) /** @expose **/ s.retinaQuality = 80;
 
     var log = function(){ if (w.slimmage.verbose && w.console && w.console.log) try {w.console.log.apply(w.console,arguments);}catch(e){}};
     s.beginWebPTest = function(){
@@ -65,7 +67,7 @@
             dpr: window.devicePixelRatio || 1
         }
         data.requestedWidth = Math.min(s.maxWidth, data.width * data.dpr), //Limit size to maxWidth.
-        data.quality = (data.dpr > 1.49) ? 80 : 90 //Default quality
+        data.quality = (data.dpr > 1.49) ? s.retinaQuality : s.quality; //Default quality
         if (s.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
 		
         //Minimize variants for caching improvements; round up to nearest multiple of widthStep
