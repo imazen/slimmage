@@ -106,3 +106,7 @@ Feel free to fork and add links to your HTML filters/helpers here!
 * 0.2.1 - Fixed IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
 * 0.2.2 - Fixed another IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
 * 0.2.3 - Added `window.slimmage.readyCallback` callback - occurs after first adjustment of all images. Added `s.adjustImageParameters(data)` to allow size/quality/format customization. Fixed incorrect quality calculation bug. All code contributed by Per Osbäck and Ola Andersson! Release tested on BrowserStack.
+
+### Contributor notes
+
+Please make all pull requests against the 'unstable' branch. Changes may only be merged into master after they have been tested on all browsers via BrowserStack and have been compressed via the Closure Compiler. 
