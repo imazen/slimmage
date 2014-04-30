@@ -109,4 +109,9 @@ Feel free to fork and add links to your HTML filters/helpers here!
 
 ### Contributor notes
 
-Please make all pull requests against the 'unstable' branch. Changes may only be merged into master after they have been tested on all browsers via BrowserStack and have been compressed via the Closure Compiler. 
+Please make all pull requests against the 'unstable' branch. Changes may only be merged into master after they have been tested on all browsers via BrowserStack and have been compressed via the Closure Compiler.
+
+### Other appraoches
+
+* [Clown Car Technqiue by Estelle Weyl](https://github.com/estelle/clowncar) (SVG media queries for the win!)
+* [&lt;picture>](http://responsiveimages.org/) (good if you need art direction)
