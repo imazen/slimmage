@@ -90,6 +90,7 @@ IE11 is [supposed to support the lazyload attribute](https://dvcs.w3.org/hg/webp
 * If WebP is enabled, it can automatically detect and request WebP images instead.
 * The final `max-width` applied to the element determines which image file size is downloaded. Unlike earlier versions, a sizing image is not used, and 'width' and 'height' properties are ignored in the selection process.
 * Images are loaded immediately after stylesheets download. Slimmage add 2ms of javascript execution time per image.
+* Images added to the page after DOMLoaded will not be detected by Slimmage unless you call `window.slimmage.checkResponsiveImages()` *after* they are on the page. If you use a separate lazy-load or jQuery plugin that modifies images, call checkResponsiveImages() after it completes its work.
 
 **It's a good idea to use a helper method or HTML filter to generate slimmage's required markup. Everything works cross-browser today, but browser vendors have a long and venerable tradition of breaking responsive image solutions.**
 
