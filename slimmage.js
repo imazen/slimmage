@@ -10,19 +10,56 @@
     if (s.verbose === undefined) /** @expose **/ s.verbose = true;
     if (s.tryWebP === undefined) /** @expose **/ s.tryWebP = false;
     if (s.readyCallback === undefined) /** @expose **/ s.readyCallback = null;
+    if (s.webpFeature === undefined) /** @expose **/ s.webpFeature = [ "lossy", "lossless", "alpha", "animation" ];
 
     var log = function(){ if (w.slimmage.verbose && w.console && w.console.log) try {w.console.log.apply(w.console,arguments);}catch(e){}};
-    s.beginWebPTest = function(){
+       
+    s.checkWebpFeature = function (feature, callback) {
+        //credits to, https://developers.google.com/speed/webp/faq#how_can_i_detect_browser_support_using_javascript
+        var testImages = {
+            lossy: "UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA",//basic webp
+            lossless: "UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==",
+            alpha: "UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==",
+            animation: "UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA"
+        };
+
+        var img = new Image();
+        img.onload = function () {
+            var result = (img.width > 0) && (img.height > 0);
+            callback(feature, result);
+        };
+        img.onerror = function () {
+            callback(feature, false);
+        };
+        img.src = "data:image/webp;base64," + testImages[feature];
+    };
+
+    s.beginWebPTest = function() {
         if (!s.tryWebP || s._testingWebP) return;
         s._testingWebP = true;
-
-        var WebP=new Image();
-        WebP.onload=WebP.onerror=function(){
-            s.webp = (WebP.height==2);
+        
+        var supported = [];
+        
+        var isAllTrue = function(array) {
+            for(var i in array)
+                if(!array[i]) {
+                   return false;
+                }
+            return true;
         };
-        WebP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+
+        for(var key in s.webpFeature) {
+            s.checkWebpFeature(s.webpFeature[key], function(feature, value) {
+                log("Slimmage: webp " + feature + " feature is " + (value? "supported":"unsupported"));
+                supported.push(value);
+
+                if(supported.length == s.webpFeature.length) {
+                    s.webp = isAllTrue(supported);
+                }
+            });
+        }
     };
-   
+
     s.getCssValue = function(target, hyphenProp){
       var val = typeof(window.getComputedStyle) != "undefined" && window.getComputedStyle(target, null).getPropertyValue(hyphenProp);
       if (!val && target.currentStyle){
@@ -65,7 +102,7 @@
         data.requestedWidth = Math.min(2048, data.width * data.dpr), //Limit size to 2048.
         data.quality = (data.dpr > 1.49) ? 80 : 90 //Default quality
         if (s.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
-		
+        
         //Minimize variants for caching improvements; round up to nearest multiple of 160
         data.requestedWidth = data.requestedWidth - (data.requestedWidth % 160) + 160; //Will limit to 13 variations
 
