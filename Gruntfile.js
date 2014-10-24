@@ -35,8 +35,8 @@ module.exports = function (grunt) {
           testname: 'mocha tests',
           throttled: 3,
           tunnelArgs: ["--verbose"],
-          tags: ['unit'],
           sauceConfig: {
+            tags: ['unit'],
             'video-upload-on-pass': false
           }
         }
@@ -49,5 +49,20 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-saucelabs');
 
-  grunt.registerTask('test:unit', ['connect', 'saucelabs-mocha']);
+
+  grunt.registerTask('check-credentials', function(){
+    if(!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY){
+        console.warn(
+            '\nPlease configure your sauce credential:\n\n' +
+            'export SAUCE_USERNAME=<SAUCE_USERNAME>\n' +
+            'export SAUCE_ACCESS_KEY=<SAUCE_ACCESS_KEY>\n\n'
+        );
+        throw new Error("Missing sauce credentials");
+    }
+  });
+
+
+  grunt.registerTask('test:unit', ['check-credentials', 'connect', 'saucelabs-mocha']);
+  grunt.registerTask('dummy', ['check-credentials']);
+
 };
