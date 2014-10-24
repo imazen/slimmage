@@ -10,6 +10,7 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     connect: {
       server: {
         options: {
@@ -17,6 +18,10 @@ module.exports = function (grunt) {
           port: 9999
         }
       }
+    },
+
+    clean: {
+      all: ['**/*.swp', 'sc_*.log'] 
     },
 
     'saucelabs-mocha': {
@@ -40,6 +45,7 @@ module.exports = function (grunt) {
     watch: {}
   });
 
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-saucelabs');
 
