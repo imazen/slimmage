@@ -1,0 +1,4 @@
+.vimrc
+env
+node_modules/
+sc_*.log
