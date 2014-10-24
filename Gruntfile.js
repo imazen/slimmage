@@ -5,19 +5,8 @@ module.exports = function (grunt) {
     platform: 'XP'
   }, {
     browserName: 'googlechrome',
-    platform: 'XP'
-  }, {
-    browserName: 'googlechrome',
     platform: 'linux'
-  }, {
-    browserName: 'internet explorer',
-    platform: 'WIN8',
-    version: '10'
-  }, {
-    browserName: 'internet explorer',
-    platform: 'VISTA',
-    version: '9'
-  }];
+  },];
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -52,5 +41,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-saucelabs');
 
-  grunt.registerTask('default', ['connect', 'saucelabs-mocha']);
+  grunt.registerTask('test:unit', ['connect', 'saucelabs-mocha']);
 };
