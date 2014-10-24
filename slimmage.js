@@ -138,11 +138,14 @@
             }
         }
 
+  
+
         //3. Find images with data-slimmage and run adjustImageSrc.
         var totalImages = 0;
         var images = s.nodesToArray(w.document.getElementsByTagName("img"));
         for (var i = 0, il = images.length; i < il; i++) {
-            if (images[i].getAttribute("data-slimmage") !== null) {
+            if (images[i].getAttribute("data-slimmage") !== null || 
+                (images[i].className && new RegExp("(^|\\s)data-slimmage(\\s|$)").test(images[i].className))) {
                 var originalSrc = images[i].getAttribute("data-src") || images[i].src;
                 s.adjustImageSrc(images[i], originalSrc);
                 totalImages++;
