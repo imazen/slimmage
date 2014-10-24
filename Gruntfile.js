@@ -1,8 +1,8 @@
 module.exports = function (grunt) {
   var browsers = [{
-    browserName: 'firefox',
-    version: '19',
-    platform: 'XP'
+    browserName: 'internet explorer',
+    version: '8',
+    platform: 'Windows 7'
   }, {
     browserName: 'googlechrome',
     platform: 'linux'
@@ -29,6 +29,8 @@ module.exports = function (grunt) {
           build: process.env.TRAVIS_JOB_ID,
           testname: 'mocha tests',
           throttled: 3,
+          tunnelArgs: ["--verbose"],
+          tags: ['unit'],
           sauceConfig: {
             'video-upload-on-pass': false
           }
