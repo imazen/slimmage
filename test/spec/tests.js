@@ -23,4 +23,17 @@ describe('slimmage', function () {
   it('should have checkResponsiveImages', function () {
     expect(s).to.have.property('checkResponsiveImages');
   });
+
+  it('should have widthStep', function () {
+    expect(s).to.have.property('widthStep');
+  });
+
+  it('should have jpegQuality', function () {
+    expect(s).to.have.property('jpegQuality');
+  });
+    
+  it('should have jpegRetinaQuality', function () {
+    expect(s).to.have.property('jpegRetinaQuality');
+  });
+
 });
