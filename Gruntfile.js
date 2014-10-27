@@ -24,6 +24,10 @@ module.exports = function (grunt) {
       all: ['**/*.swp', 'sc_*.log'] 
     },
 
+    credentials: {
+      all: {}
+    },
+
     'saucelabs-mocha': {
       all: {
         options: {
@@ -42,6 +46,7 @@ module.exports = function (grunt) {
         }
       }
     },
+
     watch: {}
   });
 
@@ -50,19 +55,35 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-saucelabs');
 
 
-  grunt.registerTask('check-credentials', function(){
-    if(!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY){
+  grunt.registerMultiTask('credentials', 'load sauce credentials from env or file', function() {
+    var sauce_username, sauce_access_key
+
+    if (grunt.file.exists("env.json")){ 
+      var file = require("./env.json")
+      sauce_username = file.sauce_username
+      sauce_access_key = file.sauce_access_key 
+    }
+
+    sauce_username = sauce_username || process.env.SAUCE_USERNAME
+    sauce_access_key = sauce_access_key || process.env.SAUCE_ACCESS_KEY
+
+    if(!sauce_username || !sauce_access_key){
         console.warn(
             '\nPlease configure your sauce credential:\n\n' +
             'export SAUCE_USERNAME=<SAUCE_USERNAME>\n' +
-            'export SAUCE_ACCESS_KEY=<SAUCE_ACCESS_KEY>\n\n'
+            'export SAUCE_ACCESS_KEY=<SAUCE_ACCESS_KEY>\n\n' +
+            'Or have a have a json file called "env.json" with the above data, lowercase.\n\n'
         );
         throw new Error("Missing sauce credentials");
     }
+    grunt.config("saucelabs-mocha.all.options.username", sauce_username)
+    grunt.config("saucelabs-mocha.all.options.key", sauce_access_key)
+    grunt.log.writeln("We have sauce credentials...");
   });
 
 
-  grunt.registerTask('test:unit', ['check-credentials', 'connect', 'saucelabs-mocha']);
-  grunt.registerTask('dummy', ['check-credentials']);
+
+  grunt.registerTask('test:unit', ['credentials', 'connect', 'saucelabs-mocha']);
+  grunt.registerTask('dummy', ['credentials']);
 
 };
