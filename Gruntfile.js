@@ -47,12 +47,23 @@ module.exports = function (grunt) {
       }
     },
 
+    'mocha': {
+      all: {
+        options: {
+          urls: [
+            'http://127.0.0.1:9999/test/index.html'
+          ]
+        }
+      }
+    },
+
     watch: {}
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-saucelabs');
+  grunt.loadNpmTasks('grunt-mocha');
 
 
   grunt.registerMultiTask('credentials', 'load sauce credentials from env or file', function() {
@@ -83,7 +94,10 @@ module.exports = function (grunt) {
 
 
 
-  grunt.registerTask('test:unit', ['credentials', 'connect', 'saucelabs-mocha']);
-  grunt.registerTask('dummy', ['credentials']);
+  grunt.registerTask('test:unit', ['credentials', 'connect', 'saucelabs-mocha']); // Unit tests in the cloud, SauceLabs
+  grunt.registerTask('test:local', ['connect', 'mocha']); // Local (or within CI) tests against PhantomJS headless (webkit) browser
 
+  grunt.registerTask('test', ['test:local', 'test:unit']); // First test locally, if successful go and test against more excotic browsers...
+
+  grunt.registerTask('default',['test:local'] ); // First test locally, if successful go and test against more excotic browsers...
 };
