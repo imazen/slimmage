@@ -20,7 +20,6 @@ On 'unstable'
     - .jpegQuality
     - .jpegRetinaQuality
     - .maxWidth
-- ?? Defer 'onload' to spy on methods, called by 'onload'?
 - ?? wrap event listeners in a '#init' method
 - window.slimmage.readyCallback is, in fact, called. 
 - window.slimmage.adjustImageParameters is, in fact, called.

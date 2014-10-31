@@ -3,15 +3,6 @@ var desireds = require('./test/desireds.js'); // hash for desired browsers
 
 
 module.exports = function (grunt) {
-  var browsers = [{
-    browserName: 'internet explorer',
-    version: '8',
-    platform: 'Windows 7'
-  }, {
-    browserName: 'googlechrome',
-    platform: 'linux'
-  }];
-
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
