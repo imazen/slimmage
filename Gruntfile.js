@@ -1,3 +1,7 @@
+var _ = require("lodash") // For its each/keys/values methods
+var desireds = require('./test/desireds.js'); // hash for desired browsers
+
+
 module.exports = function (grunt) {
   var browsers = [{
     browserName: 'internet explorer',
@@ -6,10 +10,17 @@ module.exports = function (grunt) {
   }, {
     browserName: 'googlechrome',
     platform: 'linux'
-  },];
+  }];
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+    env: { // Useful for getting browers from environment, which the spec files can test against.
+      credentials: { // And for sauce credentials
+        src: 'env.json'
+      }
+      // dynamically filled
+    },
 
     connect: {
       server: {
@@ -21,11 +32,24 @@ module.exports = function (grunt) {
     },
 
     clean: {
-      all: ['**/*.swp', 'sc_*.log'] 
+      all: ['**/*.swp', 'sc_*.log']
     },
 
-    credentials: {
-      all: {}
+    // simplemocha: Runs mocha tests from grunt, in node. Nothing special.
+    // No connection to saucelabs or WD
+    // WD specifics take place in the test files
+    simplemocha: {
+        sauce: {
+            options: {
+                timeout: 60000,
+                reporter: 'spec'
+            },
+            src: ['test/wd/**/*-specs.js']
+        }
+    },
+
+    concurrent: {
+        'test-browsers': [], // dynamically filled
     },
 
     'saucelabs-mocha': {
@@ -34,11 +58,11 @@ module.exports = function (grunt) {
           urls: [
             'http://127.0.0.1:9999/test/index.html'
           ],
-          browsers: browsers,
+          browsers: _.values(desireds),
           build: process.env.TRAVIS_JOB_ID,
           testname: 'mocha tests',
           throttled: 3,
-          tunnelArgs: ["--verbose"],
+          //tunnelArgs: ["--debug"],
           sauceConfig: {
             tags: ['unit'],
             'video-upload-on-pass': false
@@ -47,7 +71,7 @@ module.exports = function (grunt) {
       }
     },
 
-    'mocha': {
+    'mocha': { // Local PhantomJs tests
       all: {
         options: {
           urls: [
@@ -56,48 +80,58 @@ module.exports = function (grunt) {
         }
       }
     },
-
-    watch: {}
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-saucelabs');
-  grunt.loadNpmTasks('grunt-mocha');
+  grunt.loadNpmTasks('grunt-saucelabs'); // Run tests, inside browsers, with sauce-connect
+  grunt.loadNpmTasks('grunt-mocha'); // Run mocha tests against a PhantomJs instance
+  grunt.loadNpmTasks('grunt-env');
+  grunt.loadNpmTasks('grunt-concurrent');
+  grunt.loadNpmTasks('grunt-simple-mocha'); // Run mocha tests in node from grunt
+
+  // Load custom tasks
+  grunt.task.loadTasks('test/tasks') // Relative path to task files
 
 
-  grunt.registerMultiTask('credentials', 'load sauce credentials from env or file', function() {
-    var sauce_username, sauce_access_key
+  // Add each browser as a task,
+  // ... then we'll also be able to run them concurrently
+  _(desireds).each(function(desired, key) {
 
-    if (grunt.file.exists("env.json")){ 
-      var file = require("./env.json")
-      sauce_username = file.sauce_username
-      sauce_access_key = file.sauce_access_key 
-    }
+    // Add to env (plugin)
+    grunt.config('env.'+key, {
+        DESIRED: JSON.stringify(_.values(desireds)) // By putting the browser config in the environment, we'll be able to use them from within the spec files.
+    });
 
-    sauce_username = sauce_username || process.env.SAUCE_USERNAME
-    sauce_access_key = sauce_access_key || process.env.SAUCE_ACCESS_KEY
+    // Create test:browser:<browser> task
+    grunt.registerTask('test:browser:' + key, ['env:' + key, 'simplemocha:sauce']); // A bit of magic here: set up the environment with chosen browser, and run simplemocha
 
-    if(!sauce_username || !sauce_access_key){
-        console.warn(
-            '\nPlease configure your sauce credential:\n\n' +
-            'export SAUCE_USERNAME=<SAUCE_USERNAME>\n' +
-            'export SAUCE_ACCESS_KEY=<SAUCE_ACCESS_KEY>\n\n' +
-            'Or have a have a json file called "env.json" with the above data, lowercase.\n\n'
-        );
-        throw new Error("Missing sauce credentials");
-    }
-    grunt.config("saucelabs-mocha.all.options.username", sauce_username)
-    grunt.config("saucelabs-mocha.all.options.key", sauce_access_key)
-    grunt.log.writeln("We have sauce credentials...");
+    // Add concurrent tasks
+    grunt.config("concurrent.test-browsers").push('test:browser:' + key);
   });
 
 
 
+  // Just for my quick and dirty testing. Will be removed soon
+  grunt.registerTask('dummy',  function() {
+    grunt.log.writeln("Dummy");
+    grunt.log.writeln(JSON.stringify(_.values(desireds)));
+    grunt.log.writeln(process.env.SAUCE_USERNAME + ": " + process.env.SAUCE_ACCESS_KEY);
+  });
+
+
+  // Credentials: Add from file or use environment, then check and populate.
+  grunt.registerTask('credentials',['env:credentials', 'check-credentials', 'populate-credentials'] ); // First test locally, if successful go and test against more exotic browsers...
+
+  // Register alias tasks...
   grunt.registerTask('test:unit', ['credentials', 'connect', 'saucelabs-mocha']); // Unit tests in the cloud, SauceLabs
   grunt.registerTask('test:local', ['connect', 'mocha']); // Local (or within CI) tests against PhantomJS headless (webkit) browser
+  grunt.registerTask('test:feature', ['concurrent:test-browsers']); // Run all test-browsers tasks concurrently.
+  //... for more info see where the 'test:browser:<browser>' tasks are defined
 
-  grunt.registerTask('test', ['test:local', 'test:unit']); // First test locally, if successful go and test against more excotic browsers...
+  grunt.registerTask('test', ['clean', 'connect', 'mocha', 'credentials', 'concurrent:test-browsers', 'saucelabs-mocha']); // First test locally, if successful go and test against more exotic browsers...
+  grunt.registerTask('default',['clean', 'test:local'] );
 
-  grunt.registerTask('default',['test:local'] ); // First test locally, if successful go and test against more excotic browsers...
+
+  grunt.log.writeln(grunt.config("concurrent.test-browsers"))
 };
