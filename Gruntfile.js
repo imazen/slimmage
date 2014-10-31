@@ -40,7 +40,10 @@ module.exports = function (grunt) {
     },
 
     concurrent: {
-        'test-browsers': [], // dynamically filled
+      options: {
+        logConcurrentOutput: true
+      },
+      'test-browsers': [], // dynamically filled
     },
 
     'saucelabs-mocha': {
