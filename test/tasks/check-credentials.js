@@ -14,6 +14,5 @@ module.exports = function(grunt) {
         throw new Error("Missing sauce credentials");
     }
     grunt.log.writeln("We have sauce credentials...");
-    grunt.log.writeln(process.env.SAUCE_USERNAME + ": " + process.env.SAUCE_ACCESS_KEY);
   });
 };
