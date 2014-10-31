@@ -91,14 +91,16 @@ module.exports = function (grunt) {
 
     // Add to env (plugin)
     grunt.config('env.'+key, {
-        DESIRED: JSON.stringify(_.values(desireds)) // By putting the browser config in the environment, we'll be able to use them from within the spec files.
+        DESIRED: JSON.stringify(desired) // By putting the browser config in the environment, we'll be able to use them from within the spec files.
     });
 
     // Create test:browser:<browser> task
     grunt.registerTask('test:browser:' + key, ['env:' + key, 'simplemocha:sauce']); // A bit of magic here: set up the environment with chosen browser, and run simplemocha
 
     // Add concurrent tasks
-    grunt.config("concurrent.test-browsers").push('test:browser:' + key);
+    var tb = grunt.config("concurrent.test-browsers") || []
+    tb.push('test:browser:' + key);
+    grunt.config("concurrent.test-browsers", tb)
   });
 
 
@@ -107,7 +109,8 @@ module.exports = function (grunt) {
   grunt.registerTask('dummy',  function() {
     grunt.log.writeln("Dummy");
     grunt.log.writeln(JSON.stringify(_.values(desireds)));
-    grunt.log.writeln(process.env.SAUCE_USERNAME + ": " + process.env.SAUCE_ACCESS_KEY);
+    grunt.log.writeln("u/k:  "+process.env.SAUCE_USERNAME + ": " + process.env.SAUCE_ACCESS_KEY);
+    grunt.log.writeln("tb[]: "+JSON.stringify(grunt.config("concurrent.test-browsers")));
   });
 
 
@@ -115,9 +118,9 @@ module.exports = function (grunt) {
   grunt.registerTask('credentials',['env:credentials', 'check-credentials', 'populate-credentials'] ); // First test locally, if successful go and test against more exotic browsers...
 
   // Register alias tasks...
-  grunt.registerTask('test:unit', ['credentials', 'connect', 'saucelabs-mocha']); // Unit tests in the cloud, SauceLabs
   grunt.registerTask('test:local', ['connect', 'mocha']); // Local (or within CI) tests against PhantomJS headless (webkit) browser
-  grunt.registerTask('test:feature', ['concurrent:test-browsers']); // Run all test-browsers tasks concurrently.
+  grunt.registerTask('test:unit', ['credentials', 'connect', 'saucelabs-mocha']); // Unit tests in the cloud, SauceLabs
+  grunt.registerTask('test:feature', ['credentials', 'connect','concurrent:test-browsers']); // Run all test-browsers tasks concurrently.
   //... for more info see where the 'test:browser:<browser>' tasks are defined
 
   grunt.registerTask('test', ['clean', 'connect', 'mocha', 'credentials', 'concurrent:test-browsers', 'saucelabs-mocha']); // First test locally, if successful go and test against more exotic browsers...
