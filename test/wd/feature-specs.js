@@ -2,6 +2,7 @@ var chai = require("chai");
 var chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 chai.should();
+var verbose = true;
 
 // this.browser and this.wd are injected by the grunt-wd-mocha plugin.
 //var setup = require("./setup")(this); // setup details, such as logging and credentials
@@ -14,6 +15,16 @@ describe('slimmage on training wheels', function() {
       browser = this.browser; // browser only gets injected here, once tests start...
       // enables chai assertion chaining
       chaiAsPromised.transferPromiseness = this.wd.transferPromiseness;
+      // Add logging if verbose
+      if(verbose){
+        // optional logging
+        browser.on('status', function(info) {
+          console.log(info.cyan);
+        });
+        browser.on('command', function(meth, path, data) {
+          console.log(' > ' + meth.yellow, path.grey, data || '');
+        });
+      }
     });
 
     afterEach(function(done) {
@@ -22,23 +33,16 @@ describe('slimmage on training wheels', function() {
     });
 
     after(function(done) {
+      if (browser.mode === "saucelabs") {
         browser
           .quit()
-          //.sauceJobStatus(allPassed)
+          .sauceJobStatus(allPassed)
           .nodeify(done)
-
-    });
-    describe('dummy browser', function() {
-      it('should work', function(done) {
+      } else {
         browser
-            .get("http://nodejs.org/")
-            .title()
-            .should.become("node.js")
-            .elementById("intro")
-            .text()
-            .should.eventually.include('JavaScript runtime')
+          .quit()
           .nodeify(done)
-      });
+      }
     });
     describe("slimmage with defaults", function() {
       it("should load without errors", function(done) {

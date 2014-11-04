@@ -62,6 +62,15 @@ module.exports = function (grunt) {
             '--webdriver-logfile', 'phantom.log'
           ]
         }
+      },
+      sauce: {
+        src: ['test/wd/*-specs.js'], // Use this.browser inside regular mocha test files.
+        options: {
+          testTags: ['feature', 'slimmage']
+          testName: 'sauce tests',
+          browsers: _.values(desireds),
+          tunnelArgs: ['-v', '--doctor']
+        }
       }
     },
 
@@ -77,7 +86,7 @@ module.exports = function (grunt) {
           throttled: 3,
           //tunnelArgs: ["--debug"],
           sauceConfig: {
-            tags: ['unit'],
+            tags: ['unit', 'slimmage'],
             'video-upload-on-pass': false
           }
         }
@@ -144,10 +153,11 @@ module.exports = function (grunt) {
   grunt.registerTask('test:local:unit', ['connect', 'mocha']); // Local (or within CI) tests against PhantomJS headless (webkit) browser
   grunt.registerTask('test:local:feature', ['connect', 'mochaWebdriver:phantomjs']); // Local (or within CI) tests against PhantomJS headless (webkit) browser
   grunt.registerTask('test:unit', ['credentials', 'connect', 'saucelabs-mocha']); // Unit tests in the cloud, SauceLabs
-  grunt.registerTask('test:feature', ['credentials', 'connect','concurrent:test-browsers']); // Run all test-browsers tasks concurrently.
+  //grunt.registerTask('test:feature', ['credentials', 'connect','concurrent:test-browsers']); // Run all test-browsers tasks concurrently.
+  grunt.registerTask('test:feature', ['credentials', 'connect','mochaWebdriver:sauce']); // Run all test-browsers tasks concurrently.
   //... for more info see where the 'test:browser:<browser>' tasks are defined
 
-  grunt.registerTask('test', ['clean', 'connect', 'mocha', 'credentials', 'concurrent:test-browsers', 'saucelabs-mocha']); // First test locally, if successful go and test against more exotic browsers...
+  grunt.registerTask('test', ['clean', 'connect', 'mocha', 'mochaWebdriver:phantomjs', 'credentials', 'mochaWebdriver:sauce', 'saucelabs-mocha']); // First test locally, if successful go and test against more exotic browsers...
   grunt.registerTask('test:local', ['clean', 'connect', 'mocha', 'mochaWebdriver:phantomjs']);
   grunt.registerTask('default',['clean', 'test:local'] );
 
