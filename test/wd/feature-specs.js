@@ -86,3 +86,15 @@ describe('slimmage', function() {
       });
     });
 });
+
+
+// Common tests on each element
+function elementTests(element, expected_values, done){
+  var that = expected_values;
+  it('src url should ratchet up to ' + that.src_url_width, function(done) {
+    element
+     .getAttribute('src')
+     .should.become('http://z.zr.io/ri/1s.jpg?width=' + that.src_url_width)
+     .nodeify(done)
+  });
+}
