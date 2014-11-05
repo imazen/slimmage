@@ -7,7 +7,11 @@ var verbose = true;
 // this.browser and this.wd are injected by the grunt-wd-mocha plugin.
 //var setup = require("./setup")(this); // setup details, such as logging and credentials
 
-describe('slimmage on training wheels', function() {
+var slim = { // Slimmage defaults
+  widthStep: 160
+}
+
+describe('slimmage', function() {
     var browser;
     var allPassed = true;
 
@@ -44,13 +48,39 @@ describe('slimmage on training wheels', function() {
           .nodeify(done)
       }
     });
-    describe("slimmage with defaults", function() {
+
+    // Begin actual tests...
+    describe("with defaults", function(done) {
+      var page; // Promise chain, once we have a loaded page
+      before(function(){
+        page = browser.get("http://127.0.0.1:9999/test/feature-defaults.html")
+      })
+      after(function(){
+        page.nodeify(done) // describe is finished at this point
+      })
+
       it("should load without errors", function(done) {
-          browser
-            .get("http://127.0.0.1:9999/test/feature-defaults.html")
+          page
             .title()
-              .should.become("slimmage defaults")
+            .should.become("slimmage defaults")
           .nodeify(done)
+      });
+
+      describe('src url', function() {
+        it('should ratchet up to 160', function(done) {
+            page
+              .elementByClassName('fixedsize_100') // img.max_width == 100
+              .getAttribute("src")
+              .should.become("http://z.zr.io/ri/1s.jpg?width=" + slim.widthStep) // ... final return
+            .nodeify(done)
+        });
+        it('should ratchet up to 320', function(done) {
+            page
+              .elementByClassName('fixedsize_200') // img.max_width == 200
+              .getAttribute("src")
+              .should.become("http://z.zr.io/ri/1s.jpg?width=" + (slim.widthStep*2))
+            .nodeify(done)
+        });
       });
     });
 });

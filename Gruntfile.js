@@ -66,7 +66,7 @@ module.exports = function (grunt) {
       sauce: {
         src: ['test/wd/*-specs.js'], // Use this.browser inside regular mocha test files.
         options: {
-          testTags: ['feature', 'slimmage']
+          testTags: ['feature', 'slimmage'],
           testName: 'sauce tests',
           browsers: _.values(desireds),
           tunnelArgs: ['-v', '--doctor']
