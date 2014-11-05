@@ -66,20 +66,22 @@ describe('slimmage', function() {
           .nodeify(done)
       });
 
-      describe('src url', function() {
-        it('should ratchet up to 160', function(done) {
-            page
-              .elementByClassName('fixedsize_100') // img.max_width == 100
-              .getAttribute('src')
-              .should.become('http://z.zr.io/ri/1s.jpg?width=' + slim.widthStep)
-            .nodeify(done)
+      describe('fixedwidth_100', function() {
+        it('src url should ratchet up to 160', function(done) {
+          page
+            .elementByClassName('fixedsize_100') // img.max_width == 100
+            .getAttribute('src')
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + slim.widthStep)
+          .nodeify(done)
         });
-        it('should ratchet up to 320', function(done) {
-            page
-              .elementByClassName('fixedsize_200') // img.max_width == 200
-              .getAttribute('src')
-              .should.become('http://z.zr.io/ri/1s.jpg?width=' + (slim.widthStep*2))
-            .nodeify(done)
+      });
+      describe('fixedwidth_200', function() {
+        it('src url should ratchet up to 320', function(done) {
+          page
+            .elementByClassName('fixedsize_200') // img.max_width == 200
+            .getAttribute('src')
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + (slim.widthStep*2))
+          .nodeify(done)
         });
       });
     });
