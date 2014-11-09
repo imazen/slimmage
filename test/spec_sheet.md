@@ -13,7 +13,7 @@ On 'unstable'
   - ie: tests should pass after a viewport change
 - [ ] Images load correctly - are they visible? correct size?
 - [x] Final URLs reflect appropriate width and height values for the given viewport.
-- ?? isRaipUrlValid
+- ?? isRIAPIUrlValid
 
 ### Unit tests: Mocha is inside the browser
 - Following are defined:
