@@ -67,35 +67,34 @@ describe('slimmage', function() {
           .nodeify(done)
       });
 
-      describe('fixedwidth_100', function() {
-        it('src url should ratchet up to 160', function(done) {
-          page
-            .elementByClassName('fixedsize_100') // img.max_width == 100
-            .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + slim.widthStep)
-          .nodeify(done)
+      testElements.call(this) // Run the tests on the elements
+
+      // Note: it has become a challange to extract 'testing' code to be run in different specs.
+      // ...One such hurdle is before/after hooks. The above function call, presents arguments as
+      // ...they are currently. Without the hooks having run.
+      function testElements(){
+        describe('fixedwidth_100', function() {
+          it('src url should ratchet up to 160', function(done) {
+            page
+              .elementByClassName('fixedsize_100') // img.max_width == 100
+              .getAttribute('src')
+              .should.become('http://z.zr.io/ri/1s.jpg?width=' + slim.widthStep)
+              .nodeify(done)
+          });
         });
-      });
-      describe('fixedwidth_200', function() {
-        it('src url should ratchet up to 320', function(done) {
-          page
-            .elementByClassName('fixedsize_200') // img.max_width == 200
-            .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + (slim.widthStep*2))
-          .nodeify(done)
+
+        describe('fixedwidth_200', function() {
+          it('src url should ratchet up to 320', function(done) {
+            page
+              .elementByClassName('fixedsize_200') // img.max_width == 200
+              .getAttribute('src')
+              .should.become('http://z.zr.io/ri/1s.jpg?width=' + (slim.widthStep*2))
+              .nodeify(done)
+          });
         });
-      });
+      }
+
     });
+
 });
 
-
-// Common tests on each element
-function elementTests(element, expected_values, done){
-  var that = expected_values;
-  it('src url should ratchet up to ' + that.src_url_width, function(done) {
-    element
-     .getAttribute('src')
-     .should.become('http://z.zr.io/ri/1s.jpg?width=' + that.src_url_width)
-     .nodeify(done)
-  });
-}
