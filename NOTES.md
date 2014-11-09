@@ -17,3 +17,6 @@ Npm Issue:
   ran `npm install` without sudo
   ...Things are working thus far.
   There is probably an elegant solution to this, but my Google search terms did not find it.
+32bit Issue:
+  Also causes a "spawn EACCES"
+  Make sure files match your architecture
