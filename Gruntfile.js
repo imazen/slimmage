@@ -1,6 +1,6 @@
 var _ = require("lodash") // For its each/keys/values methods
 var desireds = require('./test/desireds.js'); // hash for desired browsers
-
+var port = process.env.PORT || 3000
 
 module.exports = function (grunt) {
   grunt.initConfig({
@@ -17,7 +17,8 @@ module.exports = function (grunt) {
       server: {
         options: {
           base: '',
-          port: 9999
+          port: port,
+          host: '127.0.0.1'
         }
       }
     },
@@ -78,7 +79,7 @@ module.exports = function (grunt) {
       all: {
         options: {
           urls: [
-            'http://127.0.0.1:9999/test/index.html'
+            'http://127.0.0.1:'+port+'/test/index.html'
           ],
           browsers: _.values(desireds),
           build: process.env.TRAVIS_JOB_ID,
@@ -97,7 +98,7 @@ module.exports = function (grunt) {
       all: {
         options: {
           urls: [
-            'http://127.0.0.1:9999/test/index.html'
+            'http://127.0.0.1:'+port+'/test/index.html'
           ]
         }
       }

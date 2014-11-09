@@ -3,6 +3,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 chai.should();
 var verbose = true;
+var port = process.env.PORT || 3000
 
 // this.browser and this.wd are injected by the grunt-wd-mocha plugin.
 //var setup = require('./setup')(this); // setup details, such as logging and credentials
@@ -53,7 +54,7 @@ describe('slimmage', function() {
     describe('with defaults', function(done) {
       var page; // Promise chain, once we have a loaded page
       before(function(){
-        page = browser.get('http://127.0.0.1:9999/test/feature-defaults.html')
+        page = browser.get('http://127.0.0.1:'+port+'/test/feature-defaults.html')
       })
       after(function(){
         page.nodeify(done) // describe is finished at this point
