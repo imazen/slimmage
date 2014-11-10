@@ -10,7 +10,7 @@ On 'unstable'
 - [ ] Enabling WebP does not break any browser: window.slimmage = {tryWebP:true};
   - ie: tests should pass with and without 'tryWebP'
 - [ ] Images do not break following a viewport size increase 
-  - ie: tests should pass after a viewport change
+  - ie: tests should pass after a viewport change, given different data to account for size
 - [ ] Images load correctly - are they visible? correct size?
 - [x] Final URLs reflect appropriate width and height values for the given viewport.
 - ?? isRIAPIUrlValid
