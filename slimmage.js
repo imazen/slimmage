@@ -41,6 +41,11 @@
       //We can return pixels directly, but not other units
       if (val.slice(-2) == "px") return parseFloat(val.slice(0,-2));
 
+      // Some browsers (IE8, Firefox 28) read "none" when not set. A value of
+      // "none" is invalid and would cause an exception or be interpreted as 0.
+      if (val == "none") val = "";
+
+
       //Create a temporary sibling div to resolve units into pixels.
       var temp = document.createElement("div");
       temp.style.overflow = temp.style.visibility = "hidden"; 
