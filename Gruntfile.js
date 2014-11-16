@@ -50,7 +50,7 @@ module.exports = function (grunt) {
     mochaWebdriver: {
       options: {
         usePromises: true,
-        timeout: 1000 * 30, // TODO: Add reasonable timeout
+        timeout: 60000, // TODO: Add reasonable timeout
         reporter: 'spec'
       },
       phantomjs: {
@@ -111,7 +111,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-saucelabs'); // Run tests, inside browsers, with sauce-connect
   grunt.loadNpmTasks('grunt-mocha'); // Run mocha tests against a PhantomJs instance
   grunt.loadNpmTasks('grunt-env');
-  grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-simple-mocha'); // Run mocha tests in node from grunt
   grunt.loadNpmTasks('grunt-mocha-webdriver');
 
