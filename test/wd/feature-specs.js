@@ -16,7 +16,7 @@ var slim = {
   widthStep: 160
 }
 
-var win_tollerance = 20; // = px; tolerance for padding/margin/window-frame
+var win_tollerance = 25; // = px; tolerance for padding/margin/window-frame
 var explicit_wait = 3000;
 
 // given->expected for the repeatable tests run
@@ -133,14 +133,16 @@ describe('slimmage', function() {
 
     // Change window size. Test. Change window size again. Test
     function testAll() {
-      testWindowSize.call(this, values._default)
+      testWindowSize.call(this, values._default, true)
       testWindowSize.call(this, values.viewport_change)
       // testChangeWindowSize.call(this,values.viewport_change) /// Change window size (and test window size)
       // testElements.call(this, values.viewport_change) // Run tests on the elements
     }
-    function testWindowSize(vals) {
+    function testWindowSize(vals, leave_window_size) {
       describe("window at "+vals.given.window_w +" x "+ vals.given.window_h,function() {
-        testChangeWindowSize.call(this, vals) // Change window size (and test window size)
+        if (!leave_window_size){
+          testChangeWindowSize.call(this, vals) // Change window size (and test window size)
+        }
         testElements.call(this, vals) // Run tests on the elements
       });
     }
