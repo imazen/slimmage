@@ -20,14 +20,14 @@ var tagChaiAssertionError = function(err) {
  *  Wait for the size to be correct, a polling asserter
  *  @param: {array} size width,height
  */
-exports.bodyWidthToBeWithin = function(expected_width,tolerance) {
+exports.widthToBeWithin = function(selector, expected_width,tolerance) {
+
   return new Asserter(
     function(target) { // browser or el
       return target
-        // condition implemented with chai as promised
-        .elementByTagName('body')
+        .elementByCssSelector(selector)
         .getSize()
-        // .should.eventually.have.deep.property("width",expected_width)
+        // condition implemented with chai as promised
         .then(function(size) {
           var w = expected_width
           var a = w - tolerance;
@@ -49,6 +49,15 @@ exports.bodyWidthToBeWithin = function(expected_width,tolerance) {
     }
   );
 };
+
+exports.asserter = function (fn) {
+  return new Asserter(
+    function(target) { // browser or el
+      return fn(target) // Remember to return `target`
+        .catch(tagChaiAssertionError); // tag errors for retry in catch.
+    }
+  );
+}
 
 // simple asserter, just making sure that the element (or browser)
 // text is non-empty and returning the text.
