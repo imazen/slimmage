@@ -17,6 +17,7 @@ var slim = {
 }
 
 var win_tollerance = 20; // = px; tolerance for padding/margin/window-frame
+var explicit_wait = 3000;
 
 // given->expected for the repeatable tests run
 var values = {
@@ -161,7 +162,7 @@ describe('slimmage', function() {
 
         it('should wait until the body has resized', function(done) {
             page
-            .waitFor(ca.widthToBeWithin('body', vals.given.window_w, win_tollerance), 1000) // 1000 = timeout
+            .waitFor(ca.widthToBeWithin('body', vals.given.window_w, win_tollerance), explicit_wait)
             .nodeify(done)
         });
 
@@ -207,7 +208,7 @@ describe('slimmage', function() {
             //   var b = vals.given.window_w/2 + win_tollerance;
             //   size.width.should.be.within(a,b);
             // })
-            .waitFor(ca.widthToBeWithin('.halfsize', half_window, win_tollerance), 1000) // 1000 = timeout
+            .waitFor(ca.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
             .nodeify(done)
         });
 
@@ -218,7 +219,7 @@ describe('slimmage', function() {
                 .elementByClassName('halfsize')
                 .getAttribute('src')
                 .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.expected.halfsize_w )
-            }), 1000) // repeat the above until success or timeout
+            }), explicit_wait) // repeat the above until success or timeout
             .nodeify(done)
         });
       });
