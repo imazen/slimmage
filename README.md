@@ -90,6 +90,7 @@ IE11 is [supposed to support the lazyload attribute](https://dvcs.w3.org/hg/webp
 * If WebP is enabled, it can automatically detect and request WebP images instead.
 * The final `max-width` applied to the element determines which image file size is downloaded. Unlike earlier versions, a sizing image is not used, and 'width' and 'height' properties are ignored in the selection process.
 * Images are loaded immediately after stylesheets download. Slimmage add 2ms of javascript execution time per image.
+* Images added to the page after DOMLoaded will not be detected by Slimmage unless you call `window.slimmage.checkResponsiveImages()` *after* they are on the page. If you use a separate lazy-load or jQuery plugin that modifies images, call checkResponsiveImages() after it completes its work.
 
 **It's a good idea to use a helper method or HTML filter to generate slimmage's required markup. Everything works cross-browser today, but browser vendors have a long and venerable tradition of breaking responsive image solutions.**
 
@@ -106,3 +107,12 @@ Feel free to fork and add links to your HTML filters/helpers here!
 * 0.2.1 - Fixed IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
 * 0.2.2 - Fixed another IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
 * 0.2.3 - Added `window.slimmage.readyCallback` callback - occurs after first adjustment of all images. Added `s.adjustImageParameters(data)` to allow size/quality/format customization. Fixed incorrect quality calculation bug. All code contributed by Per Osbäck and Ola Andersson! Release tested on BrowserStack.
+
+### Contributor notes
+
+Please make all pull requests against the 'unstable' branch. Changes may only be merged into master after they have been tested on all browsers via BrowserStack and have been compressed via the Closure Compiler.
+
+### Other approaches
+
+* [Clown Car Technqiue by Estelle Weyl](https://github.com/estelle/clowncar) (SVG media queries for the win!)
+* [&lt;picture>](http://responsiveimages.org/) (good if you need art direction)
