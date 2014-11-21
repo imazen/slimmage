@@ -1,4 +1,4 @@
-﻿describe('window', function () {
+describe('window', function () {
   it('should have slimmage', function () {
     expect(window).to.have.property('slimmage');
   });
@@ -16,7 +16,7 @@ describe('failing tests, to show things are working', function () {
 describe('slimmage', function () {
   var s;
   before(function(){
-    s = window.slimmage
+    s = window.slimmage;
   });
 
   it('should be an object', function () {
@@ -34,9 +34,26 @@ describe('slimmage', function () {
   it('should have jpegQuality', function () {
     expect(s).to.have.property('jpegQuality');
   });
-    
+
   it('should have jpegRetinaQuality', function () {
     expect(s).to.have.property('jpegRetinaQuality');
   });
+
+  describe('readyCallback',function() {
+    it('should be called',function(done) {
+      // It's simple. slimmage should call this method. If is doesn't we'll hang until timeout.
+      window.slimmage.readyCallback = function() { // we'll put our test cb in here later
+        expect(this).to.be(s);
+        done();
+      };
+    });
+  });
+
+
+  // it('',function(done) {
+  //   sinon.spy(s, "checkResponsiveImages"); // spy on callback attached to slimmage 's'
+  //   s.checkResponsiveImages.restore();
+  //   done();
+  // });
 
 });
