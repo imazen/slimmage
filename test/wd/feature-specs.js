@@ -3,7 +3,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 chai.should();
 var verbose = true;
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 3000;
 
 // Add some custom 'waitFor' assertions
 var ca  = require('./customAssertions.js'); /* .sizeToBe */
@@ -14,7 +14,7 @@ var ca  = require('./customAssertions.js'); /* .sizeToBe */
 // Slimmage defaults
 var slim = {
   widthStep: 160
-}
+};
 
 var win_tollerance = 25; // = px; tolerance for padding/margin/window-frame
 var explicit_wait = 3000;
@@ -40,7 +40,7 @@ var values = {
       halfsize_w: 640
     }
   },
-}
+};
 
 describe('slimmage', function() {
     var browser;
@@ -73,11 +73,11 @@ describe('slimmage', function() {
         browser
           .quit()
           .sauceJobStatus(allPassed)
-          .nodeify(done)
+          .nodeify(done);
       } else {
         browser
           .quit()
-          .nodeify(done)
+          .nodeify(done);
       }
     });
 
@@ -89,16 +89,16 @@ describe('slimmage', function() {
         page = browser
         .setWindowSize(values._default.given.window_w,values._default.given.window_h)
         .get('http://127.0.0.1:'+port+'/test/feature-defaults.html');
-      })
+      });
 
       it('should load the right page', function(done) {
         page
         .title()
         .should.become('slimmage defaults')
-        .nodeify(done)
+        .nodeify(done);
       });
 
-      testAll.call(this)
+      testAll.call(this);
 
     });
 
@@ -111,16 +111,16 @@ describe('slimmage', function() {
         page = browser
           .setWindowSize(values._default.given.window_w,values._default.given.window_h)
           .get('http://127.0.0.1:'+port+'/test/feature-webp.html');
-      })
+      });
 
       it('should load the right page', function(done) {
         page
         .title()
         .should.become('slimmage webp')
-        .nodeify(done)
+        .nodeify(done);
       });
 
-      testAll.call(this)
+      testAll.call(this);
 
     });
 
@@ -133,17 +133,17 @@ describe('slimmage', function() {
 
     // Change window size. Test. Change window size again. Test
     function testAll() {
-      testWindowSize.call(this, values._default, true)
-      testWindowSize.call(this, values.viewport_change)
+      testWindowSize.call(this, values._default, true);
+      testWindowSize.call(this, values.viewport_change);
       // testChangeWindowSize.call(this,values.viewport_change) /// Change window size (and test window size)
       // testElements.call(this, values.viewport_change) // Run tests on the elements
     }
     function testWindowSize(vals, leave_window_size) {
       describe("window at "+vals.given.window_w +" x "+ vals.given.window_h,function() {
         if (!leave_window_size){
-          testChangeWindowSize.call(this, vals) // Change window size (and test window size)
+          testChangeWindowSize.call(this, vals); // Change window size (and test window size)
         }
-        testElements.call(this, vals) // Run tests on the elements
+        testElements.call(this, vals); // Run tests on the elements
       });
     }
     // This is to fire off a change event.
@@ -152,20 +152,36 @@ describe('slimmage', function() {
 
         before(function(done) {
           page.setWindowSize(vals.given.window_w, vals.given.window_h)
-            .nodeify(done) // We need the above window changes before we can continue
+            .nodeify(done); // We need the above window changes before we can continue
         });
 
         it("should be the right size ("+ vals.given.window_w + ")", function(done) {
           // This exists, because resizing the elements is async
-          page.getWindowSize()
-            .should.eventually.have.deep.property("width",vals.given.window_w)
-            .nodeify(done)
+            page.waitFor(ca.asserter(function(t) {
+              var a = vals.given.window_w - win_tollerance;
+              var b = vals.given.window_w + win_tollerance;
+              return t
+                .getWindowSize()
+                .then(function(size) {
+                  return size.width.should.be.within(a,b);
+                });
+            }), explicit_wait) // repeat the above until success or timeout
+            .nodeify(done);
         });
 
         it('should wait until the body has resized', function(done) {
             page
-            .waitFor(ca.widthToBeWithin('body', vals.given.window_w, win_tollerance), explicit_wait)
-            .nodeify(done)
+            .waitFor(ca.asserter(function(t) {
+              var a = vals.given.window_w - win_tollerance;
+              var b = vals.given.window_w + win_tollerance;
+              return t
+                .elementByTagName('body')
+                .getSize()
+                .then(function(size) {
+                  return size.width.should.be.within(a,b);
+                });
+            }), explicit_wait) // repeat the above until success or timeout
+            .nodeify(done);
         });
 
         // Must run tests AFTER window changes size
@@ -183,7 +199,7 @@ describe('slimmage', function() {
             .elementByClassName('fixedsize_100') // img.max_width == 100px
             .getAttribute('src')
             .should.become('http://z.zr.io/ri/1s.jpg?width=' + slim.widthStep)
-            .nodeify(done)
+            .nodeify(done);
         });
 
       });
@@ -194,12 +210,12 @@ describe('slimmage', function() {
             .elementByClassName('fixedsize_200') // img.max_width == 200px
             .getAttribute('src')
             .should.become('http://z.zr.io/ri/1s.jpg?width=' + (slim.widthStep*2))
-            .nodeify(done)
+            .nodeify(done);
         });
       });
 
       describe('halfsize', function() {
-        var half_window = vals.given.window_w/2
+        var half_window = vals.given.window_w/2;
         it('should be '+half_window+' +/-'+ win_tollerance +' px wide',function(done) {
           page
             // .elementByClassName('halfsize')
@@ -211,7 +227,7 @@ describe('slimmage', function() {
             //   size.width.should.be.within(a,b);
             // })
             .waitFor(ca.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
-            .nodeify(done)
+            .nodeify(done);
         });
 
         it('src url should ratchet up to '+ vals.expected.halfsize_w,function(done) {
@@ -220,9 +236,9 @@ describe('slimmage', function() {
               return t
                 .elementByClassName('halfsize')
                 .getAttribute('src')
-                .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.expected.halfsize_w )
+                .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.expected.halfsize_w );
             }), explicit_wait) // repeat the above until success or timeout
-            .nodeify(done)
+            .nodeify(done);
         });
       });
 
