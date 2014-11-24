@@ -84,11 +84,13 @@ module.exports = function (grunt) {
           ],
           browsers: _.values(desireds),
           build: process.env.TRAVIS_JOB_ID,
-          testname: 'mocha tests',
-          throttled: 3,
+          pollInterval: 5000, // timeout
+          maxRetries: 3,
+          testname: 'slimmage mocha tests',
+          throttled: 3, // how many browses to be run in parallel
           //tunnelArgs: ["--debug"],
           sauceConfig: {
-            tags: ['unit', 'slimmage'],
+            tags: ['slimmage', 'unit'],
             'video-upload-on-pass': false
           }
         }
