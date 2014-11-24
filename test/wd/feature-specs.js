@@ -72,7 +72,7 @@ describe('slimmage', function() {
       if (browser.mode === 'saucelabs') {
         browser
           .quit()
-          .sauceJobStatus(allPassed)
+          // .sauceJobStatus(allPassed) // TODO: This causes tests to hang afterwards....???
           .nodeify(done);
       } else {
         browser
