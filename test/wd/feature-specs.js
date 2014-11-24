@@ -16,7 +16,7 @@ var slim = {
   widthStep: 160
 };
 
-var win_tollerance = 25; // = px; tolerance for padding/margin/window-frame
+var win_tollerance = 30; // = px; tolerance for padding/margin/window-frame
 var explicit_wait = 3000;
 
 // given->expected for the repeatable tests run
