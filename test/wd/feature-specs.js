@@ -68,18 +68,18 @@ describe('slimmage', function() {
         done();
     });
 
-    after(function(done) {
-      if (browser.mode === 'saucelabs') {
-        browser
-          .quit()
-          // .sauceJobStatus(allPassed) // TODO: This causes tests to hang afterwards....???
-          .nodeify(done);
-      } else {
-        browser
-          .quit()
-          .nodeify(done);
-      }
-    });
+    // after(function(done) {
+    //   if (browser.mode === 'saucelabs') {
+    //     browser
+    //       .quit()
+    //       // .sauceJobStatus(allPassed) // TODO: This causes tests to hang afterwards....???
+    //       .nodeify(done);
+    //   } else {
+    //     browser
+    //       .quit()
+    //       .nodeify(done);
+    //   }
+    // });
 
     // ------------------------------------------------------------------------
     // Load page, test all
