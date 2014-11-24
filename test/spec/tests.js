@@ -39,21 +39,46 @@ describe('slimmage', function () {
     expect(s).to.have.property('jpegRetinaQuality');
   });
 
-  describe('readyCallback',function() {
-    it('should be called',function(done) {
-      // It's simple. slimmage should call this method. If is doesn't we'll hang until timeout.
-      window.slimmage.readyCallback = function() { // we'll put our test cb in here later
-        expect(this).to.be(s);
-        done();
-      };
+  describe('checkResponsiveImages',function() {
+    after(function() {
+      s.readyCallback.restore();
     });
+
+    it('should call readyCallback',function() {
+
+      // create a function
+      s.readyCallback = function() {
+        expect(this).to.be(s);
+      };
+
+      // spy on it
+      sinon.spy(s, "readyCallback"); // spy on callback attached to slimmage 's'
+
+      // call parent 'calling' function
+      s.checkResponsiveImages();
+
+      // our spy should have been called as a result, in this case, only once
+      expect(s.readyCallback.calledOnce).to.be(true);
+    });
+
+    it('should call adjustImageSrc ',function() {
+
+      // create a function
+      s.adjustImageSrc = function() {
+        expect(this).to.be(s);
+      };
+
+      // spy on it
+      sinon.spy(s, "adjustImageSrc"); // spy on callback attached to slimmage 's'
+
+      // call parent 'calling' function
+      s.checkResponsiveImages();
+
+      // our spy should have been called as a result, in this case, only once
+      expect(s.adjustImageSrc.calledOnce).to.be(true);
+
+    });
+
   });
-
-
-  // it('',function(done) {
-  //   sinon.spy(s, "checkResponsiveImages"); // spy on callback attached to slimmage 's'
-  //   s.checkResponsiveImages.restore();
-  //   done();
-  // });
 
 });
