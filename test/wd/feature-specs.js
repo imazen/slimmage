@@ -6,7 +6,8 @@ var verbose = true;
 var port = process.env.PORT || 3000;
 
 // Add some custom 'waitFor' assertions
-var ca  = require('./customAssertions.js'); /* .sizeToBe */
+var util  = require('./util.js'); /* .asserter,  */
+
 
 // this.browser and this.wd are injected by the grunt-wd-mocha plugin.
 //var setup = require('./setup')(this); // setup details, such as logging and credentials
@@ -157,7 +158,7 @@ describe('slimmage', function() {
 
         it("should be the right size ("+ vals.given.window_w + ")", function(done) {
           // This exists, because resizing the elements is async
-            page.waitFor(ca.asserter(function(t) {
+            page.waitFor(util.asserter(function(t) {
               var a = vals.given.window_w - win_tollerance;
               var b = vals.given.window_w + win_tollerance;
               return t
@@ -171,7 +172,7 @@ describe('slimmage', function() {
 
         it('should wait until the body has resized', function(done) {
             page
-            .waitFor(ca.asserter(function(t) {
+            .waitFor(util.asserter(function(t) {
               var a = vals.given.window_w - win_tollerance;
               var b = vals.given.window_w + win_tollerance;
               return t
@@ -226,13 +227,14 @@ describe('slimmage', function() {
             //   var b = vals.given.window_w/2 + win_tollerance;
             //   size.width.should.be.within(a,b);
             // })
-            .waitFor(ca.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
+            .waitFor(util.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
+            .waitFor(util.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
             .nodeify(done);
         });
 
         it('src url should ratchet up to '+ vals.expected.halfsize_w,function(done) {
           page
-            .waitFor(ca.asserter(function(t) {
+            .waitFor(util.asserter(function(t) {
               return t
                 .elementByClassName('halfsize')
                 .getAttribute('src')
