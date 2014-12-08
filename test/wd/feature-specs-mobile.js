@@ -117,15 +117,33 @@ describe('slimmage', function() {
 
     function testMobile() {
       describe('mobile',function() {
-        pages.forEach(function(pa){
-          page = browser.setOrientation('portrait');
-          loadPage.call(this, pa);
-          testElements.call(this);
-          page = browser.setOrientation('landscape');
-          loadPage.call(this, pa);
-          testElements.call(this);
 
+        before(function() {
+          page = browser.setOrientation('PORTRAIT');
         });
+
+        loadPage.call(this, pages[0]);
+        testElements.call(this, values.mobile) ;
+        testChangeOrientation.call(this);
+        testElements.call(this, values.mobile) ;
+
+      });
+    }
+
+    function testChangeOrientation (value) {
+      describe('orientation',function() {
+
+        before(function() {
+          page = browser.setOrientation('LANDSCAPE');
+        });
+
+        it('should change to, ' + value ,function(done) {
+          page
+          .getOrientation()
+          .should.eventually.be(value)
+          .nodeify(done);
+        });
+
       });
     }
 
