@@ -21,6 +21,19 @@ var win_tollerance = 30; // = px; tolerance for padding/margin/window-frame
 var explicit_wait = 3000;
 
 // given->expected for the repeatable tests run
+var pages = [
+  {
+    name: 'default',
+    url:'http://127.0.0.1:'+port+'/test/feature-defaults.html',
+    title: 'slimmage defaults'
+  },
+
+  {
+    name: 'webp',
+    url:'http://127.0.0.1:'+port+'/test/feature-webp.html',
+    title: 'slimmage webp'
+  },
+];
 var values = {
   _default: {
     given:{
@@ -82,56 +95,41 @@ describe('slimmage', function() {
     //   }
     // });
 
+    //--------------------------------------------------------------------------
+    //---      Run the tests, these are the entry points                     ---
+    //--------------------------------------------------------------------------
+    // Run tests on the two different pages, defaults and webp
+    testPage.call(this, pages[0]);
+    testPage.call(this, pages[1]);
+
+
+    //--------------------------------------------------------------------------
+    //---       The following are only functions, and unless called          ---
+    //---       ... from within a test, they do nothing.                     ---
+    //--------------------------------------------------------------------------
+
     // ------------------------------------------------------------------------
     // Load page, test all
     // ------------------------------------------------------------------------
-    describe('defaults',function() {
-      before(function(){
-        page = browser
-        .setWindowSize(values._default.given.window_w,values._default.given.window_h)
-        .get('http://127.0.0.1:'+port+'/test/feature-defaults.html');
-      });
-
-      it('should load the right page', function(done) {
-        page
-        .title()
-        .should.become('slimmage defaults')
-        .nodeify(done);
-      });
-
-      testAll.call(this);
-
-    });
-
-    // ------------------------------------------------------------------------
-    // Do the same tests as above, but on the -webp page
-    // ------------------------------------------------------------------------
-    describe("webp",function() {
-      before(function(){
-        // ...the following will have 'tryWebP' enabled
-        page = browser
+    function testPage(details) {
+      describe(details.name,function() {
+        before(function(){
+          page = browser
           .setWindowSize(values._default.given.window_w,values._default.given.window_h)
-          .get('http://127.0.0.1:'+port+'/test/feature-webp.html');
+          .get(details.url);
+        });
+
+        it('should load the right page', function(done) {
+          page
+          .title()
+          .should.become(details.title)
+          .nodeify(done);
+        });
+
+        testAll.call(this);
+
       });
-
-      it('should load the right page', function(done) {
-        page
-        .title()
-        .should.become('slimmage webp')
-        .nodeify(done);
-      });
-
-      testAll.call(this);
-
-    });
-
-    //--------------------------------------------------------------------------
-    //---                                                                    ---
-    //---       The following are only functions, and unless called          ---
-    //---       ... from within a test, they do nothing.                     ---
-    //---                                                                    ---
-    //--------------------------------------------------------------------------
-
+    }
     // Change window size. Test. Change window size again. Test
     function testAll() {
       testWindowSize.call(this, values._default, true);
@@ -157,7 +155,7 @@ describe('slimmage', function() {
         });
 
         it("should be the right size ("+ vals.given.window_w + ")", function(done) {
-          // This exists, because resizing the elements is async
+          // This exists, because resizing elements, is async
             page.waitFor(util.asserter(function(t) {
               var a = vals.given.window_w - win_tollerance;
               var b = vals.given.window_w + win_tollerance;
