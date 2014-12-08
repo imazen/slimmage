@@ -30,23 +30,17 @@ module.exports = function (grunt) {
     // simplemocha: Runs mocha tests from grunt, in node. Nothing special.
     // No connection to saucelabs or WD
     // WD specifics take place in the test files
-    simplemocha: {
-        sauce: {
-            options: {
-                timeout: 60000,
-                reporter: 'spec'
-            },
-            src: ['test/wd/**/*-specs.js']
-        }
-    },
+    // simplemocha: {
+    //     sauce: {
+    //         options: {
+    //             timeout: 60000,
+    //             reporter: 'spec'
+    //         },
+    //         src: ['test/wd/**/*-specs.js']
+    //     }
+    // },
 
-    //concurrent: {
-      //options: {
-        //logConcurrentOutput: true
-      //},
-      //'test-browsers': [], // dynamically filled
-    //},
-
+    // Webdriver tests (Sauce and local PhantomJs)
     mochaWebdriver: {
       options: {
         usePromises: true,
@@ -130,7 +124,7 @@ module.exports = function (grunt) {
     });
 
     // Create test:browser:<browser> task
-    grunt.registerTask('test:browser:' + key, ['env:' + key, 'simplemocha:sauce']); // A bit of magic here: set up the environment with chosen browser, and run simplemocha
+    // grunt.registerTask('test:browser:' + key, ['env:' + key, 'simplemocha:sauce']); // A bit of magic here: set up the environment with chosen browser, and run simplemocha
 
     // Add concurrent tasks
     var tb = grunt.config("concurrent.test-browsers") || []
