@@ -8,7 +8,6 @@ var port = process.env.PORT || 3000;
 // Add some custom 'waitFor' assertions
 var util  = require('./util.js'); /* .asserter,  */
 
-
 // this.browser and this.wd are injected by the grunt-wd-mocha plugin.
 //var setup = require('./setup')(this); // setup details, such as logging and credentials
 
@@ -50,10 +49,18 @@ var values = {
       window_h: 768
     },
     expected: {
-      // halfsize_w: 1024 // 2048/2 = 1024, nearest step is the same at...1024
       halfsize_w: 640
     }
   },
+  mobile: {
+    given:{
+      window_w: 1024,
+      window_h: 768
+    },
+    expected: {
+      halfsize_w: 640
+    }
+  }
 };
 
 describe('slimmage', function() {
@@ -102,7 +109,6 @@ describe('slimmage', function() {
     // testPage.call(this, pages[0]);
     // testPage.call(this, pages[1]);
     testMobile.call(this);
-
 
     //--------------------------------------------------------------------------
     //---       The following are only functions, and unless called          ---
@@ -256,5 +262,4 @@ describe('slimmage', function() {
       });
 
     } // testElements
-
 });
