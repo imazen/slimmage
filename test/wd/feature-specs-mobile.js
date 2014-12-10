@@ -33,7 +33,38 @@ var pages = [
     title: 'slimmage webp'
   },
 ];
+// var values = {
+//   _default: {
+//     given:{
+//       window_w: 800,
+//       window_h: 640
+//     },
+//     expected: {
+//       halfsize_w: 480 // 800/2 = 400, nearest step is 480
+//     }
+//   },
+//   viewport_change: {
+//     given:{
+//       window_w: 1024,
+//       window_h: 768
+//     },
+//     expected: {
+//       halfsize_w: 640
+//     }
+//   },
+// };
+
+  // NOTE: not the larger 'plus' version
+  var iphone6 = {
+    devicePixelRatio: 2,
+    portrait: {
+      height: 1334,
+      width: 750,
+      halfsize: 375,
+      // first factor in dpr, then round up to nearest step
+      halfsize_src: 800 // 375 * 2 = 750, nearest step (multiple of 160) is 800.
     },
+  };
 
 describe('slimmage', function() {
     var browser;
@@ -142,42 +173,43 @@ describe('slimmage', function() {
 
       describe('fixedwidth_100', function() {
 
-        it('src url should ratchet up to 160', function(done) {
+        it('src url should ratchet up to ' + vals.fix100_src, function(done) {
           page
             .elementByClassName('fixedsize_100') // img.max_width == 100px
             .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + slim.widthStep)
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + val.fix100_src)
             .nodeify(done);
         });
 
       });
 
       describe('fixedwidth_200', function() {
-        it('src url should ratchet up to 320', function(done) {
+        it('src url should ratchet up to ' + vals.fix200_src, function(done) {
           page
             .elementByClassName('fixedsize_200') // img.max_width == 200px
             .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + (slim.widthStep*2))
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + val.fix200_src)
             .nodeify(done);
         });
       });
 
       describe('halfsize', function() {
-        var half_window = vals.given.window_w/2;
-        it('should be '+half_window+' +/-'+ win_tollerance +' px wide',function(done) {
+        it('should be '+ vals.halfsize +' +/-'+ win_tollerance +' px wide',function(done) {
           page
-            .waitFor(util.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
-            .waitFor(util.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
+            .waitFor(util.widthToBeWithin('.halfsize',
+                vals.halfsize,
+                win_tollerance
+              ), explicit_wait)
             .nodeify(done);
         });
 
-        it('src url should ratchet up to '+ vals.expected.halfsize_w,function(done) {
+        it('src url should ratchet up to '+ vals.halfsize_src ,function(done) {
           page
             .waitFor(util.asserter(function(t) {
               return t
                 .elementByClassName('halfsize')
                 .getAttribute('src')
-                .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.expected.halfsize_w );
+                .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.halfsize_src );
             }), explicit_wait) // repeat the above until success or timeout
             .nodeify(done);
         });
