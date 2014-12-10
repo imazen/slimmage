@@ -16,6 +16,10 @@ var slim = {
   widthStep: 160
 };
 
+function calc_nearest_slim_step(val) {
+  return val - (val % slim.widthStep) + slim.widthStep;
+}
+
 var win_tollerance = 30; // = px; tolerance for padding/margin/window-frame
 var explicit_wait = 3000;
 
@@ -42,8 +46,6 @@ var mobiles = {
       halfsize: 180,
       // first factor in dpr, then round up to nearest step
       halfsize_src: 480, // 180 * 2 = 360, nearest step (multiple of 160) is 480.
-      fix100_src: 320, // with dpr = 200...and nearest step = 320
-      fix200_src: 480 // with dpr = 400...and nearest step = 480
     }
   }
 };
@@ -152,25 +154,28 @@ describe('slimmage', function() {
     }
 
     function testElements(vals){
+      var dpr = vals.devicePixelRatio || 1;
+      var fix100_src = calc_nearest_slim_step(dpr * 100);
+      var fix200_src = calc_nearest_slim_step(dpr * 200);
 
       describe('fixedwidth_100', function() {
 
-        it('src url should ratchet up to ' + vals.fix100_src , function(done) {
+        it('src url should ratchet up to ' + fix100_src , function(done) {
           page
             .elementByClassName('fixedsize_100') // img.max_width == 100px
             .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.fix100_src)
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix100_src)
             .nodeify(done);
         });
 
       });
 
       describe('fixedwidth_200', function() {
-        it('src url should ratchet up to ' + vals.fix200_src, function(done) {
+        it('src url should ratchet up to ' + fix200_src, function(done) {
           page
             .elementByClassName('fixedsize_200') // img.max_width == 200px
             .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.fix200_src)
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix200_src)
             .nodeify(done);
         });
       });
