@@ -41,8 +41,14 @@ var pages = [
   // NOTE: this is not the larger 'plus' version
 var mobiles = {
   iphone6: {
-    devicePixelRatio: 2,
+    landscape: {
+      devicePixelRatio: 2,
+      halfsize: 333, // 1334/4
+      // first factor in dpr, then round up to nearest step
+      halfsize_src: 800, // 333 * 2 = 666, nearest step (multiple of 160) is 800.
+    },
     portrait: {
+      devicePixelRatio: 2,
       halfsize: 180,
       // first factor in dpr, then round up to nearest step
       halfsize_src: 480, // 180 * 2 = 360, nearest step (multiple of 160) is 480.
@@ -112,7 +118,7 @@ describe('slimmage', function() {
         loadPage.call(this, pages[0]);
         testElements.call(this, mobiles.iphone6.portrait) ;
         testChangeOrientation.call(this, 'LANDSCAPE');
-        // testElements.call(this, mobiles.iphone6) ;
+        testElements.call(this, mobiles.iphone6.landscape);
 
       });
     }
@@ -121,10 +127,10 @@ describe('slimmage', function() {
       describe('orientation',function() {
 
         before(function() {
-          page = browser.setOrientation('LANDSCAPE');
+          page = browser.setOrientation(value);
         });
 
-        it('should change to, ' + value ,function(done) {
+        it('should change to ' + value, function(done) {
           page
           .getOrientation()
           .should.become(value)
