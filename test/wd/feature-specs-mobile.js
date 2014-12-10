@@ -33,35 +33,7 @@ var pages = [
     title: 'slimmage webp'
   },
 ];
-var values = {
-  _default: {
-    given:{
-      window_w: 800,
-      window_h: 640
     },
-    expected: {
-      halfsize_w: 480 // 800/2 = 400, nearest step is 480
-    }
-  },
-  viewport_change: {
-    given:{
-      window_w: 1024,
-      window_h: 768
-    },
-    expected: {
-      halfsize_w: 640
-    }
-  },
-  mobile: {
-    given:{
-      window_w: 1024,
-      window_h: 768
-    },
-    expected: {
-      halfsize_w: 640
-    }
-  }
-};
 
 describe('slimmage', function() {
     var browser;
@@ -154,7 +126,6 @@ describe('slimmage', function() {
       describe(details.name,function() {
         before(function(){
           page = browser
-          // .setWindowSize(values._default.given.window_w,values._default.given.window_h)
           .get(details.url);
         });
 
@@ -164,65 +135,6 @@ describe('slimmage', function() {
           .should.become(details.title)
           .nodeify(done);
         });
-      });
-    }
-
-    // Change window size. Test. Change window size again. Test
-    function testAll() {
-      testWindowSize.call(this, values._default, true);
-      testWindowSize.call(this, values.viewport_change);
-    }
-
-    function testWindowSize(vals, leave_window_size) {
-      describe("window at "+vals.given.window_w +" x "+ vals.given.window_h,function() {
-        if (!leave_window_size){
-          testChangeWindowSize.call(this, vals); // Change window size (and test window size)
-        }
-        testElements.call(this, vals); // Run tests on the elements
-      });
-    }
-
-    // This is to fire off a change event.
-    function testChangeWindowSize(vals) {
-      describe('changing to ' + vals.given.window_w,function() {
-
-        before(function(done) {
-          page.setWindowSize(vals.given.window_w, vals.given.window_h)
-            .nodeify(done); // We need the above window changes before we can continue
-        });
-
-        it("should be the right size ("+ vals.given.window_w + ")", function(done) {
-          // This exists, because resizing elements, is async
-            page.waitFor(util.asserter(function(t) {
-              var a = vals.given.window_w - win_tollerance;
-              var b = vals.given.window_w + win_tollerance;
-              return t
-                .getWindowSize()
-                .then(function(size) {
-                  return size.width.should.be.within(a,b);
-                });
-            }), explicit_wait) // repeat the above until success or timeout
-            .nodeify(done);
-        });
-
-        it('should wait until the body has resized', function(done) {
-            page
-            .waitFor(util.asserter(function(t) {
-              var a = vals.given.window_w - win_tollerance;
-              var b = vals.given.window_w + win_tollerance;
-              return t
-                .elementByTagName('body')
-                .getSize()
-                .then(function(size) {
-                  return size.width.should.be.within(a,b);
-                });
-            }), explicit_wait) // repeat the above until success or timeout
-            .nodeify(done);
-        });
-
-        // Must run tests AFTER window changes size
-        // testElements.call(this, values.viewport_change) // Run tests on the elements
-
       });
     }
 
@@ -254,14 +166,6 @@ describe('slimmage', function() {
         var half_window = vals.given.window_w/2;
         it('should be '+half_window+' +/-'+ win_tollerance +' px wide',function(done) {
           page
-            // .elementByClassName('halfsize')
-            // .getSize()
-            // //.should.eventually.have.deep.property('width', vals.given.window_w/2 )// half the window's size
-            // .then(function(size) {
-            //   var a = vals.given.window_w/2 - win_tollerance;
-            //   var b = vals.given.window_w/2 + win_tollerance;
-            //   size.width.should.be.within(a,b);
-            // })
             .waitFor(util.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
             .waitFor(util.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
             .nodeify(done);
