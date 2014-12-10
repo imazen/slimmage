@@ -153,17 +153,17 @@ describe('slimmage', function() {
     // ------------------------------------------------------------------------
     // Load page, test all
     // ------------------------------------------------------------------------
-    function loadPage(details) {
-      describe(details.name,function() {
+    function loadPage(page_details) {
+      describe(page_details.name,function() {
         before(function(){
           page = browser
-          .get(details.url);
+          .get(page_details.url);
         });
 
         it('should load the right page', function(done) {
           page
           .title()
-          .should.become(details.title)
+          .should.become(page_details.title)
           .nodeify(done);
         });
       });
