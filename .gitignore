@@ -4,3 +4,4 @@ env.json
 node_modules/
 *.log
 **/*.swp
+gittest/
