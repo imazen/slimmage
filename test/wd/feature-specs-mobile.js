@@ -111,11 +111,14 @@ describe('slimmage', function() {
     function testMobile() {
       describe('mobile',function() {
 
-        before(function() {
-          page = browser.setOrientation('PORTRAIT');
-        });
-
+        testChangeOrientation.call(this, 'PORTRAIT');
         loadPage.call(this, pages[0]);
+        testElements.call(this, mobiles.iphone6.portrait) ;
+        testChangeOrientation.call(this, 'LANDSCAPE');
+        testElements.call(this, mobiles.iphone6.landscape);
+
+        testChangeOrientation.call(this, 'PORTRAIT');
+        loadPage.call(this, pages[1]);
         testElements.call(this, mobiles.iphone6.portrait) ;
         testChangeOrientation.call(this, 'LANDSCAPE');
         testElements.call(this, mobiles.iphone6.landscape);
