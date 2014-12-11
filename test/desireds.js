@@ -9,11 +9,11 @@ module.exports = {
       'screen-resolution': '1024x768'
     },
 
-    explorer6: {
-      browserName: 'internet explorer',
-      version: '6.0',
-      'screen-resolution': '1024x768'
-    },
+    // explorer6: {
+    //   browserName: 'internet explorer',
+    //   version: '6.0',
+    //   'screen-resolution': '1024x768'
+    // },
 
     explorer: {
       browserName: 'internet explorer',
