@@ -23,6 +23,19 @@ module.exports = function (grunt) {
       }
     },
 
+    gcc_rest: {
+      files: {
+        'slimmage.min.js': ['./slimmage.js']
+      },
+      options: {
+        params: {
+          language: 'ECMASCRIPT5_STRICT',
+          compilation_level: 'ADVANCED_OPTIMIZATIONS',
+          warning_level: 'VERBOSE'
+        }
+      }
+    },
+
     clean: {
       all: ['**/*.swp', 'sc_*.log']
     },
