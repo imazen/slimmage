@@ -33,38 +33,20 @@ var pages = [
     title: 'slimmage webp'
   },
 ];
-// var values = {
-//   _default: {
-//     given:{
-//       window_w: 800,
-//       window_h: 640
-//     },
-//     expected: {
-//       halfsize_w: 480 // 800/2 = 400, nearest step is 480
-//     }
-//   },
-//   viewport_change: {
-//     given:{
-//       window_w: 1024,
-//       window_h: 768
-//     },
-//     expected: {
-//       halfsize_w: 640
-//     }
-//   },
-// };
 
-  // NOTE: not the larger 'plus' version
-  var iphone6 = {
+  // NOTE: this is not the larger 'plus' version
+var mobiles = {
+  iphone6: {
     devicePixelRatio: 2,
     portrait: {
-      height: 1334,
-      width: 750,
-      halfsize: 375,
+      halfsize: 180,
       // first factor in dpr, then round up to nearest step
-      halfsize_src: 800 // 375 * 2 = 750, nearest step (multiple of 160) is 800.
-    },
-  };
+      halfsize_src: 480, // 180 * 2 = 360, nearest step (multiple of 160) is 480.
+      fix100_src: 320, // with dpr = 200...and nearest step = 320
+      fix200_src: 480 // with dpr = 400...and nearest step = 480
+    }
+  }
+};
 
 describe('slimmage', function() {
     var browser;
@@ -126,9 +108,9 @@ describe('slimmage', function() {
         });
 
         loadPage.call(this, pages[0]);
-        testElements.call(this, values.mobile) ;
-        testChangeOrientation.call(this);
-        testElements.call(this, values.mobile) ;
+        testElements.call(this, mobiles.iphone6.portrait) ;
+        testChangeOrientation.call(this, 'LANDSCAPE');
+        // testElements.call(this, mobiles.iphone6) ;
 
       });
     }
