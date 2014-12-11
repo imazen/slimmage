@@ -65,7 +65,7 @@ module.exports = function (grunt) {
           testName: 'slimmage feature tests', // TODO: put in github specifics (issues/branch/etc)
           browsers: _.values(desireds),
           tunnelArgs: ['-v', '--doctor'],
-          concurrency: 3 // how many browses to be run in parallel
+          concurrency: 99 // how many browses to be run in parallel
         }
       }
     },
