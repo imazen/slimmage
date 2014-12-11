@@ -64,7 +64,11 @@ test.changeWindowSize = function(size) {
     it('should be the right size ('+ size.width + ')', function(done) {
       chain
       .getWindowSize()
-      .should.eventually.have.deep.property('width', size.width)
+      .then(function(actual) {
+          var a = size.width - e.win_tollerance;
+          var b = size.width + e.win_tollerance;
+          return actual.width.should.be.within(a,b);
+      })
       .nodeify(done);
     });
 
