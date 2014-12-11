@@ -1,3 +1,5 @@
+/* global describe,before,it,afterEach*/
+
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -8,7 +10,6 @@ var port = process.env.PORT || 3000;
 // Add some custom 'waitFor' assertions
 var util  = require('./util.js'); /* .asserter,  */
 
-
 // this.browser and this.wd are injected by the grunt-wd-mocha plugin.
 //var setup = require('./setup')(this); // setup details, such as logging and credentials
 
@@ -17,43 +18,69 @@ var slim = {
   widthStep: 160
 };
 
+function calc_nearest_slim_step(val) {
+  return val - (val % slim.widthStep) + slim.widthStep;
+}
+
 var win_tollerance = 30; // = px; tolerance for padding/margin/window-frame
 var explicit_wait = 3000;
 
 // given->expected for the repeatable tests run
-var pages = [
-  {
+var pages = {
+  normal: {
     name: 'default',
     url:'http://127.0.0.1:'+port+'/test/feature-defaults.html',
     title: 'slimmage defaults'
   },
 
-  {
+  webp: {
     name: 'webp',
     url:'http://127.0.0.1:'+port+'/test/feature-webp.html',
     title: 'slimmage webp'
   },
-];
-var values = {
-  _default: {
-    given:{
-      window_w: 800,
-      window_h: 640
+};
+
+  // NOTE: this is not the larger 'plus' version
+var desktop = {
+
+    medium: {
+      devicePixelRatio: 1,
+      size: {
+        width: 800,
+        height: 600
+      },
+      halfsize: 400, // 1334/4
+      halfsize_src: calc_nearest_slim_step(400)
     },
-    expected: {
-      halfsize_w: 480 // 800/2 = 400, nearest step is 480
+
+    large: {
+      devicePixelRatio: 1,
+      size: {
+        width: 1024,
+        height: 768
+      },
+
+      halfsize: 512,
+      halfsize_src: calc_nearest_slim_step(512)
     }
-  },
-  viewport_change: {
-    given:{
-      window_w: 1024,
-      window_h: 768
+
+};
+
+var mobiles = {
+  iphone6: {
+    landscape: {
+      devicePixelRatio: 2,
+      halfsize: 333, // 1334/4
+      // first factor in dpr, then round up to nearest step
+      halfsize_src: calc_nearest_slim_step(333 * 2)
     },
-    expected: {
-      // halfsize_w: 1024 // 2048/2 = 1024, nearest step is the same at...1024
-      halfsize_w: 640
+    portrait: {
+      devicePixelRatio: 2,
+      halfsize: 180,
+      // first factor in dpr, then round up to nearest step
+      halfsize_src: calc_nearest_slim_step(180 * 2)
     }
-  },
+  }
 };
 
 describe('slimmage', function() {
@@ -99,80 +126,72 @@ describe('slimmage', function() {
     //---      Run the tests, these are the entry points                     ---
     //--------------------------------------------------------------------------
     // Run tests on the two different pages, defaults and webp
-    testPage.call(this, pages[0]);
-    testPage.call(this, pages[1]);
-
+    // testMobile.call(this);
+    testDesktop.call(this);
 
     //--------------------------------------------------------------------------
     //---       The following are only functions, and unless called          ---
     //---       ... from within a test, they do nothing.                     ---
     //--------------------------------------------------------------------------
 
-    // ------------------------------------------------------------------------
-    // Load page, test all
-    // ------------------------------------------------------------------------
-    function testPage(details) {
-      describe(details.name,function() {
-        before(function(){
-          page = browser
-          .setWindowSize(values._default.given.window_w,values._default.given.window_h)
-          .get(details.url);
-        });
+    //--------------------------------------------------------------------------
+    //---    High level test suites                                          ---
+    //--------------------------------------------------------------------------
 
-        it('should load the right page', function(done) {
-          page
-          .title()
-          .should.become(details.title)
-          .nodeify(done);
-        });
+    function testDesktop() {
+      describe('desktop',function() {
 
-        testAll.call(this);
+        testChangeWindowSize.call(this, desktop.medium.size );
+        testLoadPage.call(this, pages.normal );
+        testElements.call(this, desktop.medium );
+        testChangeWindowSize.call(this, desktop.large.size );
+        testElements.call(this, desktop.large );
 
       });
     }
-    // Change window size. Test. Change window size again. Test
-    function testAll() {
-      testWindowSize.call(this, values._default, true);
-      testWindowSize.call(this, values.viewport_change);
-      // testChangeWindowSize.call(this,values.viewport_change) /// Change window size (and test window size)
-      // testElements.call(this, values.viewport_change) // Run tests on the elements
-    }
-    function testWindowSize(vals, leave_window_size) {
-      describe("window at "+vals.given.window_w +" x "+ vals.given.window_h,function() {
-        if (!leave_window_size){
-          testChangeWindowSize.call(this, vals); // Change window size (and test window size)
-        }
-        testElements.call(this, vals); // Run tests on the elements
+
+    function testMobile() {
+      describe('mobile',function() {
+
+        testChangeOrientation.call(this, 'PORTRAIT');
+        testLoadPage.call(this, pages.normal );
+        testElements.call(this, mobiles.iphone6.portrait) ;
+        testChangeOrientation.call(this, 'LANDSCAPE');
+        testElements.call(this, mobiles.iphone6.landscape);
+
+        testChangeOrientation.call(this, 'PORTRAIT');
+        testLoadPage.call(this, pages.webp );
+        testElements.call(this, mobiles.iphone6.portrait) ;
+        testChangeOrientation.call(this, 'LANDSCAPE');
+        testElements.call(this, mobiles.iphone6.landscape);
+
       });
     }
-    // This is to fire off a change event.
-    function testChangeWindowSize(vals) {
-      describe('changing to ' + vals.given.window_w,function() {
+
+    //--------------------------------------------------------------------------
+    //---    Desktop specific                                                ---
+    //--------------------------------------------------------------------------
+
+    function testChangeWindowSize(size) {
+      describe('changing to ' + size.width,function() {
 
         before(function(done) {
-          page.setWindowSize(vals.given.window_w, vals.given.window_h)
+          page.setWindowSize( size.width , size.height )
             .nodeify(done); // We need the above window changes before we can continue
         });
 
-        it("should be the right size ("+ vals.given.window_w + ")", function(done) {
-          // This exists, because resizing elements, is async
-            page.waitFor(util.asserter(function(t) {
-              var a = vals.given.window_w - win_tollerance;
-              var b = vals.given.window_w + win_tollerance;
-              return t
-                .getWindowSize()
-                .then(function(size) {
-                  return size.width.should.be.within(a,b);
-                });
-            }), explicit_wait) // repeat the above until success or timeout
-            .nodeify(done);
+        it('should be the right size ('+ size.width + ')', function(done) {
+          page
+          .getWindowSize()
+          .should.eventually.have.deep.property('width', size.width)
+          .nodeify(done);
         });
 
         it('should wait until the body has resized', function(done) {
             page
             .waitFor(util.asserter(function(t) {
-              var a = vals.given.window_w - win_tollerance;
-              var b = vals.given.window_w + win_tollerance;
+              var a = size.width - win_tollerance;
+              var b = size.width + win_tollerance;
               return t
                 .elementByTagName('body')
                 .getSize()
@@ -183,65 +202,98 @@ describe('slimmage', function() {
             .nodeify(done);
         });
 
-        // Must run tests AFTER window changes size
-        // testElements.call(this, values.viewport_change) // Run tests on the elements
+      });
+    }
+
+
+    //--------------------------------------------------------------------------
+    //---    Mobile specific                                                 ---
+    //--------------------------------------------------------------------------
+
+    function testChangeOrientation (value) {
+      describe('orientation',function() {
+
+        before(function() {
+          page = browser.setOrientation(value);
+        });
+
+        it('should change to ' + value, function(done) {
+          page
+          .getOrientation()
+          .should.become(value)
+          .nodeify(done);
+        });
 
       });
     }
 
+    // ------------------------------------------------------------------------
+    // Load page, test all
+    // ------------------------------------------------------------------------
+    function testLoadPage(page_details) {
+      describe(page_details.name,function() {
+        before(function(){
+          page = browser
+          .get(page_details.url);
+        });
+
+        it('should load the right page', function(done) {
+          page
+          .title()
+          .should.become(page_details.title)
+          .nodeify(done);
+        });
+      });
+    }
+
     function testElements(vals){
+      var dpr = vals.devicePixelRatio || 1;
+      var fix100_src = calc_nearest_slim_step(dpr * 100);
+      var fix200_src = calc_nearest_slim_step(dpr * 200);
 
       describe('fixedwidth_100', function() {
 
-        it('src url should ratchet up to 160', function(done) {
+        it('src url should ratchet up to ' + fix100_src , function(done) {
           page
             .elementByClassName('fixedsize_100') // img.max_width == 100px
             .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + slim.widthStep)
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix100_src)
             .nodeify(done);
         });
 
       });
 
       describe('fixedwidth_200', function() {
-        it('src url should ratchet up to 320', function(done) {
+        it('src url should ratchet up to ' + fix200_src, function(done) {
           page
             .elementByClassName('fixedsize_200') // img.max_width == 200px
             .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + (slim.widthStep*2))
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix200_src)
             .nodeify(done);
         });
       });
 
       describe('halfsize', function() {
-        var half_window = vals.given.window_w/2;
-        it('should be '+half_window+' +/-'+ win_tollerance +' px wide',function(done) {
+        it('should be '+ vals.halfsize +' +/-'+ win_tollerance +' px wide',function(done) {
           page
-            // .elementByClassName('halfsize')
-            // .getSize()
-            // //.should.eventually.have.deep.property('width', vals.given.window_w/2 )// half the window's size
-            // .then(function(size) {
-            //   var a = vals.given.window_w/2 - win_tollerance;
-            //   var b = vals.given.window_w/2 + win_tollerance;
-            //   size.width.should.be.within(a,b);
-            // })
-            .waitFor(util.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
-            .waitFor(util.widthToBeWithin('.halfsize', half_window, win_tollerance), explicit_wait)
+            .waitFor(util.widthToBeWithin('.halfsize',
+                vals.halfsize,
+                win_tollerance
+              ), explicit_wait)
             .nodeify(done);
         });
 
-        it('src url should ratchet up to '+ vals.expected.halfsize_w,function(done) {
+        it('src url should ratchet up to '+ vals.halfsize_src ,function(done) {
           page
             .waitFor(util.asserter(function(t) {
               return t
                 .elementByClassName('halfsize')
                 .getAttribute('src')
-                .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.expected.halfsize_w );
+                .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.halfsize_src );
             }), explicit_wait) // repeat the above until success or timeout
             .nodeify(done);
         });
       });
 
     } // testElements
-
 });
