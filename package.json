@@ -26,6 +26,7 @@
     "grunt-contrib-connect": "^0.7.1",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-env": "^0.4.2",
+    "grunt-gcc-rest": "^0.1.5",
     "grunt-mocha": "^0.4.11",
     "grunt-mocha-webdriver": "^1.1.2",
     "grunt-saucelabs": "*",
