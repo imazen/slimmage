@@ -12,7 +12,7 @@ expected.calc_nearest_slim_step = function (val) {
 };
 
 expected.win_tollerance = 30; // = px; tolerance for padding/margin/window-frame
-expected.explicit_wait = 3000;
+expected.explicit_wait = 10000;
 
 // given->expected for the repeatable tests run
 expected.pages = {
