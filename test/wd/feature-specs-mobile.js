@@ -24,19 +24,19 @@ var win_tollerance = 30; // = px; tolerance for padding/margin/window-frame
 var explicit_wait = 3000;
 
 // given->expected for the repeatable tests run
-var pages = [
-  {
+var pages = {
+  normal: {
     name: 'default',
     url:'http://127.0.0.1:'+port+'/test/feature-defaults.html',
     title: 'slimmage defaults'
   },
 
-  {
+  webp: {
     name: 'webp',
     url:'http://127.0.0.1:'+port+'/test/feature-webp.html',
     title: 'slimmage webp'
   },
-];
+};
 
   // NOTE: this is not the larger 'plus' version
 var mobiles = {
@@ -112,13 +112,13 @@ describe('slimmage', function() {
       describe('mobile',function() {
 
         testChangeOrientation.call(this, 'PORTRAIT');
-        testLoadPage.call(this, pages[0]);
+        testLoadPage.call(this, pages.normal );
         testElements.call(this, mobiles.iphone6.portrait) ;
         testChangeOrientation.call(this, 'LANDSCAPE');
         testElements.call(this, mobiles.iphone6.landscape);
 
         testChangeOrientation.call(this, 'PORTRAIT');
-        testLoadPage.call(this, pages[1]);
+        testLoadPage.call(this, pages.webp );
         testElements.call(this, mobiles.iphone6.portrait) ;
         testChangeOrientation.call(this, 'LANDSCAPE');
         testElements.call(this, mobiles.iphone6.landscape);
