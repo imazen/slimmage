@@ -125,7 +125,7 @@ describe('slimmage', function() {
         it('should change to, ' + value ,function(done) {
           page
           .getOrientation()
-          .should.eventually.be(value)
+          .should.become(value)
           .nodeify(done);
         });
 
@@ -155,11 +155,11 @@ describe('slimmage', function() {
 
       describe('fixedwidth_100', function() {
 
-        it('src url should ratchet up to ' + vals.fix100_src, function(done) {
+        it('src url should ratchet up to ' + vals.fix100_src , function(done) {
           page
             .elementByClassName('fixedsize_100') // img.max_width == 100px
             .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + val.fix100_src)
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.fix100_src)
             .nodeify(done);
         });
 
@@ -170,7 +170,7 @@ describe('slimmage', function() {
           page
             .elementByClassName('fixedsize_200') // img.max_width == 200px
             .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + val.fix200_src)
+            .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.fix200_src)
             .nodeify(done);
         });
       });
