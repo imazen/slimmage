@@ -45,13 +45,13 @@ var mobiles = {
       devicePixelRatio: 2,
       halfsize: 333, // 1334/4
       // first factor in dpr, then round up to nearest step
-      halfsize_src: 800, // 333 * 2 = 666, nearest step (multiple of 160) is 800.
+      halfsize_src: calc_nearest_slim_step(333 * 2)
     },
     portrait: {
       devicePixelRatio: 2,
       halfsize: 180,
       // first factor in dpr, then round up to nearest step
-      halfsize_src: 480, // 180 * 2 = 360, nearest step (multiple of 160) is 480.
+      halfsize_src: calc_nearest_slim_step(180 * 2)
     }
   }
 };
