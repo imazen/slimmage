@@ -1,6 +1,6 @@
-var _ = require("lodash") // For its each/keys/values methods
+var _ = require('lodash'); // For its each/keys/values methods
 var desireds = require('./test/desireds.js'); // hash for desired browsers
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 3000;
 
 module.exports = function (grunt) {
   grunt.initConfig({
@@ -109,9 +109,10 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-simple-mocha'); // Run mocha tests in node from grunt
   grunt.loadNpmTasks('grunt-mocha-webdriver');
+  grunt.loadNpmTasks('grunt-gcc-rest');
 
   // Load custom tasks
-  grunt.task.loadTasks('test/tasks') // Relative path to task files
+  grunt.task.loadTasks('test/tasks'); // Relative path to task files
 
 
   // Add each browser as a task,
@@ -127,21 +128,10 @@ module.exports = function (grunt) {
     // grunt.registerTask('test:browser:' + key, ['env:' + key, 'simplemocha:sauce']); // A bit of magic here: set up the environment with chosen browser, and run simplemocha
 
     // Add concurrent tasks
-    var tb = grunt.config("concurrent.test-browsers") || []
+    var tb = grunt.config('concurrent.test-browsers') || [];
     tb.push('test:browser:' + key);
-    grunt.config("concurrent.test-browsers", tb)
+    grunt.config('concurrent.test-browsers', tb);
   });
-
-
-
-  // Just for my quick and dirty testing. Will be removed soon
-  grunt.registerTask('dummy',  function() {
-    grunt.log.writeln("Dummy");
-    grunt.log.writeln(JSON.stringify(_.values(desireds)));
-    grunt.log.writeln("u/k:  "+process.env.SAUCE_USERNAME + ": " + process.env.SAUCE_ACCESS_KEY);
-    grunt.log.writeln("tb[]: "+JSON.stringify(grunt.config("concurrent.test-browsers")));
-  });
-
 
   // Credentials: Add from file or use environment, then check and populate.
   grunt.registerTask('credentials',['env:credentials', 'check-credentials', 'populate-credentials'] ); // First test locally, if successful go and test against more exotic browsers...
@@ -156,8 +146,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', ['clean', 'connect', 'mocha', 'mochaWebdriver:phantomjs', 'credentials', 'mochaWebdriver:sauce', 'saucelabs-mocha']); // First test locally, if successful go and test against more exotic browsers...
   grunt.registerTask('test:local', ['clean', 'connect', 'mocha', 'mochaWebdriver:phantomjs']);
+  grunt.registerTask('compile',['gcc_rest'] );
   grunt.registerTask('default',['clean', 'test:local'] );
 
-
-  grunt.log.writeln(grunt.config("concurrent.test-browsers"))
+  grunt.log.writeln(grunt.config('concurrent.test-browsers'));
 };
