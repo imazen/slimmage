@@ -1,4 +1,4 @@
-/* global describe,before,afterEach*/
+/* global describe,before*/
 
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -10,9 +10,9 @@ var test	= require('./test_functions.js');
 // this.browser and this.wd are injected by the grunt-wd-mocha plugin.
 
 describe('slimmage', function() {
-    var allPassed = true;
+    var tests_to_call;
 
-    before(function() {
+    before(function(done) {
       // enables chai assertion chaining
       chaiAsPromised.transferPromiseness = this.wd.transferPromiseness;
       // Add logging if verbose
@@ -25,31 +25,39 @@ describe('slimmage', function() {
           console.log(' > ' + meth.yellow, path.grey, data || '');
         });
       }
+
+
+      this.browser
+      .sessionCapabilities()
+      .then(function(caps) {
+
+        if (/iphone/i.test(caps.deviceName)) {
+
+          console.log('This is an iPhone');
+          tests_to_call = test.mobile;
+
+        } else if (/internet explorer/i.test(caps.browserName) && parseFloat(caps.version) <= 8.0) {
+
+          console.log('This is Internet Explorer < 8.0');
+          tests_to_call = test.desktop;
+
+        } else {
+
+          console.log('Run default tests...desktop');
+          tests_to_call = test.desktop;
+
+        }
+      })
+      .nodeify(done);
+
     });
 
-    afterEach(function(done) {
-        allPassed = allPassed && (this.currentTest.state === 'passed');
-        done();
+    //--------------------------------------------------------------------------
+    //---  Run the tests, this is the entry point as defined in 'before'     ---
+    //--------------------------------------------------------------------------
+
+    it('tests',function() {
+      tests_to_call.call(this);
     });
 
-    // after(function(done) {
-    //   if (this.browser.mode === 'saucelabs') {
-    //     this.browser
-    //       .quit()
-    //       // .sauceJobStatus(allPassed) // TODO: This causes tests to hang afterwards....???
-    //       .nodeify(done);
-    //   } else {
-    //     this.browser
-    //       .quit()
-    //       .nodeify(done);
-    //   }
-    // });
-
-    //--------------------------------------------------------------------------
-    //---      Run the tests, these are the entry points                     ---
-    //--------------------------------------------------------------------------
-    // Run tests on the two different pages, defaults and webp
-    // testMobile.call(this);
-    test.desktop.call(this);
-
-});
+  }); // describe slimmage
