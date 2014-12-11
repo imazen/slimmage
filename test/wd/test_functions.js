@@ -22,6 +22,12 @@ test.desktop = function() {
     test.changeWindowSize.call(this, e.desktop.large.size );
     test.elements.call(this, e.desktop.large );
 
+    test.changeWindowSize.call(this, e.desktop.medium.size );
+    test.loadPage.call(this, e.pages.webp );
+    test.elements.call(this, e.desktop.medium );
+    test.changeWindowSize.call(this, e.desktop.large.size );
+    test.elements.call(this, e.desktop.large );
+
   });
 };
 
