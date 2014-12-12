@@ -4,15 +4,6 @@ describe('window', function () {
   });
 });
 
-describe('failing tests, to show things are working', function () {
-  it('should fail in IE8', function () {
-    expect(document).to.have.property('getElementsByClassName');
-  });
-  //it('should fail everywhere', function () {
-    //expect(true).to.be(false)
-  //});
-});
-
 describe('slimmage', function () {
   var s;
   before(function(){
