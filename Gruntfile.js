@@ -122,9 +122,9 @@ module.exports = function (grunt) {
   grunt.registerTask('test', ['connect', 'mocha', 'mochaWebdriver:phantomjs', 'check-credentials', 'mochaWebdriver:sauce', 'saucelabs-mocha']); // First test locally, if successful go and test against more exotic browsers...
   grunt.registerTask('test:local', ['connect', 'mocha', 'mochaWebdriver:phantomjs']);
   grunt.registerTask('compile',['gcc_rest'] );
-  grunt.registerTask('local',['clean','compile','test:local'] );
+  grunt.registerTask('local',['clean','test:local'] );
 
   // Run this if no task is specified
-  grunt.registerTask('default',['clean','compile','test'] );
+  grunt.registerTask('default',['clean','test'] );
 
 };
