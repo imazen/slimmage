@@ -24,8 +24,10 @@ module.exports = function (grunt) {
     },
 
     gcc_rest: {
-      files: {
-        'slimmage.min.js': ['./slimmage.js']
+      all: {
+        files: {
+          'slimmage.min.js': 'slimmage.js'
+        },
       },
       options: {
         params: {
