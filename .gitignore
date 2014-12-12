@@ -1,0 +1,7 @@
+.vimrc
+env
+env.json
+node_modules/
+*.log
+**/*.swp
+gittest/

@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>slimmage defaults</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style type="text/css">
+      img.halfsize {max-width:50%;}
+      img.fixedsize_100 {max-width:100px}
+      img.fixedsize_200 {max-width:200px}
+      /* #wrapper {
+        width: 800;
+        padding: 0px; // Make sure nothing else interferes with size
+        border: 0px;
+        margin: 0px;
+      } */
+    </style>
+
+  </head>
+  <body>
+    <h2> Slimmage feature tests (defaults) </h2>
+    <noscript data-slimmage>
+      <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
+    </noscript>
+
+    <br />
+
+    <noscript data-slimmage>
+      <img class="fixedsize_100" src="http://z.zr.io/ri/1s.jpg?width=150" />
+    </noscript>
+
+    <br />
+
+    <noscript data-slimmage>
+      <img class="fixedsize_200" src="http://z.zr.io/ri/1s.jpg?width=150" />
+    </noscript>
+
+    <br />
+
+    <!-- Code to test -->
+    <script type="text/javascript" src="../slimmage.min.js"></script>
+  </body>
+</html>
