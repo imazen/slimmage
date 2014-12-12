@@ -75,13 +75,13 @@ test.changeWindowSize = function(size) {
     it('should wait until the body has resized', function(done) {
       chain
         .waitFor(util.asserter(function(t) {
-          var a = size.width - e.win_tollerance;
-          var b = size.width + e.win_tollerance;
+          var a = size.width - e.body_tollerance;
+          var b = size.width + e.body_tollerance;
           return t
             .elementByTagName('body')
             .getSize()
-            .then(function(size) {
-              return size.width.should.be.within(a,b);
+            .then(function(actual) {
+              return actual.width.should.be.within(a,b);
             });
         }), e.explicit_wait) // repeat the above until success or timeout
         .nodeify(done);
