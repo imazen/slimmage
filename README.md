@@ -82,6 +82,23 @@ IE11 is [supposed to support the lazyload attribute](https://dvcs.w3.org/hg/webp
 <img lazyload data-slimmage="true" src="http://z.zr.io/ri/1s.jpg?width=100&format=jpg&quality=75" />
 ```
 
+## Sample markup for CSS background-image
+
+**Warning: support for `background-image` is experimental, and has limited browser support.**
+
+The implementation relies on `querySelectorAll`, which is available for IE8+. Styling with `background-size: 100% auto` is a good idea to keep the whole width of the image visible, but note that it works only on IE9+.
+
+```html
+<div data-slimmage-bg="http://z.zr.io/ri/1s.jpg?width=150">
+    <p>Lorem ipsum</p>
+</div>
+
+<style type="text/css">
+    [data-slimmage-bg] {
+        background-size: 100% auto;
+    }
+</style>
+```
 
 ### Notes
 

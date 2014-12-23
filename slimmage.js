@@ -1,4 +1,4 @@
-/* Slimmage 0.2.3, use with ImageResizer. MIT/Apache2 dual licensed by Imazen */
+/* Slimmage 0.2.3-bg, use with ImageResizer. MIT/Apache2 dual licensed by Imazen and HiQ Finland */
 
 (function (w) { //w==window
     // Enable strict mode
@@ -65,7 +65,7 @@
         return array;
     };
     //Expects virtual, not device pixel width
-    s.adjustImageSrcWithWidth = function (img, originalSrc, width) {
+    s.getImageSrcWithWidth = function (img, originalSrc, width) {
         var data = {
             webp: s.webp,
             width: width,
@@ -89,14 +89,20 @@
             //Never request a smaller image once the larger one has already started loading
             var newSrc = originalSrc.replace(/width=\d+/i, "width=" + data.requestedWidth).replace(/quality=[0-9]+/i,"quality=" + data.quality);
             if (data.webp) newSrc = newSrc.replace(/format=[a-z]+/i, "format=webp");
-            img.src =  newSrc; 
             img.setAttribute("data-pixel-width", data.requestedWidth);
             log("Slimming: updating " + newSrc);
+            return newSrc;
         }
     };
     s.adjustImageSrc = function (img, originalSrc) {
-        s.adjustImageSrcWithWidth(img, originalSrc, s.getCssPixels(img, "max-width"));
+        var newSrc = s.getImageSrcWithWidth(img, originalSrc, s.getCssPixels(img, "max-width"));
+        if (newSrc) img.src = newSrc;
     };
+    s.adjustBackgroundImage = function(elem, originalSrc) {
+        var newSrc = s.getImageSrcWithWidth(elem, originalSrc, s.getCssPixels(elem, "max-width"));
+        if (newSrc) elem.style.backgroundImage = "url(" + newSrc + ")";
+        if (!elem.style.backgroundImage) elem.style.backgroundImage = "url(" + originalSrc + ")";
+    }
 
     s.checkResponsiveImages = function (delay) {
         if (s.timeoutid > 0) w.clearTimeout(s.timeoutid);
@@ -159,7 +165,19 @@
             }
         }
 
-        //4. Callback when ready
+        //4. Find elements with data-slimmage-bg and set CSS background-image
+        if (w.document.querySelectorAll) {
+            var bgImages = s.nodesToArray(w.document.querySelectorAll("[data-slimmage-bg]"))
+            for (var i = 0, il = bgImages.length; i < il; i++) {
+                var originalBg = bgImages[i].getAttribute("data-slimmage-bg");
+                if (originalBg !== null) {
+                    s.adjustBackgroundImage(bgImages[i], originalBg);
+                    totalImages++;
+                }
+            }
+        }
+
+        //5. Callback when ready
         if(typeof s.readyCallback === 'function') {
             s.readyCallback();
         }
@@ -183,3 +201,4 @@
     //test for webp support
     s.beginWebPTest();
 }(this));
+
