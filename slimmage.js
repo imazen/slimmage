@@ -164,7 +164,12 @@
             }
         }
 
-        //3. Find images with data-slimmage and run adjustImageSrc.
+        //3. Let plugins inject custom behavior
+        if('function' === typeof s['beforeAdjustSrc']) {
+            s['beforeAdjustSrc']();
+        }
+
+        //4. Find images with data-slimmage and run adjustImageSrc.
         var totalImages = 0;
         var images = s.nodesToArray(w.document.getElementsByTagName("img"));
         for (var k = 0, kl = images.length; k < kl; k++) {
@@ -175,8 +180,8 @@
             }
         }
 
-        //4. Callback when ready
-        if(typeof s['readyCallback'] === 'function') {
+        //5. Callback when ready
+        if('function' === typeof s['readyCallback']) {
             s['readyCallback']();
         }
         

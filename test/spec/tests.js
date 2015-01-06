@@ -70,7 +70,20 @@ describe('slimmage', function () {
 
     });
 
+    it('should call beforeAdjustSrc', function(){
 
+      s.beforeAdjustSrc = function(){
+        expect(this).to.be(s);
+      };
+
+      sinon.spy(s, "beforeAdjustSrc");
+      
+      //act - call parent 'calling' function
+      s.checkResponsiveImages();
+
+      // our spy should have been called as a result, in this case, only once
+      expect(s.beforeAdjustSrc.calledOnce).to.be(true);
+    });
   });
 
   describe('getImageInfo', function(){
@@ -80,8 +93,8 @@ describe('slimmage', function () {
       s.adjustImageParameters = function(data){
         expect(data.width).to.be.above(10);
         expect(data.src).to.be("http://z.zr.io/ri/1s.jpg?width=150");
-        expect(data.requestedWidth).to.be(160);
         expect(data.dpr).to.be.within(1,3);
+        expect(data.requestedWidth).to.be(160 * data.dpr);
         expect(data.quality).to.be.within(10,100);
         data.requestedWidth=200;
       };
