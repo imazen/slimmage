@@ -11,7 +11,7 @@ before_install:
   - npm install -g grunt-cli
 before_script:
   - npm run build
-  - gzip -9fk slimmage.min.js
+  - gzip -9c slimmage.min.js > slimmage.min.js.gz
 after_success:
   - bash test/post_install.sh
 deploy:
