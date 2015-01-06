@@ -12,3 +12,14 @@ before_install:
 after_success:
   - npm run build
   - bash test/post_install.sh
+deploy:
+  provider: releases
+  api-key:
+    secure: "XQAUH29i5t6U0OUGcXlzRYCGsLRxjUxB9JVL+woq4orUc0LDsVRuxPJoj9zd+ZfSVI/b2hZ+7vDiDUSEflrT5MzKh3r9SGBrtgFUHbraPe3rzP6+PGqvF9E02CUETgyeQ+05RzjJET1HMoB/lZ/N/rhfwLyPSSYeMgfCQ2AkMv4="
+  file: 
+    - "slimmage.min.js"
+    - "slimmage.js"
+  skip_cleanup: true
+  on:
+    tags: true
+    all_branches: true
