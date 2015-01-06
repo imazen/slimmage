@@ -1,23 +1,25 @@
-/* Slimmage 0.2.4, use with ImageResizer. MIT/Apache2 dual licensed by Imazen */
+/* @license Slimmage 0.2.4, use with ImageResizer. MIT/Apache2 dual licensed by Imazen */
+
+/* We often use string instead of dot notation to keep 
+   Closure Compiler's advanced mode from breaking APIs */
+/*jshint sub:true*/
 
 (function (w) { //w==window
     // Enable strict mode
     "use strict";
 
-    var s =  window.slimmage || {};
-    /** @expose **/
-    window.slimmage = s;
-    if (s.verbose === undefined) /** @expose **/ s.verbose = true;
-    if (s.tryWebP === undefined) /** @expose **/ s.tryWebP = false;
-    if (s.readyCallback === undefined) /** @expose **/ s.readyCallback = null;
-    if (s.maxWidth === undefined) /** @expose **/ s.maxWidth = 2048;
-    if (s.widthStep === undefined) /** @expose **/ s.widthStep = 160;
-    if (s.jpegQuality === undefined) /** @expose **/ s.jpegQuality = 90;
-    if (s.jpegRetinaQuality === undefined) /** @expose **/ s.jpegRetinaQuality = 80;
+    var s =  window['slimmage'] || {};
+    window['slimmage'] = s;
+    if (s['verbose'] === undefined) {           s['verbose'] = true;}
+    if (s['tryWebP'] === undefined) {           s['tryWebP'] = false;}
+    if (s['maxWidth'] === undefined) {          s['maxWidth'] = 2048;}
+    if (s['widthStep'] === undefined) {         s['widthStep'] = 160;}
+    if (s['jpegQuality'] === undefined) {       s['jpegQuality'] = 90;}
+    if (s['jpegRetinaQuality'] === undefined) { s['jpegRetinaQuality'] = 80;}
 
-    var log = function(){ if (w.slimmage.verbose && w.console && w.console.log) try {w.console.log.apply(w.console,arguments);}catch(e){}};
+    var log = function(){ if (s['verbose'] && w.console && w.console.log) try {w.console.log.apply(w.console,arguments);}catch(e){}};
     s.beginWebPTest = function(){
-        if (!s.tryWebP || s._testingWebP) return;
+        if (!s['tryWebP'] || s._testingWebP) return;
         s._testingWebP = true;
 
         var WebP=new Image();
@@ -65,44 +67,48 @@
         return array;
     };
     //Expects virtual, not device pixel width
-    s.adjustImageSrcWithWidth = function (img, originalSrc, width) {
+    s['adjustImageSrcWithWidth'] = function (img, originalSrc, width) {
         var data = {
-            webp: s.webp,
-            width: width,
-            dpr: window.devicePixelRatio || 1,
-            src: originalSrc
-        }
-        data.requestedWidth = Math.min(s.maxWidth, data.width * data.dpr), //Limit size to maxWidth.
-        data.quality = (data.dpr > 1.49) ? s.jpegRetinaQuality : s.jpegQuality; //Default quality
-        if (data.webp) data.quality = data.dpr > 1.49 ? 65 : 78;
-		
+            'webp': s.webp,
+            'width': width,
+            'dpr': window.devicePixelRatio || 1,
+            'src': originalSrc
+        };
+        //Determine quality percentage
+        var high_density = s.webp ? s['jpegRetinaQuality'] : 65;
+        var low_density = s.webp ? s['jpegQuality'] : 78;
+        data['quality'] = data['dpr'] > 1.49 ? high_density : low_density;
+		  
+        //Calculate raw pixels using devicePixelRatio. Limit size to maxWidth.
+        var proposedWidth = Math.min(s['maxWidth'], width * data['dpr']); 
         //Minimize variants for caching improvements; round up to nearest multiple of widthStep
-        data.requestedWidth = data.requestedWidth - (data.requestedWidth % s.widthStep) + s.widthStep; //Will limit to 13 variations
+        data['requestedWidth'] = proposedWidth - (proposedWidth % s['widthStep']) + s['widthStep']; //Will limit to 13 variations
 
         var oldpixels = img.getAttribute("data-pixel-width") | 0;
 
-        if (s.adjustImageParameters && typeof(s.adjustImageParameters) === "function") {
-            s.adjustImageParameters(data);
+        var a = s['adjustImageParameters'];
+        if (a && typeof(a) === "function") {
+            a(data);
         }
+        var finalWidth = data['requestedWidth'];
 
-        if (data.requestedWidth > oldpixels) {
+        if (finalWidth > oldpixels) {
             //Never request a smaller image once the larger one has already started loading
-            var newSrc = originalSrc.replace(/width=\d+/i, "width=" + data.requestedWidth).replace(/quality=[0-9]+/i,"quality=" + data.quality);
-            if (data.webp) newSrc = newSrc.replace(/format=[a-z]+/i, "format=webp");
+            var newSrc = originalSrc.replace(/width=\d+/i, "width=" + finalWidth).replace(/quality=[0-9]+/i,"quality=" + data['quality']);
+            if (data['webp']) newSrc = newSrc.replace(/format=[a-z]+/i, "format=webp");
             img.src =  newSrc; 
-            img.setAttribute("data-pixel-width", data.requestedWidth);
+            img.setAttribute("data-pixel-width", finalWidth);
             log("Slimming: updating " + newSrc);
         }
     };
-    s.adjustImageSrc = function (img, originalSrc) {
-        s.adjustImageSrcWithWidth(img, originalSrc, s.getCssPixels(img, "max-width"));
+    s['adjustImageSrc'] = function (img, originalSrc) {
+        s['adjustImageSrcWithWidth'](img, originalSrc, s.getCssPixels(img, "max-width"));
     };
-
-    s.checkResponsiveImages = function (delay) {
+    s.cr = function (delay) {
         if (s.timeoutid > 0) w.clearTimeout(s.timeoutid);
         s.timeoutid = 0;
         if (delay && delay > 0) {
-            s.timeoutid = w.setTimeout(s.checkResponsiveImages, delay);
+            s.timeoutid = w.setTimeout(s.cr, delay);
             return;
         }
         var stopwatch = new Date().getTime();
@@ -116,12 +122,12 @@
                 
                 var div = w.document.createElement('div');
                 var contents = (ns.textContent || ns.innerHTML);
-                if (!contents || contents.replace(/[\s\t\r\n]+/,"").length == 0){
+                if (!contents || contents.replace(/[\s\t\r\n]+/,"").length === 0){
                     //IE doesn't let us touch noscript, so we have to use attributes.
                     var img = new Image();
                     for (var ai = 0; ai < ns.attributes.length; ai++) {
                         var a = ns.attributes[ai];
-                        if (a && a.specified && a.name.indexOf("data-img-") == 0){
+                        if (a && a.specified && a.name.indexOf("data-img-") === 0){
                             img.setAttribute(a.name.slice(9 - a.name.length),a.value);
                         }
                     }
@@ -151,34 +157,34 @@
         //3. Find images with data-slimmage and run adjustImageSrc.
         var totalImages = 0;
         var images = s.nodesToArray(w.document.getElementsByTagName("img"));
-        for (var i = 0, il = images.length; i < il; i++) {
+        for (var k = 0, kl = images.length; k < kl; k++) {
             if (images[i].getAttribute("data-slimmage") !== null) {
-                var originalSrc = images[i].getAttribute("data-src") || images[i].src;
-                s.adjustImageSrc(images[i], originalSrc);
+                var originalSrc = images[k].getAttribute("data-src") || images[k].src;
+                s['adjustImageSrc'](images[k], originalSrc);
                 totalImages++;
             }
         }
 
         //4. Callback when ready
-        if(typeof s.readyCallback === 'function') {
-            s.readyCallback();
+        if(typeof s['readyCallback'] === 'function') {
+            s['readyCallback']();
         }
         
         log("Slimmage: restored " + newImages + " images from noscript tags; sizing " + totalImages + " images. " + (new Date().getTime() - stopwatch) + "ms");
     };
 
-    var h = s.checkResponsiveImages;
+    s['checkResponsiveImages'] = s.cr;
     // Run on resize and domready (w.load as a fallback)
     if (w.addEventListener) {
-        w.addEventListener("resize", function () { h(500); }, false);
+        w.addEventListener("resize", function () { s.cr(500); }, false);
         w.addEventListener("DOMContentLoaded", function () {
-            h();
+            s.cr();
             // Run once only
-            w.removeEventListener("load", h, false);
+            w.removeEventListener("load", s.cr, false);
         }, false);
-        w.addEventListener("load", h, false);
+        w.addEventListener("load", s.cr, false);
     } else if (w.attachEvent) {
-        w.attachEvent("onload", h);
+        w.attachEvent("onload", s.cr);
     }
     //test for webp support
     s.beginWebPTest();
