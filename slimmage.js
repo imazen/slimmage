@@ -70,12 +70,13 @@
         return array;
     };
     //Expects virtual, not device pixel width
-    s['getImageInfo'] = function (elementWidth, previousSrc, previousPixelWidth) {
+    s['getImageInfo'] = function (elementWidth, previousSrc, previousPixelWidth, previousElement) {
         var data = {
             'webp': s.webp,
             'width': elementWidth,
             'dpr': window.devicePixelRatio || 1,
-            'src': previousSrc
+            'src': previousSrc, 
+            'element': previousElement
         };
         //Determine quality percentage
         var high_density = s.webp ? s['jpegRetinaQuality'] : 65;
@@ -106,7 +107,8 @@
 
         var result = s['getImageInfo'](s.getCssPixels(img, 'max-width'), 
                                        previousSrc, 
-                                       img.getAttribute('data-pixel-width') | 0);
+                                       img.getAttribute('data-pixel-width') | 0, 
+                                       img);
         
         if (result){
           img.src = result['src'];
