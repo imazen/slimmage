@@ -1,5 +1,7 @@
 ## Slimmage - sane & simple responsive images
 
+master: ![master](https://img.shields.io/travis/imazen/slimmage/master.svg) unstable: ![unstable](https://img.shields.io/travis/imazen/slimmage/unstable.svg)
+
 Your wait for a sane, easily managed path to responsive images has now ended.
 
 **With Slimmage, *CSS* controls which image size is downloaded, not HTML**
