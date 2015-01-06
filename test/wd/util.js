@@ -29,7 +29,7 @@ exports.widthToBeWithin = function(selector, expected_width,tolerance) {
         .getSize()
         // condition implemented with chai as promised
         .then(function(size) {
-          var w = expected_width
+          var w = expected_width;
           var a = w - tolerance;
           var b = w + tolerance;
           size.width.should.be.within(a,b);
@@ -57,6 +57,6 @@ exports.asserter = function (fn) {
         .catch(tagChaiAssertionError); // tag errors for retry in catch.
     }
   );
-}
+};
 
 

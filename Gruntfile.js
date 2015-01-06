@@ -100,6 +100,7 @@ module.exports = function (grunt) {
     },
     'jshint': {
       slimmage: ['slimmage.js'],
+      unit_tests: ['test/spec/tests.js', 'test/wd/*.js', 'test/desireds.js']
       
     }
   });
