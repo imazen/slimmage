@@ -121,6 +121,15 @@ Refactored access notations to eliminate both minification errors and lint. Fix 
 
 Please make all pull requests against the 'unstable' branch. Pull requests should include corresponding tests.
 
+
+## FAQ
+
+* I don’t want to be stuck with multiples of `stepWidth` (default: 160). Can I use arbitrary sizes? [Sure! window.slimmage.adjustImageParameters gives you full control](https://github.com/imazen/slimmage/issues/24#issuecomment-68944115).
+* Does this support retina? [Absolutely! All pixel density variations should work perfectly](https://github.com/imazen/slimmage/issues/17).
+* [Do you support lazy loading](https://github.com/imazen/slimmage/issues/16)? That depends on your definition. You can certainly use the `postpone` attribute to lower the priority of the image downloading. You can create or enable images at arbitrary times, and call `window.slimmage.checkResponsiveImages()` at any time to ‘fix them’, but slimmage doesn’t *in itself*, bake in a lazy-loading-as-you-scroll kind of feature/bug.
+* It doesn’t work with my AJAXY-thingamabob! Slimmage can’t fix what isn’t there. Either [ensure Slimmage is loaded before the other script begins messing up the DOM](https://github.com/imazen/slimmage/issues/4), or call `window.slimmage.checkResponsiveImages()` after the DOM-mangling is complete and the images are visible.
+
+
 ### Other approaches
 
 * [&lt;picture>](http://responsiveimages.org/) (good if you need art direction)
