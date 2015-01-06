@@ -53,6 +53,7 @@
       //Create a temporary sibling div to resolve units into pixels.
       var temp = document.createElement("div");
       temp.style.overflow = temp.style.visibility = "hidden"; 
+      temp.style.cssFloat = "none";
       target.parentNode.appendChild(temp);  
       temp.style.width = val;
       var pixels = temp.offsetWidth;
