@@ -7,7 +7,9 @@ set -e
 
 REPO=https://code-bot:$GH_TOKEN@github.com/imazen/slimmage.git
 
-INCOMING_BR=unstable
+# Explain steps
+set -v
+
 OUT_BR=bot_tested
 
 # Give ourselves an identity
@@ -25,7 +27,7 @@ git add slimmage.min.js
 git checkout -b $OUT_BR
 
 # Commit
-git commit -m 'Travis tested #'+"$TRAVIS_BUILD_NUMBER"
+git commit -m 'Travis tested #'+"$TRAVIS_BUILD_NUMBER"+' from branch '+"$TRAVIS_BRANCH"+'  '+"$TRAVIS_COMMIT"
 
 # Push it back to repo
 git push -u $REPO $OUT_BR -q 2> /dev/null
