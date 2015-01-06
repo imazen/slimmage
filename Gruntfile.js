@@ -63,7 +63,7 @@ module.exports = function (grunt) {
           testName: 'slimmage feature tests', // TODO: put in github specifics (issues/branch/etc)
           browsers: _.values(desireds),
           tunnelArgs: ['-v', '--doctor'],
-          concurrency: 99 // how many browses to be run in parallel
+          concurrency: 99 // how many browsers to be run in parallel
         }
       }
     },
@@ -98,6 +98,10 @@ module.exports = function (grunt) {
         }
       }
     },
+    'jshint': {
+      slimmage: ['slimmage.js'],
+      
+    }
   });
 
   // These are the grunt tasks
@@ -107,24 +111,25 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-mocha'); // Run mocha tests against a PhantomJs instance
   grunt.loadNpmTasks('grunt-mocha-webdriver');
   grunt.loadNpmTasks('grunt-gcc-rest');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Load custom tasks
   grunt.task.loadTasks('test/tasks'); // Relative path to task files
 
   // Register alias tasks...
-  grunt.registerTask('test:local:unit', ['connect', 'mocha']); // Local (or within CI) tests against PhantomJS headless (webkit) browser
-  grunt.registerTask('test:local:feature', ['connect', 'mochaWebdriver:phantomjs']); // Local (or within CI) tests against PhantomJS headless (webkit) browser
-  grunt.registerTask('test:unit', ['check-credentials', 'connect', 'saucelabs-mocha']); // Unit tests in the cloud, SauceLabs
-  grunt.registerTask('test:feature', ['check-credentials', 'connect','mochaWebdriver:sauce']); // Run all test-browsers tasks concurrently.
+  grunt.registerTask('test:local:unit', ['compile','connect', 'mocha']); // Local (or within CI) tests against PhantomJS headless (webkit) browser
+  grunt.registerTask('test:local:feature', ['compile','connect', 'mochaWebdriver:phantomjs']); // Local (or within CI) tests against PhantomJS headless (webkit) browser
+  grunt.registerTask('test:unit', ['compile','check-credentials', 'connect', 'saucelabs-mocha']); // Unit tests in the cloud, SauceLabs
+  grunt.registerTask('test:feature', ['compile','check-credentials', 'connect','mochaWebdriver:sauce']); // Run all test-browsers tasks concurrently.
   //... for more info see where the 'test:browser:<browser>' tasks are defined
 
   // High level aliases
-  grunt.registerTask('test', ['connect', 'mocha', 'mochaWebdriver:phantomjs', 'check-credentials', 'mochaWebdriver:sauce', 'saucelabs-mocha']); // First test locally, if successful go and test against more exotic browsers...
-  grunt.registerTask('test:local', ['connect', 'mocha', 'mochaWebdriver:phantomjs']);
+  grunt.registerTask('test', ['compile', 'connect', 'mocha', 'mochaWebdriver:phantomjs', 'check-credentials', 'mochaWebdriver:sauce', 'saucelabs-mocha']); // First test locally, if successful go and test against more exotic browsers...
+  grunt.registerTask('test:local', ['compile', 'connect', 'mocha', 'mochaWebdriver:phantomjs']);
   grunt.registerTask('compile',['gcc_rest'] );
   grunt.registerTask('local',['clean','test:local'] );
 
   // Run this if no task is specified
-  grunt.registerTask('default',['clean','test'] );
+  grunt.registerTask('default',['clean','compile', 'test'] );
 
 };
