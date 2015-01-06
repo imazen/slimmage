@@ -5,14 +5,14 @@ set -e
 # globals: $TRAVIS_BRANCH, $GH_TOKEN $TRAVIS_BUILD_NUMBER
 # Travis has pulled and checked out the branch we commited (that was also whitelisted)
 
-REPO=https://ponelat:$GH_TOKEN@github.com/ponelat/test.git
+REPO=https://code-bot:$GH_TOKEN@github.com/imazen/slimmage.git
 
 INCOMING_BR=unstable
 OUT_BR=bot_tested
 
 # Give ourselves an identity
-git config --global user.email "travis@example.com"
-git config --global user.name "Travis CI Worker"
+git config --global user.email "codebot@imazen.io"
+git config --global user.name "Imazen CI Bot"
 
 # Delete  branch on repo, silently
 git push $REPO --delete $OUT_BR -q 2> /dev/null
