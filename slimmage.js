@@ -1,4 +1,4 @@
-/* Slimmage 0.2.3, use with ImageResizer. MIT/Apache2 dual licensed by Imazen */
+/* Slimmage 0.2.4, use with ImageResizer. MIT/Apache2 dual licensed by Imazen */
 
 (function (w) { //w==window
     // Enable strict mode
