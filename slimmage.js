@@ -70,12 +70,12 @@
         return array;
     };
     //Expects virtual, not device pixel width
-    s['adjustImageSrcWithWidth'] = function (img, originalSrc, width) {
+    s['getImageInfo'] = function (elementWidth, previousSrc, previousPixelWidth) {
         var data = {
             'webp': s.webp,
-            'width': width,
+            'width': elementWidth,
             'dpr': window.devicePixelRatio || 1,
-            'src': originalSrc
+            'src': previousSrc
         };
         //Determine quality percentage
         var high_density = s.webp ? s['jpegRetinaQuality'] : 65;
@@ -83,11 +83,9 @@
         data['quality'] = data['dpr'] > 1.49 ? high_density : low_density;
 		  
         //Calculate raw pixels using devicePixelRatio. Limit size to maxWidth.
-        var proposedWidth = Math.min(s['maxWidth'], width * data['dpr']); 
+        var proposedWidth = Math.min(s['maxWidth'], elementWidth * data['dpr']); 
         //Minimize variants for caching improvements; round up to nearest multiple of widthStep
         data['requestedWidth'] = Math.round(Math.ceil(proposedWidth / s['widthStep']) * s['widthStep']); //Will limit to 13 variations
-
-        var oldpixels = img.getAttribute("data-pixel-width") | 0;
 
         var a = s['adjustImageParameters'];
         if (a && typeof(a) === "function") {
@@ -95,17 +93,26 @@
         }
         var finalWidth = data['requestedWidth'];
 
-        if (finalWidth > oldpixels) {
+        if (finalWidth > previousPixelWidth) {
             //Never request a smaller image once the larger one has already started loading
-            var newSrc = originalSrc.replace(/width=\d+/i, "width=" + finalWidth).replace(/quality=[0-9]+/i,"quality=" + data['quality']);
+            var newSrc = previousSrc.replace(/width=\d+/i, "width=" + finalWidth).replace(/quality=[0-9]+/i,"quality=" + data['quality']);
             if (data['webp']) newSrc = newSrc.replace(/format=[a-z]+/i, "format=webp");
-            img.src =  newSrc; 
-            img.setAttribute("data-pixel-width", finalWidth);
-            log("Slimming: updating " + newSrc);
+            
+            return {'src': newSrc, 'data-pixel-width': finalWidth};
         }
+        return null;
     };
-    s['adjustImageSrc'] = function (img, originalSrc) {
-        s['adjustImageSrcWithWidth'](img, originalSrc, s.getCssPixels(img, "max-width"));
+    s['adjustImageSrc'] = function (img, previousSrc) {
+
+        var result = s['getImageInfo'](s.getCssPixels(img, 'max-width'), 
+                                       previousSrc, 
+                                       img.getAttribute('data-pixel-width') | 0);
+        
+        if (result){
+          img.src = result['src'];
+          img.setAttribute('data-pixel-width',result['data-pixel-width']);
+          log("Slimming: updating " + result['src']);
+        } 
     };
     s.cr = function (delay) {
         if (s.timeoutid > 0) w.clearTimeout(s.timeoutid);
@@ -162,8 +169,8 @@
         var images = s.nodesToArray(w.document.getElementsByTagName("img"));
         for (var k = 0, kl = images.length; k < kl; k++) {
             if (images[i].getAttribute("data-slimmage") !== null) {
-                var originalSrc = images[k].getAttribute("data-src") || images[k].src;
-                s['adjustImageSrc'](images[k], originalSrc);
+                var previousSrc = images[k].getAttribute("data-src") || images[k].src;
+                s['adjustImageSrc'](images[k], previousSrc);
                 totalImages++;
             }
         }

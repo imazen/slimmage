@@ -73,28 +73,28 @@ describe('slimmage', function () {
 
   });
 
-  describe('adjustImageSrcWithWidth', function(){
+  describe('getImageInfo', function(){
     
     it('should call adjustImageParameters with valid data', function(){
 
       s.adjustImageParameters = function(data){
         expect(data.width).to.be.above(10);
         expect(data.src).to.be("http://z.zr.io/ri/1s.jpg?width=150");
+        expect(data.requestedWidth).to.be(160);
         expect(data.dpr).to.be.within(1,3);
-        expect(data.requestedWidth).to.be(800 * data.dpr);
         expect(data.quality).to.be.within(10,100);
-        data.requestedWidth=900;
+        data.requestedWidth=200;
       };
 
       sinon.spy(s, "adjustImageParameters");
       
-      var img = document.createElement('img');
       //act
-      s.adjustImageSrcWithWidth(img,"http://z.zr.io/ri/1s.jpg?width=150",800);
+      var result = s.getImageInfo(100,"http://z.zr.io/ri/1s.jpg?width=150",0);
 
       expect(s.adjustImageParameters.calledOnce).to.be(true);
 
-      expect(img.src).to.be("http://z.zr.io/ri/1s.jpg?width=900");
+      expect(result.src).to.be("http://z.zr.io/ri/1s.jpg?width=200");
+      expect(result["data-pixel-width"]).to.be(200);
 
     });
   });
