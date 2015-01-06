@@ -110,11 +110,15 @@ Feel free to fork and add links to your HTML filters/helpers here!
 * 0.2.1 - Fixed IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
 * 0.2.2 - Fixed another IE bug related to console.log: https://github.com/imazen/slimmage/issues/2
 * 0.2.3 - Added `window.slimmage.readyCallback` callback - occurs after first adjustment of all images. Added `s.adjustImageParameters(data)` to allow size/quality/format customization. Fixed incorrect quality calculation bug. All code contributed by Per Osbäck and Ola Andersson! Release tested on BrowserStack.
-* 0.2.4 - Added automated test suite. (sorry for the delay in PR acceptance!).  Merge #25 from perosb - Pass image url into data structure to allow logic based on file name.
-Merge #27 from dancek - Configurable max-width and quality parameters
-Merge #36 from dancek - Fix behavior when max-width is not defined (IE8) (replaces #18, fixes #29) 
-Refactored access notations to eliminate both minification errors and lint. Fix bug: Perfect multiples of stepWidth were being rounded up to the next interval (images larger than needed in some instances).
+* 0.2.4 - Added automated test suite. (sorry for the delay in PR acceptance!).  
+    Merge #25 from perosb - Pass image url into data structure to allow logic based on file name.  
+    Merge #27 from dancek - Configurable max-width and quality parameters.  
+    Merge #36 from dancek - Fix behavior when max-width is not defined (IE8) (replaces #18, fixes #29)  
+    Refactored access notations to eliminate both minification errors and lint. Fix bug: Perfect multiples of stepWidth were being rounded up to the next interval (images larger than needed in some instances).  
 * 0.2.5 - Merge #30 from Jeavon - Fix css size calculation when the parent div is floated in Safari (both OS X and iOS). (otherwise 0x0) 
+* 0.3.0 - Make 'data.element' available to slimmage.adjustImageParameters, so plugins have more information  
+    Add window.slimmage.beforeAdjustSrc callback function - this allows users to inject behavior between noscript parsing and img.src edits.  
+    Replace adjustImageSrcWithWidth with getImageInfo, make adjustImageSrc responsible for more. Simplifies certain kinds of extension, such as background image support.
 
 
 ### Contributor notes

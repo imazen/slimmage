@@ -1,0 +1,40 @@
+{
+  "name": "slimmage",
+  "main": "slimmage.js",
+  "version": "0.3.0",
+  "homepage": "https://github.com/imazen/slimmage",
+  "authors": [
+    "Nathanael Jones <nathanael.jones@gmail.com>"
+  ],
+  "description": "Sane and simple responsive images. Image resolution/file size determined by CSS media queries and max-width on a per-element basis.",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "responsive",
+    "image",
+    "picture",
+    "srcset",
+    "noscript",
+    "progressive-enhancement",
+    "accessible",
+    "resolution-switching",
+    "pixel-density",
+    "dppx",
+    "polyfill"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "Gruntfile.js",
+    "package.json",
+    "*.log",
+    ".travis.yml",
+    ".gitignore"
+
+  ]
+}
