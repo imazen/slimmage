@@ -16,12 +16,17 @@ OUT_BR=bot_tested
 git config --global user.email "codebot@imazen.io"
 git config --global user.name "Imazen CI Bot"
 
-# Delete  branch on repo, silently
-git push $REPO --delete $OUT_BR -q 2> /dev/null
+# Delete OUT_BR if it exists
+git show-ref --verify --quiet refs/heads/$OUT_BR
+if [ $? = 0 ]
+then
+    git push $REPO --delete $OUT_BR -q 2> /dev/null
+fi
 
 # Do something...
 # Add files
 git add slimmage.min.js
+git add slimmage.min.js.gz
 
 # Recreate OUT branch
 git checkout -b $OUT_BR
@@ -32,4 +37,4 @@ git commit -m 'Travis tested #'+"$TRAVIS_BUILD_NUMBER"+' from branch '+"$TRAVIS_
 # Push it back to repo
 git push -u $REPO $OUT_BR -q 2> /dev/null
 
-echo "Have a nice day!"
+echo "Uploaded compressed and minified files to branch $OUT_BR"

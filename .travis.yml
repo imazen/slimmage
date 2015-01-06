@@ -9,8 +9,9 @@ env:
 before_install:
   - npm install -g npm@~1.4.6
   - npm install -g grunt-cli
-after_success:
   - npm run build
+  - gzip -9fk slimmage.min.js
+after_success:
   - bash test/post_install.sh
 deploy:
   provider: releases
@@ -19,6 +20,7 @@ deploy:
   file: 
     - "slimmage.min.js"
     - "slimmage.js"
+    - "slimmage.min.js.gz"
   skip_cleanup: true
   on:
     tags: true

@@ -1,6 +1,5 @@
 ## Slimmage - sane & simple responsive images
-
-master: ![master](https://img.shields.io/travis/imazen/slimmage/master.svg) unstable: ![unstable](https://img.shields.io/travis/imazen/slimmage/unstable.svg)
+[![master](https://img.shields.io/travis/imazen/slimmage/master.svg?label=master)](https://travis-ci.org/imazen/slimmage/builds) [![unstable](https://img.shields.io/travis/imazen/slimmage/unstable.svg?label=unstable)](https://travis-ci.org/imazen/slimmage/builds)
 
 Your wait for a sane, easily managed path to responsive images has now ended.
 
@@ -8,7 +7,7 @@ Your wait for a sane, easily managed path to responsive images has now ended.
 
 
 * **Media queries, breakpoints, nested percentages, & `max-width` work as expected**.
-* **Works on > 99% of browsers. 3KB minified *vanilla js*, 1.5KB compressed.**
+* **Works on > 99% of browsers. 3KB minified *vanilla js*, 1.5KB compressed.** [Download minified version via releases tab](https://github.com/imazen/slimmage/releases).
 * **Cookie-free; works on first page load. Works with CDNs**.
 * **Fully accessible; degrades gracefully without javascript**
 * **Massive bandwidth reduction. No duplicate requests. Can auto-enable WebP and adjust compression based on pixel density**
