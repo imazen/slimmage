@@ -80,22 +80,23 @@ describe('slimmage', function () {
       s.adjustImageParameters = function(data){
         expect(data.width).to.be.above(10);
         expect(data.src).to.be("http://z.zr.io/ri/1s.jpg?width=150");
-        expect(data.requestedWidth).to.be(160);
+        expect(data.requestedWidth).to.be(800);
         expect(data.dpr).to.be.within(1,3);
         expect(data.quality).to.be.within(10,100);
-        data.requestedWidth=200;
+        data.requestedWidth=900;
       };
 
       sinon.spy(s, "adjustImageParameters");
       
       var img = document.getElementsByClassName("fixedsize_100")[0];
       //act
-      s.adjustImageSrcWithWidth(img,"http://z.zr.io/ri/1s.jpg?width=150",100);
+      s.adjustImageSrcWithWidth(img,"http://z.zr.io/ri/1s.jpg?width=150",800);
 
-      expect(s.adjustImageSrcWithWidth.calledOnce).to.be(true);
+      expect(s.adjustImageParameters.calledOnce).to.be(true);
 
-      expect(img.src).to.be("http://z.zr.io/ri/1s.jpg?width=200");
+      expect(img.src).to.be("http://z.zr.io/ri/1s.jpg?width=900");
+
     });
-  };
+  });
 
 });

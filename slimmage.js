@@ -84,7 +84,7 @@
         //Calculate raw pixels using devicePixelRatio. Limit size to maxWidth.
         var proposedWidth = Math.min(s['maxWidth'], width * data['dpr']); 
         //Minimize variants for caching improvements; round up to nearest multiple of widthStep
-        data['requestedWidth'] = proposedWidth - (proposedWidth % s['widthStep']) + s['widthStep']; //Will limit to 13 variations
+        data['requestedWidth'] = Math.round(Math.ceil(proposedWidth / s['widthStep']) * s['widthStep']); //Will limit to 13 variations
 
         var oldpixels = img.getAttribute("data-pixel-width") | 0;
 

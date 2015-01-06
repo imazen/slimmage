@@ -111,8 +111,7 @@ Feel free to fork and add links to your HTML filters/helpers here!
 * 0.2.4 - Added automated test suite. (sorry for the delay in PR acceptance!).  Merge #25 from perosb - Pass image url into data structure to allow logic based on file name.
 Merge #27 from dancek - Configurable max-width and quality parameters
 Merge #36 from dancek - Fix behavior when max-width is not defined (IE8) (replaces #18, fixes #29) 
-Refactored access notations to eliminate both minification errors and lint. 
-
+Refactored access notations to eliminate both minification errors and lint. Fix bug: Perfect multiples of stepWidth were being rounded up to the next interval (images larger than needed in some instances).
 
 ### Contributor notes
 
