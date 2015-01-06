@@ -5,3 +5,5 @@ node_modules/
 *.log
 **/*.swp
 gittest/
+/slimmage.min.js
+/slimmage.min.js.gz
