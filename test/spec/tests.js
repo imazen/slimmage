@@ -68,6 +68,7 @@ describe('slimmage', function () {
       // our spy should have been called as a result, in this case, only once
       expect(s.adjustImageSrc.calledOnce).to.be(true);
 
+      s.adjustImageSrc.restore(); 
     });
 
     it('should call beforeAdjustSrc', function(){
@@ -83,6 +84,9 @@ describe('slimmage', function () {
 
       // our spy should have been called as a result, in this case, only once
       expect(s.beforeAdjustSrc.calledOnce).to.be(true);
+
+      s.beforeAdjustSrc.restore();
+      delete s.beforeAdjustSrc;
     });
   });
 
@@ -109,7 +113,34 @@ describe('slimmage', function () {
       expect(result.src).to.be("http://z.zr.io/ri/1s.jpg?width=200");
       expect(result["data-pixel-width"]).to.be(200);
 
+      s.adjustImageParameters.restore();
+      delete s.adjustImageParameters;
     });
+
+    it('should always round up', function(){
+
+      var info = s.getImageInfo(159,"im?width=5",0);
+      expect(info["data-pixel-width"]).to.be(160);
+
+      info = s.getImageInfo(1,"im?width=5",0);
+      expect(info["data-pixel-width"]).to.be(160);
+
+
+      info = s.getImageInfo(160,"im?width=5",0);
+      expect(info["data-pixel-width"]).to.be(160);
+
+      info = s.getImageInfo(161,"im?width=5",0);
+      expect(info["data-pixel-width"]).to.be(320);
+
+    });
+
+    it('should not request a zero-width image', function(){
+
+      var result = s.getImageInfo(0,"im?width=5",0);
+      expect(result).to.be(null);
+
+    });
+
   });
 
 });
