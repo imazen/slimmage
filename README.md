@@ -15,7 +15,9 @@ Your wait for a sane, easily managed path to responsive images has now ended.
 
 Handles any viewport size and pixel density with ease. Yes, retina and retina-like displays are supported.
 
-Tested on IE6-10, Firefox 3.6-23, Opera 11-12, Safari 5-6, Chrome 14-28, Opera Mobile, and over a dozen mobile Webkit browsers. Essentially everything [supported by BrowserStack](http://www.browserstack.com/screenshots). In theory we should be supporting over 99.5% of browsers.
+Our automated tests currently check firefox, ie, chrome, and mobile safari.
+
+0.2.3 was manually tested on IE6-10, Firefox 3.6-23, Opera 11-12, Safari 5-6, Chrome 14-28, Opera Mobile, and over a dozen mobile Webkit browsers. - essentially everything [supported by BrowserStack](http://www.browserstack.com/screenshots). In theory we should be supporting over 99.5% of browsers.
 
 MIT/Apache dual licensed by [Imazen](http://imazen.io).
 
@@ -112,10 +114,12 @@ Feel free to fork and add links to your HTML filters/helpers here!
 Merge #27 from dancek - Configurable max-width and quality parameters
 Merge #36 from dancek - Fix behavior when max-width is not defined (IE8) (replaces #18, fixes #29) 
 Refactored access notations to eliminate both minification errors and lint. Fix bug: Perfect multiples of stepWidth were being rounded up to the next interval (images larger than needed in some instances).
+* 0.2.5 - Merge #30 from Jeavon - Fix css size calculation when the parent div is floated in Safari (both OS X and iOS). (otherwise 0x0) 
+
 
 ### Contributor notes
 
-Please make all pull requests against the 'unstable' branch. Changes may only be merged into master after they have been tested on all browsers via BrowserStack and have been compressed via the Closure Compiler.
+Please make all pull requests against the 'unstable' branch. Pull requests should include corresponding tests.
 
 ### Other approaches
 
