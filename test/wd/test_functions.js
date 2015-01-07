@@ -36,15 +36,15 @@ test.mobile = function() {
 
     test.changeOrientation.call(this, 'PORTRAIT');
     test.loadPage.call(this, e.pages.normal );
-    test.elements.call(this, e.mobiles.iphone6.portrait) ;
+    test.elements.call(this, e.mobile) ;
     test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.mobiles.iphone6.landscape);
+    test.elements.call(this, e.mobile);
 
     test.changeOrientation.call(this, 'PORTRAIT');
     test.loadPage.call(this, e.pages.webp );
-    test.elements.call(this, e.mobiles.iphone6.portrait) ;
+    test.elements.call(this, e.mobile) ;
     test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.mobiles.iphone6.landscape);
+    test.elements.call(this, e.mobile);
 
   });
 };

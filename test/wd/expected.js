@@ -50,14 +50,6 @@ expected.desktop = {
 
 };
 
-expected.mobiles = {
-  // NOTE: this is not the larger 'plus' version
-  iphone6: {
-    landscape: {
-      devicePixelRatio: 2,
-    },
-    portrait: {
-      devicePixelRatio: 2,
-    }
-  }
+expected.mobile = {
+  devicePixelRatio: 2,
 };
