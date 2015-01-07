@@ -90,6 +90,30 @@ describe('slimmage', function () {
     });
   });
 
+  describe('mutateUrl', function(){
+    it('should only affect the querystring', function(){
+      var result = s.mutateUrl(
+        "path?a=true&b=false#hash",
+        function(){}, 
+        function(p, d, k, v){
+          return d + k + "=cats";
+        }, function(q){return q;});
+
+      expect(result).to.be("path?a=cats&b=cats#hash");
+
+    });
+
+    it('should clean up delimiters', function(){
+      var result = s.mutateUrl(
+        "path?&a=true&&b=false#hash",
+        function(){}, 
+        function(p, d, k, v){
+          return (k && v) ? ('&' + d + k + "=cats") : '';
+        }, function(q){return q;});
+
+      expect(result).to.be("path?a=cats&b=cats#hash");
+    });
+  });
   describe('getImageInfo', function(){
     
     it('should call adjustImageParameters with valid data', function(){
@@ -131,7 +155,7 @@ describe('slimmage', function () {
       expect(info["data-pixel-width"]).to.be(160);
 
       info = s.getImageInfo(161/dpr,"im?width=5",0);
-      expect(info["data-pixel-width"]).to.be(320);
+      expect(info['data-pixel-width']).to.be(320);
 
     });
 
@@ -140,6 +164,21 @@ describe('slimmage', function () {
       var result = s.getImageInfo(0,"im?width=5",0);
       expect(result).to.be(null);
 
+    });
+
+
+    it('should adjust height if present, maintaining aspect ratio', function(){
+      var dpr = window.devicePixelRatio || 1;
+
+      var result = s.getImageInfo(100 /dpr,"im?width=16&height=9",0);
+      expect(result.src).to.be("im?width=160&height=90");
+    });
+
+   it('should account for applied zoom', function(){
+      var dpr = window.devicePixelRatio || 1;
+      var result = s.getImageInfo(100/dpr,"im?width=16&height=9&zoom=2",0);
+      expect(result['data-pixel-width']).to.be(160); //160px is the bitmap width we request
+      expect(result.src).to.be("im?width=80&height=45&zoom=2"); //But only because how zoom is interpreted.
     });
 
   });

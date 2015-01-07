@@ -69,6 +69,34 @@
         }
         return array;
     };
+
+    /*
+      No URI decoding/encoding is perfomed on keys or values. Caller's responsibility.
+
+      vistor and mutator are applied to string.replace -> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_function_as_a_parameter
+      params:
+      1. entire pair, incl. (optional) &  and = 
+      2. '&' (if present)
+      3. key
+      4. value
+
+      mutator's result is honored. Must return param 1, or provide valid replacement.
+      
+      injector(query) is responsible for adding additional pairs if required. 
+      It must not produce a malformatted query.
+    */
+    s['mutateUrl'] = function(url, visitor,mutator,injector){
+      var m = /^([^?#]*)?(\?([^#]*))?(#.*)?/.exec(url);
+      var q = m[3] || '';
+
+      var qr = /(^&*|&+)([^&=]*)=?([^&]*)/g;
+      q.replace(qr, visitor); //read-only, to gather data
+
+      var newq = '?' + q.replace(qr, mutator).replace(/(?:^\?*&*)|(?:[?&]+$)/g,"").replace(/&&+/g,"&");
+
+      return (m[1] || '') + injector(newq) + (m[4] || '');
+    };
+
     //Expects virtual, not device pixel width
     s['getImageInfo'] = function (elementWidth, previousSrc, previousPixelWidth, previousElement) {
         var data = {
@@ -96,8 +124,44 @@
 
         if (finalWidth > previousPixelWidth) {
             //Never request a smaller image once the larger one has already started loading
-            var newSrc = previousSrc.replace(/width=\d+/i, "width=" + finalWidth).replace(/quality=[0-9]+/i,"quality=" + data['quality']);
-            if (data['webp']) newSrc = newSrc.replace(/format=[a-z]+/i, "format=webp");
+            var u = {}; //For storing raw pairs
+            var c = {}; //For storing relevant parsed info
+            var newSrc = s['mutateUrl'](
+              previousSrc,
+              //Visitor
+              function(_,d, k,v){
+                u[k.toLowerCase()] = v;
+              }, 
+              //Mutator
+              function(p,d,k,v){
+
+                //Parse existing values so we can make educated calculations for width/height
+                if (c.zoom === undefined){
+                  c.zoom = parseFloat(u.zoom || 1);
+                  if (isNaN(c.zoom)){ c.zoom = 1; }
+                  c.w = (finalWidth / c.zoom).toFixed();
+                }
+                if (c.ratio === undefined){
+                  var w = parseFloat(u.width || u.w || u.maxwidth);
+                  var h = parseFloat(u.height || u.h || u.maxheight);
+                  if (!isNaN(w) && !isNaN(h) && w > 0 && h > 0){
+                    c.ratio = w/h;
+                    c.h = (((finalWidth / c.zoom) / w) * h).toFixed();
+                  }else{
+                    c.ratio = 'noclue';
+                  }
+                }
+                
+                if (k.match(/^format$/i) && data['webp']) { return d + "format=webp"; }
+                if (k.match(/^quality/i)) { return d + "quality=" + data['quality']; }
+                
+                if (k.match(/^w|width|maxwidth$/i)) { return d + k + "=" + c.w;}
+                if (k.match(/^h|height|maxheight$/i)) { return d + k + "=" + c.h;}
+                
+                return p;
+              }, 
+              //Injector
+              function(q){ return q;});
             
             return {'src': newSrc, 'data-pixel-width': finalWidth};
         }
