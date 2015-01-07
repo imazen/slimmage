@@ -22,13 +22,5 @@ module.exports = {
       'version': '8.0',
       // 'deviceName':'iPhone Simulator',
       'device-orientation': 'portrait'
-    },
-
-    chrome: {
-      browserName: 'chrome',
-      platform: 'Linux',
-      version: '39.0',
-      'screen-resolution': '1024x768'
-    },
-
+    }
 };

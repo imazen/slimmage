@@ -1,6 +1,6 @@
 var _ = require('lodash'); // For its each/keys/values met ods
-var core_browsers = require('./test/desireds.js'); // hash for desired browsers
-var all_browsers = require('./test/desireds_all.js'); // hash for desired browsers
+var unit_browsers = require('./test/unit_browsers.js'); // hash for desired browsers
+var integration_browsers = require('./test/integration_browsers.js'); // hash for desired browsers
 
 var port = process.env.PORT || 3000;
 
@@ -63,7 +63,7 @@ module.exports = function (grunt) {
         options: {
           testTags: ['feature', 'slimmage'], // TODO: put in github specifics (issues/branch/etc)
           testName: 'slimmage feature tests', // TODO: put in github specifics (issues/branch/etc)
-          browsers: _.values(all_browsers),
+          browsers: _.values(integration_browsers),
           tunnelArgs: ['-v', '--doctor'],
           concurrency: 3 // how many browsers to be run in parallel
         }
@@ -76,7 +76,7 @@ module.exports = function (grunt) {
           urls: [
             'http://127.0.0.1:'+port+'/test/index.html'
           ],
-          browsers: _.values(core_browsers),
+          browsers: _.values(unit_browsers),
           build: process.env.TRAVIS_JOB_ID
           pollInterval: 5000, // timeout
           maxRetries: 3,
