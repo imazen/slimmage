@@ -121,7 +121,7 @@ describe('slimmage', function () {
 
       var dpr = window.devicePixelRatio || 1;
       var info = s.getImageInfo(159/dpr,"im?width=5",0);
-      expect(info["data-pixel-width"]).to.be(160 * );
+      expect(info["data-pixel-width"]).to.be(160);
 
       info = s.getImageInfo(1,"im?width=5",0);
       expect(info["data-pixel-width"]).to.be(160);
