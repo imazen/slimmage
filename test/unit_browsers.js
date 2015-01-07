@@ -12,7 +12,7 @@ module.exports = {
     explorer: {
       browserName: 'internet explorer',
       version: '6',
-      platform: 'Windows XP'
+      platform: 'Windows XP',
       'screen-resolution': '1024x768'
     },
 

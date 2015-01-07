@@ -4,7 +4,7 @@
 module.exports = {
 
     explorer6: {
-       platform = 'Windows XP',
+       platform: 'Windows XP',
        browserName: 'internet explorer',
        version: '6',
        'screen-resolution': '1024x768'
@@ -21,7 +21,7 @@ module.exports = {
     android4_0: {
       browserName: 'android',
       platform: 'Linux', 
-      version = '4.0'
+      version: '4.0'
     },
 
     chrome_linux: {
@@ -71,35 +71,35 @@ module.exports = {
     },
 
     explorer7: {
-       platform = 'Windows XP',
+       platform: 'Windows XP',
        browserName: 'internet explorer',
        version: '7',
        'screen-resolution': '1024x768'
     },
 
     explorer8: {
-       platform = 'Windows 7',
+       platform: 'Windows 7',
        browserName: 'internet explorer',
        version: '8',
        'screen-resolution': '1024x768'
     },
 
     explorer9: {
-      platform = 'Windows 7',
+      platform: 'Windows 7',
       browserName: 'internet explorer',
       version: '9',
       'screen-resolution': '1024x768'
     },
 
     explorer10: {
-      platform = 'Windows 8',
+      platform: 'Windows 8',
       browserName: 'internet explorer',
       version: '10',
       'screen-resolution': '1024x768'
     },
 
     explorer11: {
-      platform = 'Windows 8.1',
+      platform: 'Windows 8.1',
       browserName: 'internet explorer',
       version: '11',
       'screen-resolution': '1024x768'
@@ -108,7 +108,7 @@ module.exports = {
     android4_4: {
       browserName: 'android',
       platform: 'Linux', 
-      version = '4.4'
+      version: '4.4'
     }
 
 };

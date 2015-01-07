@@ -77,7 +77,7 @@ module.exports = function (grunt) {
             'http://127.0.0.1:'+port+'/test/index.html'
           ],
           browsers: _.values(unit_browsers),
-          build: process.env.TRAVIS_JOB_ID
+          build: process.env.TRAVIS_JOB_ID,
           pollInterval: 5000, // timeout
           maxRetries: 3,
           testname: 'slimmage mocha tests',
