@@ -1,4 +1,4 @@
-/* global describe,before*/
+/* global describe,before,it*/
 
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -31,7 +31,8 @@ describe('slimmage', function() {
       .sessionCapabilities()
       .then(function(caps) {
 
-        if (/(iphone)|(android)/i.test(caps.deviceName)) {
+        // Note we use the browserName attr for android, as it doesn't seem to have a 'deviceName' attr
+        if (/iphone/i.test(caps.deviceName) || /android/i.test(caps.browserName)) {
 
           console.log('This is an iPhone or an Android phone');
           tests_to_call = test.mobile;
