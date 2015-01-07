@@ -38,8 +38,6 @@ expected.desktop = {
         width: 800,
         height: 600
       },
-      halfsize: 400,
-      halfsize_src: expected.calc_nearest_slim_step(400)
     },
 
     large: {
@@ -48,27 +46,10 @@ expected.desktop = {
         width: 1024,
         height: 768
       },
-
-      halfsize: 512,
-      halfsize_src: expected.calc_nearest_slim_step(512)
     }
 
 };
 
-expected.mobiles = {
-  // NOTE: this is not the larger 'plus' version
-  iphone6: {
-    landscape: {
-      devicePixelRatio: 2,
-      halfsize: 333, // 1334/4
-      // first factor in dpr, then round up to nearest step
-      halfsize_src: expected.calc_nearest_slim_step(333 * 2)
-    },
-    portrait: {
-      devicePixelRatio: 2,
-      halfsize: 180,
-      // first factor in dpr, then round up to nearest step
-      halfsize_src: expected.calc_nearest_slim_step(180 * 2)
-    }
-  }
+expected.mobile = {
+  devicePixelRatio: 2,
 };

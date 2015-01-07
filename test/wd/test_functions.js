@@ -36,15 +36,15 @@ test.mobile = function() {
 
     test.changeOrientation.call(this, 'PORTRAIT');
     test.loadPage.call(this, e.pages.normal );
-    test.elements.call(this, e.mobiles.iphone6.portrait) ;
+    test.elements.call(this, e.mobile) ;
     test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.mobiles.iphone6.landscape);
+    test.elements.call(this, e.mobile);
 
     test.changeOrientation.call(this, 'PORTRAIT');
     test.loadPage.call(this, e.pages.webp );
-    test.elements.call(this, e.mobiles.iphone6.portrait) ;
+    test.elements.call(this, e.mobile) ;
     test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.mobiles.iphone6.landscape);
+    test.elements.call(this, e.mobile);
 
   });
 };
@@ -90,7 +90,6 @@ test.changeWindowSize = function(size) {
   });
 };
 
-
 //--------------------------------------------------------------------------
 //---    Mobile specific                                                 ---
 //--------------------------------------------------------------------------
@@ -115,6 +114,7 @@ test.changeOrientation  = function(value) {
 // ------------------------------------------------------------------------
 // Load page
 // ------------------------------------------------------------------------
+
 test.loadPage = function(page_details) {
   describe(page_details.name,function() {
     var chain;
@@ -136,48 +136,71 @@ test.elements = function(vals){
   var dpr = vals.devicePixelRatio || 1;
   var fix100_src = e.calc_nearest_slim_step(dpr * 100);
   var fix200_src = e.calc_nearest_slim_step(dpr * 200);
+  var halfsize; // Based on the size of the body tag
+  var halfsize_src;
 
-  describe('fixedwidth_100', function() {
+  describe('elements',function() {
 
-    it('src url should ratchet up to ' + fix100_src , function(done) {
-     this.browser
-        .elementByClassName('fixedsize_100') // img.max_width == 100px
-        .getAttribute('src')
-        .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix100_src)
+    // Calculate halfsize and halfsize_src
+    before(function(done) {
+      this.browser
+        .elementByTagName('body')
+        .getSize()
+        .then(function(size) {
+          halfsize = size.width/2;
+          halfsize_src = e.calc_nearest_slim_step(halfsize);
+        })
         .nodeify(done);
     });
 
-  });
-
-  describe('fixedwidth_200', function() {
-    it('src url should ratchet up to ' + fix200_src, function(done) {
-     this.browser
-        .elementByClassName('fixedsize_200') // img.max_width == 200px
-        .getAttribute('src')
-        .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix200_src)
-        .nodeify(done);
-    });
-  });
-
-  describe('halfsize', function() {
-    it('should be '+ vals.halfsize +' +/-'+ e.win_tollerance +' px wide',function(done) {
-     this.browser
-        .waitFor(util.widthToBeWithin('.halfsize',
-            vals.halfsize,
-            e.win_tollerance
-          ), e.explicit_wait)
-        .nodeify(done);
+    describe('fixedwidth_100', function() {
+      it('src url should ratchet up to ' + fix100_src , function(done) {
+       this.browser
+          .elementByClassName('fixedsize_100') // img.max_width == 100px
+          .getAttribute('src')
+          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix100_src)
+          .nodeify(done);
+      });
     });
 
-    it('src url should ratchet up to '+ vals.halfsize_src ,function(done) {
-     this.browser
-        .waitFor(util.asserter(function(t) {
-          return t
-            .elementByClassName('halfsize')
-            .getAttribute('src')
-            .should.become('http://z.zr.io/ri/1s.jpg?width=' + vals.halfsize_src );
-        }), e.explicit_wait) // repeat the above until success or timeout
-        .nodeify(done);
+    describe('fixedwidth_200', function() {
+      it('src url should ratchet up to ' + fix200_src, function(done) {
+       this.browser
+          .elementByClassName('fixedsize_200') // img.max_width == 200px
+          .getAttribute('src')
+          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix200_src)
+          .nodeify(done);
+      });
+    });
+
+    describe('halfsize', function() {
+
+      it('should be half the width of the body +/-'+ e.win_tollerance +' px',function(done) {
+       this.browser
+          .waitFor(util.asserter(function(t) {
+            return t
+              .elementByClassName('halfsize')
+              .getSize()
+              .then(function(size) {
+                var a = halfsize - e.body_tollerance;
+                var b = halfsize + e.body_tollerance;
+                size.width.should.be.within(a,b);
+              });
+          }), e.explicit_wait) // repeat the above until success or timeout
+          .nodeify(done);
+      });
+
+      it('src url should ratchet up to nearest step size', function(done) {
+       this.browser
+          .waitFor(util.asserter(function(t) {
+            return t
+              .elementByClassName('halfsize')
+              .getAttribute('src')
+              .should.become('http://z.zr.io/ri/1s.jpg?width=' + halfsize_src );
+          }), e.explicit_wait) // repeat the above until success or timeout
+          .nodeify(done);
+      });
+
     });
   });
 };

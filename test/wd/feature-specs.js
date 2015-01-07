@@ -31,9 +31,9 @@ describe('slimmage', function() {
       .sessionCapabilities()
       .then(function(caps) {
 
-        if (/iphone/i.test(caps.deviceName)) {
+        if (/(iphone)|(android)/i.test(caps.deviceName)) {
 
-          console.log('This is an iPhone');
+          console.log('This is an iPhone or an Android phone');
           tests_to_call = test.mobile;
 
         } else if (/internet explorer/i.test(caps.browserName) && parseFloat(caps.version) <= 8.0) {
