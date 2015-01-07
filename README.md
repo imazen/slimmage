@@ -77,11 +77,9 @@ If you didn't care about non-javascript enabled users, you could drop the inner 
 <img data-slimmage="true" src="http://z.zr.io/ri/1s.jpg?width=100&format=jpg&quality=75" />
 ```
 
-## Sample markup for future browsers (IE11, etc)
+## Sample markup [for IE11](http://msdn.microsoft.com/en-us/library/ie/dn265036(v=vs.85).aspx) and other browsers supporting lazyload
 
 **Warning - this syntax will cause 2 network requests on browsers which support image prefetching but don't support [Resource Priorities](https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/ResourcePriorities/Overview.html).**
-
-IE11 is [supposed to support the lazyload attribute](https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/ResourcePriorities/Overview.html), and we expect other vendors will follow suit soon.
 
 ```html
 <img lazyload data-slimmage="true" src="http://z.zr.io/ri/1s.jpg?width=100&format=jpg&quality=75" />
