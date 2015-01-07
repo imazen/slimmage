@@ -31,11 +31,15 @@ describe('slimmage', function() {
       .sessionCapabilities()
       .then(function(caps) {
 
-        // Note we use the browserName attr for android, as it doesn't seem to have a 'deviceName' attr
-        if (/iphone/i.test(caps.deviceName) || /android/i.test(caps.browserName)) {
+        if (/iphone/i.test(caps.deviceName) ) {
 
-          console.log('This is an iPhone or an Android phone');
-          tests_to_call = test.mobile;
+          console.log('This is an iPhone with dpr of 2');
+          tests_to_call = test.iphone_retina;
+
+        } else if (/android/i.test(caps.browserName)) {
+
+          console.log('This is an Android with default dpr of 1');
+          tests_to_call = test.android;
 
         } else if (/internet explorer/i.test(caps.browserName) && parseFloat(caps.version) <= 8.0) {
 

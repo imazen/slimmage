@@ -31,20 +31,38 @@ test.desktop = function() {
   });
 };
 
-test.mobile = function() {
-  describe('mobile',function() {
+test.iphone_retina = function() {
+  describe('iphone retina',function() {
 
     test.changeOrientation.call(this, 'PORTRAIT');
     test.loadPage.call(this, e.pages.normal );
-    test.elements.call(this, e.mobile) ;
+    test.elements.call(this, e.iphone_retina) ;
     test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.mobile);
+    test.elements.call(this, e.iphone_retina);
 
     test.changeOrientation.call(this, 'PORTRAIT');
     test.loadPage.call(this, e.pages.webp );
-    test.elements.call(this, e.mobile) ;
+    test.elements.call(this, e.iphone_retina) ;
     test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.mobile);
+    test.elements.call(this, e.iphone_retina);
+
+  });
+};
+
+test.android = function() {
+  describe('android',function() {
+
+    test.changeOrientation.call(this, 'PORTRAIT');
+    test.loadPage.call(this, e.pages.normal );
+    test.elements.call(this, e.android) ;
+    test.changeOrientation.call(this, 'LANDSCAPE');
+    test.elements.call(this, e.android);
+
+    test.changeOrientation.call(this, 'PORTRAIT');
+    test.loadPage.call(this, e.pages.webp );
+    test.elements.call(this, e.android) ;
+    test.changeOrientation.call(this, 'LANDSCAPE');
+    test.elements.call(this, e.android);
 
   });
 };
