@@ -31,6 +31,13 @@ module.exports = {
       'screen-resolution': '1024x768'
     },
 
+    explorer11: {
+      platform: 'Windows 8.1',
+      browserName: 'internet explorer',
+      version: '11',
+      'screen-resolution': '1024x768'
+    },
+
     firefox_windows: {
       browserName: 'firefox',
       platform: 'Windows',
@@ -98,12 +105,6 @@ module.exports = {
       'screen-resolution': '1024x768'
     },
 
-    explorer11: {
-      platform: 'Windows 8.1',
-      browserName: 'internet explorer',
-      version: '11',
-      'screen-resolution': '1024x768'
-    },
 
     android4_4: {
       browserName: 'android',
