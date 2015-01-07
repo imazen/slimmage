@@ -1,8 +1,5 @@
 ## Slimmage - sane & simple responsive images
-[![master](https://img.shields.io/travis/imazen/slimmage/master.svg?label=master)](https://travis-ci.org/imazen/slimmage/builds) [![unstable](https://img.shields.io/travis/imazen/slimmage/unstable.svg?label=unstable)](https://travis-ci.org/imazen/slimmage/builds)
-
-Selenium status from most recent test run (may not be a published commit): [![Selenium Test Status](https://saucelabs.com/buildstatus/imazen)](https://saucelabs.com/u/imazen)
-[![Selenium Test Status](https://saucelabs.com/browser-matrix/imazen.svg)](https://saucelabs.com/u/imazen)
+[![master](https://img.shields.io/travis/imazen/slimmage/master.svg?label=master)](https://travis-ci.org/imazen/slimmage/builds) [![unstable](https://img.shields.io/travis/imazen/slimmage/unstable.svg?label=unstable)](https://travis-ci.org/imazen/slimmage/builds) 
 
 Your wait for a sane, easily managed path to responsive images has now ended.
 
@@ -18,7 +15,9 @@ Your wait for a sane, easily managed path to responsive images has now ended.
 
 Handles any viewport size and pixel density with ease. Yes, retina and retina-like displays are supported.
 
-Our automated tests currently check firefox, ie, chrome, and mobile safari.
+Our automated tests from the last API call - these may not even been a public commit - are below. Click to browse.
+[![Selenium Test Status](https://saucelabs.com/browser-matrix/imazen.svg)](https://saucelabs.com/u/imazen)
+
 
 0.2.3 was manually tested on IE6-10, Firefox 3.6-23, Opera 11-12, Safari 5-6, Chrome 14-28, Opera Mobile, and over a dozen mobile Webkit browsers. - essentially everything [supported by BrowserStack](http://www.browserstack.com/screenshots). In theory we should be supporting over 99.5% of browsers.
 
