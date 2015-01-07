@@ -1,5 +1,7 @@
 var _ = require('lodash'); // For its each/keys/values met ods
-var desireds = require('./test/desireds.js'); // hash for desired browsers
+var core_browsers = require('./test/desireds.js'); // hash for desired browsers
+var all_browsers = require('./test/desireds_all.js'); // hash for desired browsers
+
 var port = process.env.PORT || 3000;
 
 module.exports = function (grunt) {
@@ -61,7 +63,7 @@ module.exports = function (grunt) {
         options: {
           testTags: ['feature', 'slimmage'], // TODO: put in github specifics (issues/branch/etc)
           testName: 'slimmage feature tests', // TODO: put in github specifics (issues/branch/etc)
-          browsers: _.values(desireds),
+          browsers: _.values(all_browsers),
           tunnelArgs: ['-v', '--doctor'],
           concurrency: 3 // how many browsers to be run in parallel
         }
@@ -74,8 +76,8 @@ module.exports = function (grunt) {
           urls: [
             'http://127.0.0.1:'+port+'/test/index.html'
           ],
-          browsers: _.values(desireds),
-          build: process.env.TRAVIS_JOB_ID,
+          browsers: _.values(core_browsers),
+          build: process.env.TRAVIS_JOB_ID
           pollInterval: 5000, // timeout
           maxRetries: 3,
           testname: 'slimmage mocha tests',
@@ -83,7 +85,8 @@ module.exports = function (grunt) {
           //tunnelArgs: ["--debug"],
           sauceConfig: {
             tags: ['slimmage', 'unit'],
-            'video-upload-on-pass': false
+            'video-upload-on-pass': false,
+            build: process.env.TRAVIS_JOB_ID || 0,
           }
         }
       }
@@ -100,7 +103,7 @@ module.exports = function (grunt) {
     },
     'jshint': {
       slimmage: ['slimmage.js'],
-      unit_tests: ['test/spec/tests.js', 'test/wd/*.js', 'test/desireds.js']
+      unit_tests: ['test/spec/tests.js', 'test/wd/*.js', 'test/*.js']
       
     }
   });
