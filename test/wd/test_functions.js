@@ -166,7 +166,7 @@ test.elements = function(vals){
         .getSize()
         .then(function(size) {
           halfsize = size.width/2;
-          halfsize_src = e.calc_nearest_slim_step(halfsize);
+          halfsize_src = e.calc_nearest_slim_step(halfsize * dpr);
         })
         .nodeify(done);
     });
