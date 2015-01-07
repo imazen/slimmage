@@ -39,7 +39,7 @@ describe('slimmage', function() {
 
         } else if (/internet explorer/i.test(caps.browserName) && parseFloat(caps.version) <= 8.0) {
 
-          console.log('This is Internet Explorer < 8.0');
+          console.log('This is Internet Explorer <= 8.0');
           tests_to_call = test.desktop;
 
         } else {
