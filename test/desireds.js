@@ -5,25 +5,14 @@ module.exports = {
 
     firefox: {
       browserName: 'firefox',
-      platform: 'Windows',
+      platform: 'Windows 8.1',
       'screen-resolution': '1024x768'
     },
-
-    // explorer6: {
-    //   browserName: 'internet explorer',
-    //   version: '6.0',
-    //   'screen-resolution': '1024x768'
-    // },
 
     explorer: {
       browserName: 'internet explorer',
-      'screen-resolution': '1024x768'
-    },
-
-    chrome: {
-      browserName: 'chrome',
-      platform: 'Linux',
-      version: '38.0',
+      version: '6',
+      platform: 'Windows XP'
       'screen-resolution': '1024x768'
     },
 
@@ -33,6 +22,13 @@ module.exports = {
       'version': '8.0',
       // 'deviceName':'iPhone Simulator',
       'device-orientation': 'portrait'
-    }
+    },
+
+    chrome: {
+      browserName: 'chrome',
+      platform: 'Linux',
+      version: '39.0',
+      'screen-resolution': '1024x768'
+    },
 
 };
