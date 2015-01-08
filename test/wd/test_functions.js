@@ -130,6 +130,23 @@ test.changeOrientation  = function(value) {
 };
 
 // ------------------------------------------------------------------------
+// Shared funtions
+// ------------------------------------------------------------------------
+
+test.devicePixelRatio = function(vals) {
+  vals = vals || {};
+  var dpr = vals.devicePixelRatio || 1;
+  describe('devicePixelRatio',function() {
+    it('should be using the right DPR', function(done) {
+      this.browser
+        .safeExecute('window.devicePixelRatio || 1;')
+        .should.become(dpr)
+        .nodeify(done);
+    });
+  });
+};
+
+// ------------------------------------------------------------------------
 // Load page
 // ------------------------------------------------------------------------
 
