@@ -15,61 +15,42 @@ var test = module.exports = {};
 
 test.desktop = function() {
   describe('desktop',function() {
-
-    test.changeWindowSize.call(this, e.desktop.medium.size );
-    test.loadPage.call(this, e.pages.normal );
-    test.elements.call(this, e.desktop.medium );
-    test.changeWindowSize.call(this, e.desktop.large.size );
-    test.elements.call(this, e.desktop.large );
-
-    test.changeWindowSize.call(this, e.desktop.medium.size );
-    test.loadPage.call(this, e.pages.webp );
-    test.elements.call(this, e.desktop.medium );
-    test.changeWindowSize.call(this, e.desktop.large.size );
-    test.elements.call(this, e.desktop.large );
-
+    test.desktopPage.call(this, e.pages.normal);
+    test.desktopPage.call(this, e.pages.webp);
   });
 };
 
 test.iphone_retina = function() {
   describe('iphone retina',function() {
-
-    test.changeOrientation.call(this, 'PORTRAIT');
-    test.loadPage.call(this, e.pages.normal );
-    test.elements.call(this, e.iphone_retina) ;
-    test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.iphone_retina);
-
-    test.changeOrientation.call(this, 'PORTRAIT');
-    test.loadPage.call(this, e.pages.webp );
-    test.elements.call(this, e.iphone_retina) ;
-    test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.iphone_retina);
-
+    test.mobile.call(this, e.iphone_retina);
   });
 };
 
 test.android = function() {
   describe('android',function() {
-
-    test.changeOrientation.call(this, 'PORTRAIT');
-    test.loadPage.call(this, e.pages.normal );
-    test.elements.call(this, e.android) ;
-    test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.android);
-
-    test.changeOrientation.call(this, 'PORTRAIT');
-    test.loadPage.call(this, e.pages.webp );
-    test.elements.call(this, e.android) ;
-    test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, e.android);
-
+    test.mobile.call(this, e.android);
   });
+};
+
+test.mobile = function(vals) {
+  test.mobilePage.call(this, e.pages.normal, vals);
+  // We'll be using the previous page to test dpr...
+  test.devicePixelRatio.call(this, e.android);
+  test.mobilePage.call(this, e.pages.webp, vals);
 };
 
 //--------------------------------------------------------------------------
 //---    Desktop specific                                                ---
 //--------------------------------------------------------------------------
+
+test.desktopPage = function(page) {
+  test.changeWindowSize.call(this, e.desktop.medium.size );
+  test.loadPage.call(this, page );
+  test.devicePixelRatio.call(this); // Will default to dpr of '1'
+  test.elements.call(this, e.desktop.medium );
+  test.changeWindowSize.call(this, e.desktop.large.size );
+  test.elements.call(this, e.desktop.large );
+};
 
 test.changeWindowSize = function(size) {
   describe('changing to ' + size.width,function() {
@@ -111,6 +92,14 @@ test.changeWindowSize = function(size) {
 //--------------------------------------------------------------------------
 //---    Mobile specific                                                 ---
 //--------------------------------------------------------------------------
+
+test.mobilePage = function(page,vals) {
+    test.changeOrientation.call(this, 'PORTRAIT');
+    test.loadPage.call(this, page );
+    test.elements.call(this, vals) ;
+    test.changeOrientation.call(this, 'LANDSCAPE');
+    test.elements.call(this, vals);
+};
 
 test.changeOrientation  = function(value) {
   describe('orientation',function() {
