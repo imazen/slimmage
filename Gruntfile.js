@@ -116,6 +116,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-mocha-webdriver');
   grunt.loadNpmTasks('grunt-gcc-rest');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-newer');
 
   // Load custom tasks
   grunt.task.loadTasks('test/tasks'); // Relative path to task files
@@ -130,7 +131,7 @@ module.exports = function (grunt) {
   // High level aliases
   grunt.registerTask('test', ['compile', 'connect', 'mocha', 'mochaWebdriver:phantomjs', 'check-credentials', 'mochaWebdriver:sauce', 'saucelabs-mocha']); // First test locally, if successful go and test against more exotic browsers...
   grunt.registerTask('test:local', ['compile', 'connect', 'mocha', 'mochaWebdriver:phantomjs']);
-  grunt.registerTask('compile',['gcc_rest'] );
+  grunt.registerTask('compile',['newer:gcc_rest'] );
   grunt.registerTask('local',['clean','test:local'] );
 
   // Run this if no task is specified
