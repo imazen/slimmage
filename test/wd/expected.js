@@ -49,11 +49,3 @@ expected.desktop = {
     }
 
 };
-
-expected.iphone_retina = {
-  devicePixelRatio: 2,
-};
-
-expected.android = {
-  devicePixelRatio: 1.5,
-};
