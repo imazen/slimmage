@@ -34,12 +34,12 @@ describe('slimmage', function() {
         if (/iphone/i.test(caps.deviceName) ) {
 
           console.log('This is an iPhone with dpr of 2');
-          tests_to_call = test.iphone_retina;
+          tests_to_call = test.mobile;
 
         } else if (/android/i.test(caps.browserName)) {
 
           console.log('This is an Android with default dpr of 1');
-          tests_to_call = test.android;
+          tests_to_call = test.mobile;
 
         } else if (/internet explorer/i.test(caps.browserName) && parseFloat(caps.version) <= 8.0) {
 

@@ -20,23 +20,9 @@ test.desktop = function() {
   });
 };
 
-test.iphone_retina = function() {
-  describe('iphone retina',function() {
-    test.mobile.call(this, e.iphone_retina);
-  });
-};
-
-test.android = function() {
-  describe('android',function() {
-    test.mobile.call(this, e.android);
-  });
-};
-
-test.mobile = function(vals) {
-  test.mobilePage.call(this, e.pages.normal, vals);
-  // We'll be using the previous page to test dpr...
-  test.devicePixelRatio.call(this, e.android);
-  test.mobilePage.call(this, e.pages.webp, vals);
+test.mobile = function() {
+  test.mobilePage.call(this, e.pages.normal);
+  test.mobilePage.call(this, e.pages.webp);
 };
 
 //--------------------------------------------------------------------------
@@ -46,7 +32,6 @@ test.mobile = function(vals) {
 test.desktopPage = function(page) {
   test.changeWindowSize.call(this, e.desktop.medium.size );
   test.loadPage.call(this, page );
-  test.devicePixelRatio.call(this); // Will default to dpr of '1'
   test.elements.call(this, e.desktop.medium );
   test.changeWindowSize.call(this, e.desktop.large.size );
   test.elements.call(this, e.desktop.large );
@@ -93,12 +78,12 @@ test.changeWindowSize = function(size) {
 //---    Mobile specific                                                 ---
 //--------------------------------------------------------------------------
 
-test.mobilePage = function(page,vals) {
+test.mobilePage = function(page) {
     test.changeOrientation.call(this, 'PORTRAIT');
-    test.loadPage.call(this, page );
-    test.elements.call(this, vals) ;
+    test.loadPage.call(this, page);
+    test.elements.call(this);
     test.changeOrientation.call(this, 'LANDSCAPE');
-    test.elements.call(this, vals);
+    test.elements.call(this);
 };
 
 test.changeOrientation  = function(value) {
@@ -122,19 +107,6 @@ test.changeOrientation  = function(value) {
 // Shared funtions
 // ------------------------------------------------------------------------
 
-test.devicePixelRatio = function(vals) {
-  vals = vals || {};
-  var dpr = vals.devicePixelRatio || 1;
-  describe('devicePixelRatio',function() {
-    it('should be using the right DPR', function(done) {
-      this.browser
-        .safeExecute('window.devicePixelRatio || 1;')
-        .should.become(dpr)
-        .nodeify(done);
-    });
-  });
-};
-
 // ------------------------------------------------------------------------
 // Load page
 // ------------------------------------------------------------------------
@@ -156,10 +128,8 @@ test.loadPage = function(page_details) {
   });
 };
 
-test.elements = function(vals){
-  var dpr = vals.devicePixelRatio || 1;
-  var fix155_src = e.calc_nearest_slim_step(dpr * 155);
-  var fix200_src = e.calc_nearest_slim_step(dpr * 200);
+test.elements = function(){
+  var dpr;
   var halfsize; // Based on the size of the body tag
   var halfsize_src;
 
@@ -174,12 +144,17 @@ test.elements = function(vals){
           halfsize = size.width/2;
           halfsize_src = e.calc_nearest_slim_step(halfsize * dpr);
         })
+        .safeExecute('window.devicePixelRatio || 1')
+        .then(function(val){
+          dpr = val;
+        })
         .nodeify(done);
     });
 
     describe('fixedwidth_155', function() {
-      it('src url should ratchet up to ' + fix155_src , function(done) {
-       this.browser
+      it('src url should ratchet up to nearest step', function(done) {
+        var fix155_src = e.calc_nearest_slim_step(dpr * 155);
+        this.browser
           .elementByClassName('fixedsize_155') // img.max_width == 150px
           .getAttribute('src')
           .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix155_src)
@@ -188,8 +163,9 @@ test.elements = function(vals){
     });
 
     describe('fixedwidth_200', function() {
-      it('src url should ratchet up to ' + fix200_src, function(done) {
-       this.browser
+      it('src url should ratchet up to nearest step', function(done) {
+        var fix200_src = e.calc_nearest_slim_step(dpr * 200);
+        this.browser
           .elementByClassName('fixedsize_200') // img.max_width == 200px
           .getAttribute('src')
           .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix200_src)
@@ -215,7 +191,7 @@ test.elements = function(vals){
       });
 
       it('src url should ratchet up to nearest step size', function(done) {
-       this.browser
+        this.browser
           .waitFor(util.asserter(function(t) {
             return t
               .elementByClassName('halfsize')
