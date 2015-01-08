@@ -152,7 +152,7 @@ test.loadPage = function(page_details) {
 
 test.elements = function(vals){
   var dpr = vals.devicePixelRatio || 1;
-  var fix100_src = e.calc_nearest_slim_step(dpr * 100);
+  var fix155_src = e.calc_nearest_slim_step(dpr * 155);
   var fix200_src = e.calc_nearest_slim_step(dpr * 200);
   var halfsize; // Based on the size of the body tag
   var halfsize_src;
@@ -171,12 +171,12 @@ test.elements = function(vals){
         .nodeify(done);
     });
 
-    describe('fixedwidth_100', function() {
-      it('src url should ratchet up to ' + fix100_src , function(done) {
+    describe('fixedwidth_155', function() {
+      it('src url should ratchet up to ' + fix155_src , function(done) {
        this.browser
-          .elementByClassName('fixedsize_100') // img.max_width == 100px
+          .elementByClassName('fixedsize_155') // img.max_width == 150px
           .getAttribute('src')
-          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix100_src)
+          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix155_src)
           .nodeify(done);
       });
     });
