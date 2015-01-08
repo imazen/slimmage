@@ -162,13 +162,13 @@ test.elements = function(){
       });
     });
 
-    describe('fixedwidth_200', function() {
+    describe('fixedwidth_315', function() {
       it('src url should ratchet up to nearest step', function(done) {
-        var fix200_src = e.calc_nearest_slim_step(dpr * 200);
+        var fix315_src = e.calc_nearest_slim_step(dpr * 315);
         this.browser
-          .elementByClassName('fixedsize_200') // img.max_width == 200px
+          .elementByClassName('fixedsize_315') // img.max_width == 315px
           .getAttribute('src')
-          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix200_src)
+          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix315_src)
           .nodeify(done);
       });
     });
