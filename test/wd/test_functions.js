@@ -138,15 +138,15 @@ test.elements = function(){
     // Calculate halfsize and halfsize_src
     before(function(done) {
       this.browser
+        .safeExecute('window.devicePixelRatio || 1;')
+        .then(function(val){
+          dpr = val;
+        })
         .elementByTagName('body')
         .getSize()
         .then(function(size) {
           halfsize = size.width/2;
           halfsize_src = e.calc_nearest_slim_step(halfsize * dpr);
-        })
-        .safeExecute('window.devicePixelRatio || 1')
-        .then(function(val){
-          dpr = val;
         })
         .nodeify(done);
     });
