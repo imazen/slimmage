@@ -1,7 +1,8 @@
 var _ = require('lodash'); // For its each/keys/values met ods
 var unit_browsers = require('./test/unit_browsers.js'); // hash for desired browsers
 var integration_browsers = require('./test/integration_browsers.js'); // hash for desired browsers
-
+var title = (process.env.TRAVIS_BRANCH || 'local') + ' ' + (process.env.TRAVIS_TAG || '');
+var slug = process.env.TRAVIS_REPO_SLUG || '[local]/slimmage';
 var port = process.env.PORT || 3000;
 
 module.exports = function (grunt) {
@@ -61,11 +62,15 @@ module.exports = function (grunt) {
       sauce: {
         src: ['test/wd/*-specs.js'], // Use this.browser inside regular mocha test files.
         options: {
-          testTags: ['feature', 'slimmage'], // TODO: put in github specifics (issues/branch/etc)
-          testName: 'slimmage feature tests', // TODO: put in github specifics (issues/branch/etc)
+          testTags: [slug, 'integration'], 
+          testName: title, 
           browsers: _.values(integration_browsers),
           tunnelArgs: ['-v', '--doctor'],
-          concurrency: 3 // how many browsers to be run in parallel
+          concurrency: 3, // how many browsers to be run in parallel
+          sauceConfig: {
+            'record-video': false,
+            'video-upload-on-pass': false,
+          }
         }
       }
     },
@@ -78,13 +83,14 @@ module.exports = function (grunt) {
           ],
           browsers: _.values(unit_browsers),
           build: process.env.TRAVIS_JOB_ID,
-          pollInterval: 5000, // timeout
-          maxRetries: 3,
-          testname: 'slimmage mocha tests',
+          pollInterval: 2000, // timeout
+          maxRetries: 5,
+          testname: title,
           throttled: 3, // how many browses to be run in parallel
           //tunnelArgs: ["--debug"],
           sauceConfig: {
-            tags: ['slimmage', 'unit'],
+            'record-video': false,
+            tags: [slug, 'slimmage'],
             'video-upload-on-pass': false,
             build: process.env.TRAVIS_JOB_ID || 0,
           }
