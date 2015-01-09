@@ -134,6 +134,22 @@ Please make all pull requests against the 'unstable' branch. Pull requests shoul
 * It doesn’t work with my AJAXY-thingamabob! Slimmage can’t fix what isn’t there. Either [ensure Slimmage is loaded before the other script begins messing up the DOM](https://github.com/imazen/slimmage/issues/4), or call `window.slimmage.checkResponsiveImages()` after the DOM-mangling is complete and the images are visible.
 
 
+## My jQuery plugin doesn’t let me add data attributes. What can I do?
+
+If you don’t need those images to be responsive on IE6/7, you can add this code prior to loading slimmage.js. This injects a handler that identifies images with the class `data-slimmage` applied, and then subsequently applies the `data-slimmage` *attribute*, so they will get dealt with by slimmage (0.3.0+ only). 
+    
+    if (document.querySelectorAll){
+        window.slimmage = window.slimmage || {};
+        window.slimmage.beforeAdjustSrc = function(){
+          var to_tag = document.querySelectorAll("img.data-slimmage");
+          for (var i = 0, il = to_tag.length; i < il; i++){
+            to_tag[i].setAttribute("data-slimmage","true");
+          } 
+        };
+    }
+
+
+
 ### Other approaches
 
 * [&lt;picture>](http://responsiveimages.org/) (good if you need art direction)
