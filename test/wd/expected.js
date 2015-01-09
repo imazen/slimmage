@@ -8,7 +8,7 @@ expected.slim = {
 };
 
 expected.calc_nearest_slim_step = function (val) {
-  return val - (val % expected.slim.widthStep) + expected.slim.widthStep;
+  return Math.round(Math.ceil(val / expected.slim.widthStep) * expected.slim.widthStep);
 };
 
 expected.win_tollerance = 30; // = px; tolerance for padding/margin/window-frame
