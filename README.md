@@ -134,7 +134,7 @@ Please make all pull requests against the 'unstable' branch. Pull requests shoul
 * Does this support retina? [Absolutely! All pixel density variations should work perfectly](https://github.com/imazen/slimmage/issues/17).
 * [Do you support lazy loading](https://github.com/imazen/slimmage/issues/16)? That depends on your definition. You can certainly use the `postpone` attribute to lower the priority of the image downloading. You can create or enable images at arbitrary times, and call `window.slimmage.checkResponsiveImages()` at any time to ‘fix them’, but slimmage doesn’t *in itself*, bake in a lazy-loading-as-you-scroll kind of feature/bug.
 * It doesn’t work with my AJAXY-thingamabob! Slimmage can’t fix what isn’t there. Either [ensure Slimmage is loaded before the other script begins messing up the DOM](https://github.com/imazen/slimmage/issues/4), or call `window.slimmage.checkResponsiveImages()` after the DOM-mangling is complete and the images are visible.
-
+* On IE6-9 images are appearing full-width; css `max-width` is being ignored. Ensure that the images have a parent `div` element. If they are directly inside the `body`, `max-width` doesn’t seem to be noticed by IE. Also, make sure you have a valid doctype to avoid Quirks Mode.
 
 ## My jQuery plugin doesn’t let me add data attributes. What can I do?
 
