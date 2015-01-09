@@ -119,6 +119,8 @@ Feel free to fork and add links to your HTML filters/helpers here!
 * 0.3.0 - Make 'data.element' available to slimmage.adjustImageParameters, so plugins have more information  
     Add window.slimmage.beforeAdjustSrc callback function - this allows users to inject behavior between noscript parsing and img.src edits.  
     Replace adjustImageSrcWithWidth with getImageInfo, make adjustImageSrc responsible for more. Simplifies certain kinds of extension, such as background image support.
+* 0.2.6 - Fix typo causing ‘undefined’ is null error; affects 0.2.4+. 
+* 0.4.0 - Only fire `window.slimmage.readyCallback` on first `checkResponsiveImages()` and when there have been actual modifications to images.
 
 
 ### Contributor notes
