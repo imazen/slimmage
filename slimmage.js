@@ -161,7 +161,7 @@
         var totalImages = 0;
         var images = s.nodesToArray(w.document.getElementsByTagName("img"));
         for (var k = 0, kl = images.length; k < kl; k++) {
-            if (images[i].getAttribute("data-slimmage") !== null) {
+            if (images[k].getAttribute("data-slimmage") !== null) {
                 var originalSrc = images[k].getAttribute("data-src") || images[k].src;
                 s['adjustImageSrc'](images[k], originalSrc);
                 totalImages++;

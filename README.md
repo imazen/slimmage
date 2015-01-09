@@ -115,6 +115,7 @@ Merge #27 from dancek - Configurable max-width and quality parameters
 Merge #36 from dancek - Fix behavior when max-width is not defined (IE8) (replaces #18, fixes #29) 
 Refactored access notations to eliminate both minification errors and lint. Fix bug: Perfect multiples of stepWidth were being rounded up to the next interval (images larger than needed in some instances).
 * 0.2.5 - Merge #30 from Jeavon - Fix css size calculation when the parent div is floated in Safari (both OS X and iOS). (otherwise 0x0) 
+* 0.2.6 - Fix typo causing ‘undefined’ is null error; affects 0.2.4+. 
 
 
 ### Contributor notes
