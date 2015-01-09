@@ -1,7 +1,8 @@
 var _ = require('lodash'); // For its each/keys/values met ods
 var unit_browsers = require('./test/unit_browsers.js'); // hash for desired browsers
 var integration_browsers = require('./test/integration_browsers.js'); // hash for desired browsers
-var title = (process.env.TRAVIS_BRANCH || 'local') + ' ' + (process.env.TRAVIS_TAG || '');
+var title = (process.env.TRAVIS_BRANCH || 'local') + ' ' + (process.env.TRAVIS_TAG || '') + ' ' + (process.env.TRAVIS_COMMIT || '        ').substring(0,8);
+title = title.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 var slug = process.env.TRAVIS_REPO_SLUG || '[local]/slimmage';
 var port = process.env.PORT || 3000;
 
