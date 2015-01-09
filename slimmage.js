@@ -110,7 +110,7 @@
         var high_density = s.webp ? s['jpegRetinaQuality'] : 65;
         var low_density = s.webp ? s['jpegQuality'] : 78;
         data['quality'] = data['dpr'] > 1.49 ? high_density : low_density;
-		  
+      
         //Calculate raw pixels using devicePixelRatio. Limit size to maxWidth.
         var proposedWidth = Math.min(s['maxWidth'], elementWidth * data['dpr']); 
         //Minimize variants for caching improvements; round up to nearest multiple of widthStep
@@ -239,7 +239,7 @@
         var totalImages = 0;
         var images = s.nodesToArray(w.document.getElementsByTagName("img"));
         for (var k = 0, kl = images.length; k < kl; k++) {
-            if (images[i].getAttribute("data-slimmage") !== null) {
+            if (images[k].getAttribute("data-slimmage") !== null) {
                 var previousSrc = images[k].getAttribute("data-src") || images[k].src;
                 s['adjustImageSrc'](images[k], previousSrc);
                 totalImages++;
