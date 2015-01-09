@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <title>slimmage defaults</title>
+    <title>Slimmage test page, using unstable branch of slimmage.js</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -8,30 +9,37 @@
       img.halfsize {max-width:50%;}
       img.fixedsize_100 {max-width:100px}
       img.fixedsize_200 {max-width:200px}
+
+      <![if lt IE 8]> 
+      img.halfsize {width:50%;}
+      img.fixedsize_100 {width:100px}
+      img.fixedsize_200 {width:200px}
+      <![endif]>
     </style>
 
   </head>
   <body>
-    <h2> Slimmage feature tests (defaults) </h2>
-    <noscript data-slimmage data-img-class="halfsize" data-img-src="http://z.zr.io/ri/1s.jpg?width=150">
-      <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
-    </noscript>
+    <div class="container">
+      <h2> Slimmage feature tests (defaults) </h2>
+      <noscript data-slimmage data-img-class="halfsize" data-img-src="http://z.zr.io/ri/1s.jpg?width=150">
+        <img class="halfsize" src="http://z.zr.io/ri/1s.jpg?width=150" />
+      </noscript>
 
-    <br />
+      <br />
 
-    <noscript data-slimmage data-img-class="fixedsize_100" data-img-src="http://z.zr.io/ri/1s.jpg?width=150">
-      <img class="fixedsize_100" src="http://z.zr.io/ri/1s.jpg?width=150" />
-    </noscript>
+      <noscript data-slimmage data-img-class="fixedsize_100" data-img-src="http://z.zr.io/ri/1s.jpg?width=150">
+        <img class="fixedsize_100" src="http://z.zr.io/ri/1s.jpg?width=150" />
+      </noscript>
 
-    <br />
+      <br />
 
-    <noscript data-slimmage data-img-class="fixedsize_200" data-img-src="http://z.zr.io/ri/1s.jpg?width=150">
-      <img class="fixedsize_200" src="http://z.zr.io/ri/1s.jpg?width=150" />
-    </noscript>
+      <noscript data-slimmage data-img-class="fixedsize_200" data-img-src="http://z.zr.io/ri/1s.jpg?width=150">
+        <img class="fixedsize_200" src="http://z.zr.io/ri/1s.jpg?width=150" />
+      </noscript>
 
-    <br />
+    </div>
 
     <!-- Code to test -->
-    <script type="text/javascript" src="https://rawgithub.com/imazen/slimmage/unstable/slimmage.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/imazen/slimmage/unstable/slimmage.js"></script>
   </body>
 </html>
