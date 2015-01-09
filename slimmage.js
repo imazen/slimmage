@@ -18,6 +18,7 @@
     if (s['widthStep'] === undefined) {         s['widthStep'] = 160;}
     if (s['jpegQuality'] === undefined) {       s['jpegQuality'] = 90;}
     if (s['jpegRetinaQuality'] === undefined) { s['jpegRetinaQuality'] = 80;}
+    s['changed'] = [];
 
     var log = function(){ if (s['verbose'] && w.console && w.console.log) try {w.console.log.apply(w.console,arguments);}catch(e){}};
     s.beginWebPTest = function(){
@@ -177,6 +178,7 @@
         if (result){
           img.src = result['src'];
           img.setAttribute('data-pixel-width',result['data-pixel-width']);
+          s['changed'].push(img);
           log("Slimming: updating " + result['src']);
         } 
     };
@@ -246,9 +248,13 @@
             }
         }
 
+        var changed = s['changed'].slice();
+        s['changed'].length = 0;
+
         //5. Callback when ready
-        if('function' === typeof s['readyCallback']) {
-            s['readyCallback']();
+        if((changed.length > 0 || !s.readyCalled)  && 'function' === typeof s['readyCallback']) {
+            s['readyCallback'](changed);
+            s.readyCalled = true;
         }
         
         log("Slimmage: restored " + newImages + " images from noscript tags; sizing " + totalImages + " images. " + (new Date().getTime() - stopwatch) + "ms");
