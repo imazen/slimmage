@@ -155,7 +155,7 @@ test.elements = function(){
       it('src url should ratchet up to nearest step', function(done) {
         var fix155_src = e.calc_nearest_slim_step(dpr * 155);
         this.browser
-          .elementByClassName('fixedsize_155') // img.max_width == 150px
+          .elementById('fixedsize_155') // img.max_width == 150px
           .getAttribute('src')
           .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix155_src)
           .nodeify(done);
@@ -166,7 +166,7 @@ test.elements = function(){
       it('src url should ratchet up to nearest step', function(done) {
         var fix315_src = e.calc_nearest_slim_step(dpr * 315);
         this.browser
-          .elementByClassName('fixedsize_315') // img.max_width == 315px
+          .elementById('fixedsize_315') // img.max_width == 315px
           .getAttribute('src')
           .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix315_src)
           .nodeify(done);
@@ -179,7 +179,7 @@ test.elements = function(){
        this.browser
           .waitFor(util.asserter(function(t) {
             return t
-              .elementByClassName('halfsize')
+              .elementById('halfsize')
               .getSize()
               .then(function(size) {
                 var a = halfsize - e.body_tollerance;
@@ -194,7 +194,7 @@ test.elements = function(){
         this.browser
           .waitFor(util.asserter(function(t) {
             return t
-              .elementByClassName('halfsize')
+              .elementById('halfsize')
               .getAttribute('src')
               .should.become('http://z.zr.io/ri/1s.jpg?width=' + halfsize_src );
           }), e.explicit_wait) // repeat the above until success or timeout
