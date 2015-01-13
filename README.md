@@ -52,7 +52,11 @@ If you didn't care about non-javascript enabled users, you could drop the inner 
 </noscript>
 ```
 
-## Sample markup with WebP and quality adjustment enabled, console logging disabled.
+## Sample markup with WebP and Quality adjustment
+
+Set  `tryWebP` and `webpTimeout` to enable webp use (and ensure your back-end server has a webp encoder). **webpTimeout** makes the execution order of `checkResponsiveImages` vs other javascript non-deterministic. You should manually call `window.slimmage.checkResponsiveImages()` after any other DOM manipulations are complete.
+
+Quality adjustment is enabled by default if `&quality=` is in the query.
 
 ```html
 <noscript data-slimmage>
@@ -64,7 +68,7 @@ If you didn't care about non-javascript enabled users, you could drop the inner 
 </style>
 
 <script type="text/javascript">
-    window.slimmage = {tryWebP:true, verbose:false};
+    window.slimmage = {tryWebP:true, webpTimeout:50, verbose:false};
 </script>
 <script src="/slimmage.js" ></script>
 ```
@@ -85,14 +89,73 @@ If you didn't care about non-javascript enabled users, you could drop the inner 
 <img lazyload data-slimmage="true" src="http://z.zr.io/ri/1s.jpg?width=100&format=jpg&quality=75" />
 ```
 
+### Configuration reference - `window.slimmage` object
+
+* `verbose` (false) - enables console logging
+* `tryWebP` (false) - runs a webp feature test; if it completes before checkResponsiveImages() runs, webp will be used for all image URLs that have a `&format=jpg` placeholder in the query. 
+* `webpTimeout` (0) - delays `checkResponsiveImages()` (and therefore the loading of all images) by up to the given amount of time, in order to check for webp support before generating image URLs. 50ms is a good value, but anything over 0 will break deterministic execution of Slimmage.js in relation to other javascript on the page. This matters, because some javascript may manupulate the DOM, and affect the sizing of images. `display: none` on a parent, or changing the width of a container are common sources of calculation failures. You can clean up after all javascript is ‘done’ by calling `window.slimmage.checkResponsiveImages();`
+* `maxWidth` (2048) - The maximum pixel width to request for any image.
+* `widthStep` (160) - Caching is impossible unless we limit the number of image variations. The default, 160, gives us `160, 320, 480, 640, 800, 960, 1120, 1280, 1440, 1600, 1760, 1920, 2080(2048)` - 13 variants, and keeps bandwidth waste very low.
+* `jpegQuality` (90) - The jpeg compression quality to use on low-dpr displays ( < 1.5 dppx).
+* `jpegRetinaQuality` (80) - The jpeg compression quality to use on high-dpr displays, where artifacts are much less visible.
+
+### Events and extensibility
+
+Slimmage does not have a listener registration system, as any implementation would double its size. If you want your plugins to co-operate, don’t assume anything about `this`, and call the previous handler if you overwrite it. I.e,
+
+        var oldReady = window.slimmage.readyCallback || function(){};
+        window.slimmage.readyCallback = function(){
+            oldReady();
+
+            //New code here
+        }
+
+#### slimmage.readyCallback(changedElementArray)
+
+`readyCallback` is executed one or more times. The first time `checkResponsiveImages` completes, it is called. It is also called every time a subsequent `checkResponsiveImages` results in changes to image URLs. 
+
+#### slimmage.beforeAdjustSrc
+
+`beforeAdjustSrc` is called during every `checkResponsiveImages()` run, between the extraction of `img` tags from `noscript` wrappers, and the subsequent adjustment of the URLs on those images. This would be a good place to implement support for other element types, such as background images. 
+
+#### slimmage.adjustImageParameters
+
+`adjustImageParameters(data)` is called every time an image is evaluated for updates, and can control the resulting image size, format, and quality. Handlers should be fast. 
+
+`data` is an object with the following read-only members
+
+* `width` - The CSS max-width of the element.
+* `dpr` - window.devicePixelRatio or 1.
+* `src` - the existing URL
+* `element` - the DOM node related to this calculation. May be an image.
+
+And the following read/write members - change these to affect the image URL output.
+
+* `webp` (boolean) defaults to window.slimmage.webp value (set only if tryWebP is true, and tests completed).
+* `quality` - The jpeg or webp compression percentage to use (read/write). The default value is calcualted using `dpr`, `jpegQuality`, and `jpegRetinaQuality`.
+* `requestedWidth` - The image width to request. The default value is calcualted with `dpr`, `maxWidth`, `widthStep`, and `width`(css max-width).
+
+Keep in mind your changes will only take effect if the given image URL *already* defines the corresponding `width=`, `quality=`, and `format=` querystring keys. Slimmage only updates existing keys.
+
+
+### Slimmage callable API methods
+
+`window.slimmage.checkResponsiveImages(delay)` is the most frequently used method. It accepts an optional delay in milliseconds, which allows coalescing rapid-fire events like resize. Call this if you’ve recently added or uncovered an image element in the DOM. (Javascript-based tab widgets usually need to do this).
+
+`window.slimmage.webp` (boolean) - set to `true` or `false` if `tryWebP`=true and test has completed; otherwise undefined.
+
+`window.slimmage.adjustImageSrc(imgElement, previouseSrcValue)` - Immediately processes the given image element and changes its `src` value if neccessary. 
+
+        window.slimmage.adjustImageSrc(img, img.getAttribute("data-src") || img.src);
+
 
 ### Notes
 
 * Slimmage requires "width=[number]" be present in the URL. This value specifies the image size when javascript is disabled, but is modified by slimmage.js under normal circumstances.
 * It can also adjust compression quality based on device pixel ratio, if "quality=[number]" is present.
 * If WebP is enabled, it can automatically detect and request WebP images instead.
-* The final `max-width` applied to the element determines which image file size is downloaded. Unlike earlier versions, a sizing image is not used, and 'width' and 'height' properties are ignored in the selection process.
-* Images are loaded immediately after stylesheets download. Slimmage add 2ms of javascript execution time per image.
+* The final `max-width` applied to the element determines which image file size is downloaded.
+* Images are loaded immediately after stylesheets download. Slimmage adds roughly 2ms of javascript execution time per image.
 * Images added to the page after DOMLoaded will not be detected by Slimmage unless you call `window.slimmage.checkResponsiveImages()` *after* they are on the page. If you use a separate lazy-load or jQuery plugin that modifies images, call checkResponsiveImages() after it completes its work.
 
 **It's a good idea to use a helper method or HTML filter to generate slimmage's required markup. Everything works cross-browser today, but browser vendors have a long and venerable tradition of breaking responsive image solutions.**
@@ -120,7 +183,7 @@ Feel free to fork and add links to your HTML filters/helpers here!
     Add window.slimmage.beforeAdjustSrc callback function - this allows users to inject behavior between noscript parsing and img.src edits.  
     Replace adjustImageSrcWithWidth with getImageInfo, make adjustImageSrc responsible for more. Simplifies certain kinds of extension, such as background image support.
 * 0.2.6 - Fix typo causing ‘undefined’ is null error; affects 0.2.4+. 
-* 0.4.0 - Only fire `window.slimmage.readyCallback` on first `checkResponsiveImages()` and when there have been actual modifications to images.
+* 0.4.0 - Only fire `window.slimmage.readyCallback` on first `checkResponsiveImages()` and when there have been actual modifications to images. Add window.slimmage.webpTimeout to increase likelyhood of webp usage working. Disable verbose output by default. Apply `maxWidth` after `widthStep` instead of before (lowers upper bound from 2080 to 2048). Stop inverting jpeg and webp quality values.
 
 
 ### Contributor notes

@@ -1,5 +1,5 @@
 /**
- * @preserve Slimmage 0.3.0, use with ImageResizer. MIT/Apache2 dual licensed by Imazen 
+ * @preserve Slimmage 0.4.0, use with ImageResizer. MIT/Apache2 dual licensed by Imazen 
  */
 
 /* We often use string instead of dot notation to keep 
@@ -12,7 +12,7 @@
 
     var s =  window['slimmage'] || {};
     window['slimmage'] = s;
-    if (s['verbose'] === undefined) {           s['verbose'] = true;}
+    if (s['verbose'] === undefined) {           s['verbose'] = false;}
     if (s['tryWebP'] === undefined) {           s['tryWebP'] = false;}
     if (s['maxWidth'] === undefined) {          s['maxWidth'] = 2048;}
     if (s['widthStep'] === undefined) {         s['widthStep'] = 160;}
@@ -272,7 +272,7 @@
             s.readyCalled = true;
         }
         
-        log("Slimmage: restored " + newImages + " images from noscript tags; sizing " + totalImages + " images. " + (new Date().getTime() - stopwatch) + "ms");
+        log("Slimmage: restored " + newImages + " images from noscript tags, checked " + totalImages + " images, changed " + changed.length + ". " + (new Date().getTime() - stopwatch) + "ms");
     };
 
     s['checkResponsiveImages'] = s.cr;
