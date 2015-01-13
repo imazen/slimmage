@@ -10,12 +10,15 @@
       img.fixedsize_155 {max-width:155px;}
       img.fixedsize_315 {max-width:315px;}
     </style>
-    <script>
+    <script type="text/javascript">
       window.slimmage = {};
       window.slimmage.tryWebP = true; // Enable WebP (at least give it a try)
       window.slimmage.webpTimeout = 50;
     </script>
     <script type="text/javascript" src="http://rawgit.com/imazen/slimmage/unstable/slimmage.js"></script>
+    <script type="text/javascript">
+        var verifyThisWorks = [window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp];
+    </script>
   </head>
   <body>
     <div id="container">
