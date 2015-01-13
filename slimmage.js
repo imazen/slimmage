@@ -30,6 +30,7 @@
         WebP.onload=WebP.onerror=function(){
             s['webp'] = (WebP.height==2);
             s._testingWebP = false;
+            s.cr();
         };
         WebP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
     };
