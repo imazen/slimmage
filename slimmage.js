@@ -18,6 +18,7 @@
     if (s['widthStep'] === undefined) {         s['widthStep'] = 160;}
     if (s['jpegQuality'] === undefined) {       s['jpegQuality'] = 90;}
     if (s['jpegRetinaQuality'] === undefined) { s['jpegRetinaQuality'] = 80;}
+    if (s['webpTimeout'] === undefined){        s['webpTimeout'] = 0;}
     s['changed'] = [];
 
     var log = function(){ if (s['verbose'] && w.console && w.console.log) try {w.console.log.apply(w.console,arguments);}catch(e){}};
@@ -27,7 +28,8 @@
 
         var WebP=new Image();
         WebP.onload=WebP.onerror=function(){
-            s.webp = (WebP.height==2);
+            s['webp'] = (WebP.height==2);
+            s._testingWebP = false;
         };
         WebP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
     };
@@ -103,15 +105,15 @@
     //Expects virtual, not device pixel width
     s['getImageInfo'] = function (elementWidth, previousSrc, previousPixelWidth, previousElement) {
         var data = {
-            'webp': s.webp,
+            'webp': s['webp'],
             'width': elementWidth,
             'dpr': window.devicePixelRatio || 1,
             'src': previousSrc, 
             'element': previousElement
         };
         //Determine quality percentage
-        var high_density = s.webp ? s['jpegRetinaQuality'] : 65;
-        var low_density = s.webp ? s['jpegQuality'] : 78;
+        var high_density = s['webp'] ? s['jpegRetinaQuality'] : 65;
+        var low_density = s['webp'] ? s['jpegQuality'] : 78;
         data['quality'] = data['dpr'] > 1.49 ? high_density : low_density;
       
         //Calculate raw pixels using devicePixelRatio. Limit size to maxWidth.
@@ -187,6 +189,11 @@
     s.cr = function (delay) {
         if (s.timeoutid > 0) w.clearTimeout(s.timeoutid);
         s.timeoutid = 0;
+
+        if (s._testingWebP && s['webpTimeout'] > 0 && !s.webp_waiting){
+          s.webp_waiting = true;
+          delay = s['webpTimeout'];
+        }
         if (delay && delay > 0) {
             s.timeoutid = w.setTimeout(s.cr, delay);
             return;
