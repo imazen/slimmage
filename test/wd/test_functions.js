@@ -140,7 +140,7 @@ test.elements = function(){
     // Calculate halfsize and halfsize_src
     before(function(done) {
       this.browser
-        .safeExecute('[window.devicePixelRatio || 1,window.slimmage.webp];')
+        .safeExecute('[window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp]')
         .then(function(val){
           dpr = val[0];
           if (dpr > 1.49){
