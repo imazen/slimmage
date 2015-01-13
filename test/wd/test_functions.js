@@ -144,7 +144,7 @@ test.elements = function(){
           dpr = val[0];
           format = val[1] ? "&format=webp" : "&format=jpg";
         })
-        .elementByTagName('body')
+        .elementById('container')
         .getSize()
         .then(function(size) {
           halfsize = size.width/2;
@@ -177,7 +177,7 @@ test.elements = function(){
 
     describe('halfsize', function() {
 
-      it('should be half the width of the body +/-'+ e.win_tollerance +' px',function(done) {
+      it('should be half the width of #container +/-'+ e.win_tollerance +' px',function(done) {
        this.browser
           .waitFor(util.asserter(function(t) {
             return t
