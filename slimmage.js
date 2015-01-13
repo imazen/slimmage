@@ -42,19 +42,18 @@
       if (!val && target.currentStyle){
         val = target.currentStyle[hyphenProp.replace(/([a-z])\-([a-z])/, function(a,b,c){ return b + c.toUpperCase();})] || target.currentStyle[hyphenProp];
       }
-      return val;
+      // Some browsers (IE8, Firefox 28) read "none" when not set. Others (IE6) respond with undefined. A value of
+      // "none" is invalid and would cause an exception or be interpreted as 0.
+      return (val === "none" || val === null || val === undefined) ? null : val;
     };
 
     s.getCssPixels = function(target, hyphenProp){
       var val = s.getCssValue(target,hyphenProp);
 
+      if (val === null || val === "0" || val === 0) return val;
+
       //We can return pixels directly, but not other units
       if (val.slice(-2) == "px") return parseFloat(val.slice(0,-2));
-
-      // Some browsers (IE8, Firefox 28) read "none" when not set. A value of
-      // "none" is invalid and would cause an exception or be interpreted as 0.
-      if (val == "none") val = "";
-
 
       //Create a temporary sibling div to resolve units into pixels.
       var temp = document.createElement("div");
@@ -181,7 +180,7 @@
     s['adjustImageSrc'] = function (img, previousSrc) {
 
         var cssWidth = s.getCssPixels(img, 'max-width');
-        if (cssWidth === 0) { 
+        if (!cssWidth) { 
           cssWidth = s.getCssPixels(img, 'width'); //Fall back to width if max-width is not available (IE6-8 are max-width allergic)
         }
 
