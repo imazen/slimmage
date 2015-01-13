@@ -91,7 +91,7 @@ module.exports = function (grunt) {
           //tunnelArgs: ["--debug"],
           sauceConfig: {
             'record-video': false,
-            tags: [slug, 'slimmage'],
+            tags: [slug, 'unit'],
             'video-upload-on-pass': false,
             build: process.env.TRAVIS_JOB_ID || 0,
           }
