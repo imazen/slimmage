@@ -113,8 +113,8 @@
             'element': previousElement
         };
         //Determine quality percentage
-        var high_density = s['webp'] ? s['jpegRetinaQuality'] : 65;
-        var low_density = s['webp'] ? s['jpegQuality'] : 78;
+        var high_density = s['webp'] ? 65 : s['jpegRetinaQuality'];
+        var low_density = s['webp'] ? 78 : s['jpegQuality'];
         data['quality'] = data['dpr'] > 1.49 ? high_density : low_density;
       
         //Calculate raw pixels using devicePixelRatio. Limit size to maxWidth.

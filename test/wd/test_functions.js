@@ -133,6 +133,7 @@ test.elements = function(){
   var halfsize; // Based on the size of the body tag
   var halfsize_src;
   var format;
+  var quality;
 
   describe('elements',function() {
 
@@ -142,7 +143,12 @@ test.elements = function(){
         .safeExecute('[window.devicePixelRatio || 1,window.slimmage.webp];')
         .then(function(val){
           dpr = val[0];
-          format = val[1] ? "&format=webp" : "&format=jpg";
+          if (dpr > 1.49){
+            quality = val[1] ? 65 : 80;
+          }else{
+            quality = val[1] ? 78 : 90;
+          }
+          format = val[1] ? "&format=webp&quality=" + quality : "&format=jpg&quality=" + quality;
         })
         .elementById('container')
         .getSize()
