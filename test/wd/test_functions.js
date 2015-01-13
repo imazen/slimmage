@@ -132,15 +132,17 @@ test.elements = function(){
   var dpr;
   var halfsize; // Based on the size of the body tag
   var halfsize_src;
+  var format;
 
   describe('elements',function() {
 
     // Calculate halfsize and halfsize_src
     before(function(done) {
       this.browser
-        .safeExecute('window.devicePixelRatio || 1;')
+        .safeExecute('[window.devicePixelRatio || 1,window.slimmage.webp];')
         .then(function(val){
-          dpr = val;
+          dpr = val[0];
+          format = val[1] ? "&format=webp" : "&format=jpg";
         })
         .elementByTagName('body')
         .getSize()
@@ -157,7 +159,7 @@ test.elements = function(){
         this.browser
           .elementById('fixedsize_155') // img.max_width == 150px
           .getAttribute('src')
-          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix155_src)
+          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix155_src + format)
           .nodeify(done);
       });
     });
@@ -168,7 +170,7 @@ test.elements = function(){
         this.browser
           .elementById('fixedsize_315') // img.max_width == 315px
           .getAttribute('src')
-          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix315_src)
+          .should.become('http://z.zr.io/ri/1s.jpg?width=' + fix315_src+ format)
           .nodeify(done);
       });
     });
@@ -196,7 +198,7 @@ test.elements = function(){
             return t
               .elementById('halfsize')
               .getAttribute('src')
-              .should.become('http://z.zr.io/ri/1s.jpg?width=' + halfsize_src );
+              .should.become('http://z.zr.io/ri/1s.jpg?width=' + halfsize_src + format);
           }), e.explicit_wait) // repeat the above until success or timeout
           .nodeify(done);
       });
