@@ -118,9 +118,14 @@
         data['quality'] = data['dpr'] > 1.49 ? high_density : low_density;
       
         //Calculate raw pixels using devicePixelRatio. Limit size to maxWidth.
-        var proposedWidth = Math.min(s['maxWidth'], elementWidth * data['dpr']); 
+        var idealWidth = elementWidth * data['dpr']; 
         //Minimize variants for caching improvements; round up to nearest multiple of widthStep
-        data['requestedWidth'] = Math.round(Math.ceil(proposedWidth / s['widthStep']) * s['widthStep']); //Will limit to 13 variations
+        data['requestedWidth'] = Math.min(s['maxWidth'], //Limit size to maxWidth
+                                  Math.round( //Round in case widthStep isn't an integer
+                                    Math.ceil(idealWidth / s['widthStep']) * s['widthStep'] //Divide, ceiling, then multiply
+                                            )
+                                          );
+
 
         var a = s['adjustImageParameters'];
         if (a && typeof(a) === "function") {
