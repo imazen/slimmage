@@ -10,11 +10,17 @@
       img.fixedsize_155 {max-width:155px;}
       img.fixedsize_315 {max-width:315px;}
     </style>
-    <script type="text/javascript">
-      window.slimmage = {};
-      window.slimmage.tryWebP = true; // Enable WebP (at least give it a try)
-      window.slimmage.webpTimeout = 50;
-    </script>
+    <![if lt IE 8]> 
+      <style type="text/css">
+        img.halfsize {width:50%;}
+        img.fixedsize_100 {width:100px}
+        img.fixedsize_200 {width:200px}
+      </style>
+    <![endif]>
+    <![if IE 8]> 
+        .halfsize, .fixedsize_100, .fixedsize_200{width:auto;height:auto;}
+    <![endif]>
+
     <script type="text/javascript" src="http://rawgit.com/imazen/slimmage/unstable/slimmage.js"></script>
     <script type="text/javascript">
         var verifyThisWorks = [window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp];
