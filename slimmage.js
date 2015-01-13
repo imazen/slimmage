@@ -31,6 +31,8 @@
         };
         WebP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
     };
+    //test for webp support ASAP
+    s.beginWebPTest();
    
     s.getCssValue = function(target, hyphenProp){
       var val = typeof(window.getComputedStyle) != "undefined" && window.getComputedStyle(target, null).getPropertyValue(hyphenProp);
@@ -273,6 +275,5 @@
     } else if (w.attachEvent) {
         w.attachEvent("onload", s.cr);
     }
-    //test for webp support
-    s.beginWebPTest();
+    
 }(this));
