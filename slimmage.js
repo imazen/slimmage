@@ -36,8 +36,8 @@
     };
     //test for webp support ASAP
     s.beginWebPTest();
-   
-    s.getCssValue = function(target, hyphenProp){
+
+    s['getCssValue'] = function(target, hyphenProp){
       var val = typeof(window.getComputedStyle) != "undefined" && window.getComputedStyle(target, null).getPropertyValue(hyphenProp);
       if (!val && target.currentStyle){
         val = target.currentStyle[hyphenProp.replace(/([a-z])\-([a-z])/, function(a,b,c){ return b + c.toUpperCase();})] || target.currentStyle[hyphenProp];
@@ -47,8 +47,8 @@
       return (val === "none" || val === null || val === undefined) ? null : val;
     };
 
-    s.getCssPixels = function(target, hyphenProp){
-      var val = s.getCssValue(target,hyphenProp);
+    s['getCssPixels'] = function(target, hyphenProp){
+      var val = s['getCssValue'](target,hyphenProp);
 
       if (val === null || val === "0" || val === 0) return val;
 
@@ -179,10 +179,10 @@
     };
     s['adjustImageSrc'] = function (img, previousSrc) {
 
-        var cssMaxWidth = s.getCssPixels(img, 'max-width');
-        var result = s['getImageInfo'](cssMaxWidth, 
-                                       previousSrc, 
-                                       img.getAttribute('data-pixel-width') | 0, 
+        var cssMaxWidth = s['getCssPixels'](img, 'max-width');
+        var result = s['getImageInfo'](cssMaxWidth,
+                                       previousSrc,
+                                       img.getAttribute('data-pixel-width') | 0,
                                        img);
         
         if (result){
