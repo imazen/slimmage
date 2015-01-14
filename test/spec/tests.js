@@ -68,7 +68,7 @@ describe('slimmage', function () {
       // our spy should have been called as a result, in this case, only once
       expect(s.adjustImageSrc.calledOnce).to.be(true);
 
-      s.adjustImageSrc.restore(); 
+      s.adjustImageSrc.restore();
     });
 
     it('should call beforeAdjustSrc', function(){
@@ -78,7 +78,7 @@ describe('slimmage', function () {
       };
 
       sinon.spy(s, "beforeAdjustSrc");
-      
+
       //act - call parent 'calling' function
       s.checkResponsiveImages();
 
@@ -94,7 +94,7 @@ describe('slimmage', function () {
     it('should only affect the querystring', function(){
       var result = s.mutateUrl(
         "path?a=true&b=false#hash",
-        function(){}, 
+        function(){},
         function(p, d, k, v){
           return d + k + "=cats";
         }, function(q){return q;});
@@ -106,7 +106,7 @@ describe('slimmage', function () {
     it('should clean up delimiters', function(){
       var result = s.mutateUrl(
         "path?&a=true&&b=false#hash",
-        function(){}, 
+        function(){},
         function(p, d, k, v){
           return (k && v) ? ('&' + d + k + "=cats") : '';
         }, function(q){return q;});
@@ -115,7 +115,7 @@ describe('slimmage', function () {
     });
   });
   describe('getImageInfo', function(){
-    
+
     it('should call adjustImageParameters with valid data', function(){
 
       s.adjustImageParameters = function(data){
@@ -128,7 +128,7 @@ describe('slimmage', function () {
       };
 
       sinon.spy(s, "adjustImageParameters");
-      
+
       //act
       var result = s.getImageInfo(100,"http://z.zr.io/ri/1s.jpg?width=150",0);
 
@@ -179,6 +179,45 @@ describe('slimmage', function () {
       var result = s.getImageInfo(100/dpr,"im?width=16&height=9&zoom=2",0);
       expect(result['data-pixel-width']).to.be(160); //160px is the bitmap width we request
       expect(result.src).to.be("im?width=80&height=45&zoom=2"); //But only because how zoom is interpreted.
+    });
+
+  });
+
+    // s.getCssValue = function(target, hyphenProp){
+    //   var val = typeof(window.getComputedStyle) != "undefined" && window.getComputedStyle(target, null).getPropertyValue(hyphenProp);
+    //   if (!val && target.currentStyle){
+    //     val = target.currentStyle[hyphenProp.replace(/([a-z])\-([a-z])/, function(a,b,c){ return b + c.toUpperCase();})] || target.currentStyle[hyphenProp];
+    //   }
+    //   // Some browsers (IE8, Firefox 28) read "none" when not set. Others (IE6) respond with undefined. A value of
+    //   // "none" is invalid and would cause an exception or be interpreted as 0.
+    //   return (val === "none" || val === null || val === undefined) ? null : val;
+    // };
+
+  describe('getCssValue', function() {
+    before(function(done) {
+      this.HTML_VALUE = /[0-9.]+(em|px|%|cm|in)/;
+      this.fixtures = [];
+      this.fixtures_css_value = [];
+
+      this.fixtures.push(document.getElementById('twenty_px'));
+      this.fixtures.push(document.getElementById('twenty_per'));
+      this.fixtures.push(document.getElementById('two_em'));
+      this.fixtures.push(document.getElementById('two_cm'));
+      this.fixtures.push(document.getElementById('two_in'));
+
+      for (var i = 0, len = this.fixtures.length; i < len; i++) {
+        this.fixtures_css_value[i] = s.getCssValue(this.fixtures[i], 'max-width');
+      }
+
+      done();
+    });
+
+    it('should return a numeric value for max-width',function() {
+
+      for (var i = 0, len = this.fixtures.length; i < len; i++) {
+        console.log(this.fixtures_css_value[i]);
+        expect(this.fixtures_css_value[i]).to.match(this.HTML_VALUE);
+      }
     });
 
   });
