@@ -26,11 +26,12 @@
     <script type="text/javascript" src="http://rawgit.com/imazen/slimmage/unstable/slimmage.js"></script>
     <script type="text/javascript">
         var verifyThisWorks = [window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp];
-        var half = document.getElementById("halfsize");
-        var out = document.getElementById("output");
+
         var s = window.slimmage;
 
         slimmage.readyCallback = function(){
+          var half = document.getElementById("halfsize");
+          var out = document.getElementById("output");
           out.innerHTML =  "img.halfsize width: " + s.getCssPixels(hi, "width") + "px (" + s.getCssValue(hi, "width") + ") <br />maxwidth: " + s.getCssPixels(hi, "max-width") + "px (" + s.getCssValue(hi, "max-width") + ")";
         };
     </script>
