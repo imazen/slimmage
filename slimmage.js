@@ -184,7 +184,7 @@
           cssWidth = s.getCssPixels(img, 'width'); //Fall back to width if max-width is not available (IE6-8 are max-width allergic)
         }
 
-        var result = s['getImageInfo'](s.getCssPixels(img, 'max-width'), 
+        var result = s['getImageInfo'](cssWidth, 
                                        previousSrc, 
                                        img.getAttribute('data-pixel-width') | 0, 
                                        img);
