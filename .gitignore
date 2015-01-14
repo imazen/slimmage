@@ -7,3 +7,4 @@ node_modules/
 gittest/
 /slimmage.min.js
 /slimmage.min.js.gz
+test/bs-config.js
