@@ -122,7 +122,7 @@ describe('slimmage', function () {
         expect(data.width).to.be.above(10);
         expect(data.src).to.be("http://z.zr.io/ri/1s.jpg?width=150");
         expect(data.dpr).to.be.within(1,3);
-        expect(data.requestedWidth).to.be(160 * data.dpr);
+        expect(data.requestedWidth).to.be(Math.round(Math.ceil(100 * data.dpr / 160) * 160));
         expect(data.quality).to.be.within(10,100);
         data.requestedWidth=200;
       };
