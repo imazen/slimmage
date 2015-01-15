@@ -205,6 +205,17 @@ describe('slimmage', function () {
       expect(s.getCssPixels($id('two_in'), 'max-width')).to.be(192);
     });
 
+
+    it ('should return 20% of parent width (+/- 5px) for twenty_per', function(){
+      var parentWidth = $id('twenty_per').parentNode.offsetWidth;
+      expect(parentWidth).to.be.above(1);
+
+
+      expect(s.getCssPixels($id('twenty_per'), 'max-width')).to.be.within(parentWidth /5 - 5, parentWidth/5 + 5);
+    });
+
+
+
     var makeTestFn = function(id){
      it('should return a decimal number for the max-width of #' + id,function(){
         var value = s.getCssPixels($id(id), 'max-width');
