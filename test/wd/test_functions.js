@@ -20,6 +20,14 @@ test.desktop = function() {
   });
 };
 
+test.desktop_ie = function() {
+  describe('desktop (IE 6/7)',function() {
+    test.desktopPage.call(this, e.pages.normal, true);
+    test.desktopPage.call(this, e.pages.webp, true);
+  });
+};
+
+
 test.mobile = function() {
   test.mobilePage.call(this, e.pages.normal);
   test.mobilePage.call(this, e.pages.webp);
@@ -29,12 +37,12 @@ test.mobile = function() {
 //---    Desktop specific                                                ---
 //--------------------------------------------------------------------------
 
-test.desktopPage = function(page) {
+test.desktopPage = function(page, is_ie) {
   test.changeWindowSize.call(this, e.desktop.medium.size );
   test.loadPage.call(this, page );
-  test.elements.call(this, e.desktop.medium );
+  test.elements.call(this, e.desktop.medium,is_ie);
   test.changeWindowSize.call(this, e.desktop.large.size );
-  test.elements.call(this, e.desktop.large );
+  test.elements.call(this, e.desktop.large,is_ie);
 };
 
 test.changeWindowSize = function(size) {
@@ -128,8 +136,8 @@ test.loadPage = function(page_details) {
   });
 };
 
-test.elements = function(){
-  var dpr;
+test.elements = function(is_ie){
+  var dpr = 1;
   var halfsize; // Based on the size of the body tag
   var halfsize_src;
   var format;
@@ -139,18 +147,26 @@ test.elements = function(){
 
     // Calculate halfsize and halfsize_src
     before(function(done) {
-      this.browser
-        .safeExecute('[window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp]')
-        .then(function(val){
-          dpr = val[0];
-          if (dpr > 1.49){
-            quality = val[1] ? 65 : 80;
-          }else{
-            quality = val[1] ? 78 : 90;
-          }
-          format = val[1] ? "&format=webp&quality=" + quality : "&format=jpg&quality=" + quality;
-        })
-        .elementById('container')
+      var chain = this.browser;
+      if (is_ie){
+        dpr = 1;
+        quality = 90;
+        format="&format=jpg&quality=90";
+      }else{
+        chain = chain
+          .safeExecute('[window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp]')
+          .then(function(val){
+            dpr = val[0];
+            if (dpr > 1.49){
+              quality = val[1] ? 65 : 80;
+            }else{
+              quality = val[1] ? 78 : 90;
+            }
+            format = val[1] ? "&format=webp&quality=" + quality : "&format=jpg&quality=" + quality;
+          });
+      }
+
+      chain.elementById('container')
         .getSize()
         .then(function(size) {
           halfsize = size.width/2;
