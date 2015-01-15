@@ -85,7 +85,8 @@ module.exports = function (grunt) {
           browsers: _.values(unit_browsers),
           build: process.env.TRAVIS_JOB_ID,
           pollInterval: 2000, // timeout
-          maxRetries: 5,
+          maxRetries: 1,
+          maxPollRetries: 1,
           testname: title,
           throttled: 3, // how many browses to be run in parallel
           //tunnelArgs: ["--debug"],
