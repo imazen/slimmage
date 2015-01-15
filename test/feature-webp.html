@@ -16,7 +16,14 @@
       window.slimmage.tryWebP = true; // Enable WebP (at least give it a try)
       window.slimmage.webpTimeout = 50;
     </script>
-    <!-- Code to test -->
+
+    <!--[if lte IE 8]> 
+      <script type="text/javascript">
+        //IE 8 and below need help with max-width
+        window.slimmage.enforceCss = true;
+      </script>
+    <![endif]-->
+    
     <script type="text/javascript" src="../slimmage.min.js"></script>
   </head>
   <body>

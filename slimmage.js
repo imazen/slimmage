@@ -197,6 +197,12 @@
         if (result){
           img.src = result['src'];
           img.setAttribute('data-pixel-width',result['data-pixel-width']);
+          if (s['enforceCss'] && cssMaxWidth < result['data-pixel-width']){
+            img.style.width = s['getCssValue'](img,'max-width'); 
+            img.setAttribute('data-width-enforced',true);
+          }else if (img.getAttribute('data-width-enforced')){
+            img.style.width = 'auto';
+          }
           s['changed'].push(img);
           log("Slimming: updating " + result['src']);
         } 
