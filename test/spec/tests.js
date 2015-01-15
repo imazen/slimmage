@@ -183,42 +183,44 @@ describe('slimmage', function () {
 
   });
 
-    // s.getCssValue = function(target, hyphenProp){
-    //   var val = typeof(window.getComputedStyle) != "undefined" && window.getComputedStyle(target, null).getPropertyValue(hyphenProp);
-    //   if (!val && target.currentStyle){
-    //     val = target.currentStyle[hyphenProp.replace(/([a-z])\-([a-z])/, function(a,b,c){ return b + c.toUpperCase();})] || target.currentStyle[hyphenProp];
-    //   }
-    //   // Some browsers (IE8, Firefox 28) read "none" when not set. Others (IE6) respond with undefined. A value of
-    //   // "none" is invalid and would cause an exception or be interpreted as 0.
-    //   return (val === "none" || val === null || val === undefined) ? null : val;
-    // };
+  var css_ids = ['twenty_px','twenty_per','two_em','two_cm','two_in'];
+  var css_value_pattern = /[0-9.]+(em|px|%|cm|in)/;
+  var decimal_pattern = /[0-9.]+/;
+  var $id = function(id){return document.getElementById(id);};
+
+   describe('getCssPixels', function() {
+    it ('should return 20 for 20px', function(){
+      expect(s.getCssPixels($id('twenty_px'), 'max-width')).to.be(20);
+    });
+    
+    var makeTestFn = function(id){
+     it('should return a decimal number for the max-width of #' + id,function(){
+        var value = s.getCssPixels($id(id), 'max-width');
+        console.log("getCssPixels(#" + id + ", 'max-width') => " + value);
+        expect(value).to_=.match(decimal_pattern);
+      });
+    };
+
+    for (var i = 0; i < css_ids.length; i++) {
+      makeTestFn.call(this,css_ids[i]);
+    }
+
+
+  });
 
   describe('getCssValue', function() {
-    before(function(done) {
-      this.HTML_VALUE = /[0-9.]+(em|px|%|cm|in)/;
-      this.fixtures = [];
-      this.fixtures_css_value = [];
 
-      this.fixtures.push(document.getElementById('twenty_px'));
-      this.fixtures.push(document.getElementById('twenty_per'));
-      this.fixtures.push(document.getElementById('two_em'));
-      this.fixtures.push(document.getElementById('two_cm'));
-      this.fixtures.push(document.getElementById('two_in'));
+    var makeTestFn = function(id){
+     it('should return a css value for the max-width of #' + id,function(){
+        var value = s.getCssValue($id(id), 'max-width');
+        console.log("getCssValue(#" + id + ", 'max-width') => " + value);
+        expect(value).to.match(css_value_pattern);
+      });
+    };
 
-      for (var i = 0, len = this.fixtures.length; i < len; i++) {
-        this.fixtures_css_value[i] = s.getCssValue(this.fixtures[i], 'max-width');
-      }
-
-      done();
-    });
-
-    it('should return a numeric value for max-width',function() {
-
-      for (var i = 0, len = this.fixtures.length; i < len; i++) {
-        console.log(this.fixtures_css_value[i]);
-        expect(this.fixtures_css_value[i]).to.match(this.HTML_VALUE);
-      }
-    });
+    for (var i = 0; i < css_ids.length; i++) {
+      makeTestFn.call(this,css_ids[i]);
+    }
 
   });
 
