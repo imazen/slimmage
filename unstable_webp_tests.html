@@ -5,26 +5,29 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
     <style type="text/css">
       img.halfsize      {max-width:50%;}
       img.fixedsize_155 {max-width:155px;}
       img.fixedsize_315 {max-width:315px;}
     </style>
 
+    <script>
+      window.slimmage = {};
+      window.slimmage.tryWebP = true; // Enable WebP (at least give it a try)
+      window.slimmage.webpTimeout = 50;
+    </script>
 
-    <!-- IE 8 and below are max-width allergic -->
     <!--[if lte IE 8]> 
       <script type="text/javascript">
-      window.slimmage = {enforceCss:true};
+        //IE 8 and below need help with max-width
+        window.slimmage.enforceCss = true;
       </script>
     <![endif]-->
-
+    
     <script type="text/javascript" src="http://rawgit.com/imazen/slimmage/unstable/slimmage.js"></script>
-    <script type="text/javascript">
-        var verifyThisWorks = [window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp];
 
-        var s = window.slimmage;
+    <script>
+            var s = window.slimmage;
 
         slimmage.readyCallback = function(){
           var half = document.getElementById("halfsize");
@@ -52,7 +55,7 @@
         <img id="fixedsize_315" class="fixedsize_315" src="http://z.zr.io/ri/1s.jpg?width=150&amp;format=jpg&amp;quality=90" />
       </noscript>
     </div>
-
     <div id="output"></div>
+
   </body>
 </html>
