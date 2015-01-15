@@ -193,10 +193,21 @@ describe('slimmage', function () {
       expect(s.getCssPixels($id('twenty_px'), 'max-width')).to.be(20);
     });
 
+    it ('should return 32 for two_em', function(){
+      expect(s.getCssPixels($id('two_em'), 'max-width')).to.be(32);
+    });
+
+    it ('should return 76 +/- 1 for two_cm', function(){
+      expect(s.getCssPixels($id('two_cm'), 'max-width')).to.be.within(75,77);
+    });
+
+    it ('should return 192 for two_in', function(){
+      expect(s.getCssPixels($id('two_in'), 'max-width')).to.be(192);
+    });
+
     var makeTestFn = function(id){
      it('should return a decimal number for the max-width of #' + id,function(){
         var value = s.getCssPixels($id(id), 'max-width');
-        console.log("getCssPixels(#" + id + ", 'max-width') => " + value);
         expect(value).to.match(decimal_pattern);
       });
     };
@@ -213,7 +224,6 @@ describe('slimmage', function () {
     var makeTestFn = function(id){
      it('should return a css value for the max-width of #' + id,function(){
         var value = s.getCssValue($id(id), 'max-width');
-        console.log("getCssValue(#" + id + ", 'max-width') => " + value);
         expect(value).to.match(css_value_pattern);
       });
     };
