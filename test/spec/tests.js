@@ -192,12 +192,12 @@ describe('slimmage', function () {
     it ('should return 20 for 20px', function(){
       expect(s.getCssPixels($id('twenty_px'), 'max-width')).to.be(20);
     });
-    
+
     var makeTestFn = function(id){
      it('should return a decimal number for the max-width of #' + id,function(){
         var value = s.getCssPixels($id(id), 'max-width');
         console.log("getCssPixels(#" + id + ", 'max-width') => " + value);
-        expect(value).to_=.match(decimal_pattern);
+        expect(value).to.match(decimal_pattern);
       });
     };
 
