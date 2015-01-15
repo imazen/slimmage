@@ -36,15 +36,24 @@
     };
     //test for webp support ASAP
     s.beginWebPTest();
-
+    
+    s.is_blank = function(v){ return v === "none" || v === null || v === undefined || v === "" || v === false;};
     s['getCssValue'] = function(target, hyphenProp){
+      //See http://www.nathanaeljones.com/blog/2013/reading-max-width-cross-browser
+
       var val = typeof(window.getComputedStyle) != "undefined" && window.getComputedStyle(target, null).getPropertyValue(hyphenProp);
-      if (!val && target.currentStyle){
+
+      // Some browsers (IE8, Firefox 28) read "none" when not set. Others (IE6) respond with undefined. A value of
+      // "none" is invalid and would cause an exception or be interpreted as 
+      if (!s.is_blank(val)){ 
+        return val; 
+      }
+
+      if (target.currentStyle){
         val = target.currentStyle[hyphenProp.replace(/([a-z])\-([a-z])/, function(a,b,c){ return b + c.toUpperCase();})] || target.currentStyle[hyphenProp];
       }
-      // Some browsers (IE8, Firefox 28) read "none" when not set. Others (IE6) respond with undefined. A value of
-      // "none" is invalid and would cause an exception or be interpreted as 0.
-      return (val === "none" || val === null || val === undefined) ? null : val;
+      
+      return s.is_blank(val) ? null : val;
     };
 
     s['getCssPixels'] = function(target, hyphenProp){
