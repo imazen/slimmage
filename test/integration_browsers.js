@@ -34,6 +34,13 @@ module.exports = {
        'screen-resolution': '1024x768'
     },
 
+    chrome28: {
+       platform: 'linux',
+       browserName: 'chrome',
+       version: '28',
+       'screen-resolution': '1024x768'
+    },
+
     explorer7: {
        platform: 'Windows XP',
        browserName: 'internet explorer',
