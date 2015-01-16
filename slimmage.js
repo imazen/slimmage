@@ -208,6 +208,8 @@
         } 
     };
     s.cr = function (delay) {
+        var i, il, j, jl, k, kl;
+
         if (s.timeoutid > 0) w.clearTimeout(s.timeoutid);
         s.timeoutid = 0;
 
@@ -224,7 +226,7 @@
         var newImages = 0;
         //1. Copy images out of noscript tags, but hide 'src' attribute as data-src
         var n = s.nodesToArray(w.document.getElementsByTagName("noscript"));
-        for (var i = 0, il = n.length; i < il; i++) {
+        for (i = 0, il = n.length; i < il; i++) {
             var ns = n[i];
             if (ns.getAttribute("data-slimmage") !== null) {
                 
@@ -247,7 +249,7 @@
                 }
                 //Clear source values before we add it back to the dom, ensure data-slimmage is set.
                 var childImages = div.getElementsByTagName("img");
-                for (var j = 0, jl = childImages.length; j < jl; j++) {
+                for (j = 0, jl = childImages.length; j < jl; j++) {
                     var ci = childImages[j];
                     if (ci.src !== null && ci.src.length > 0) {
                         ci.setAttribute("data-src", ci.src);
@@ -270,7 +272,7 @@
         //4. Find images with data-slimmage and run adjustImageSrc.
         var totalImages = 0;
         var images = s.nodesToArray(w.document.getElementsByTagName("img"));
-        for (var k = 0, kl = images.length; k < kl; k++) {
+        for (k = 0, kl = images.length; k < kl; k++) {
             if (images[k].getAttribute("data-slimmage") !== null) {
                 var previousSrc = images[k].getAttribute("data-src") || images[k].src;
                 s['adjustImageSrc'](images[k], previousSrc);
