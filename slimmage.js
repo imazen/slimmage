@@ -36,7 +36,19 @@
     };
     //test for webp support ASAP
     s.beginWebPTest();
-    
+
+    s.setAttr = function(elem, name, value){
+      name = name.toLowerCase();
+      if (name == "class"){ elem.className = value;}
+      else if (name == "tabindex") {elem.tabIndex = value;}
+      else if (name == "usemap") {elem.useMap = value;}
+      else{
+        elem.setAttribute(name,value);
+      }
+      
+    };
+    s['setAttribute'] = s.setAttr;
+
     s.is_blank = function(v){ return v === "none" || v === null || v === undefined || v === "" || v === false;};
     s['getCssValue'] = function(target, hyphenProp){
       //See http://www.nathanaeljones.com/blog/2013/reading-max-width-cross-browser
@@ -196,10 +208,10 @@
         
         if (result){
           img.src = result['src'];
-          img.setAttribute('data-pixel-width',result['data-pixel-width']);
+          s.setAttr(img,'data-pixel-width',result['data-pixel-width']);
           if (s['enforceCss'] && cssMaxWidth < result['data-pixel-width']){
             img.style.width = s['getCssValue'](img,'max-width'); 
-            img.setAttribute('data-width-enforced',true);
+            s.setAttr(img,'data-width-enforced',true);
           }else if (img.getAttribute('data-width-enforced')){
             img.style.width = 'auto';
           }
@@ -238,7 +250,7 @@
                     for (var ai = 0; ai < ns.attributes.length; ai++) {
                         var a = ns.attributes[ai];
                         if (a && a.specified && a.name.indexOf("data-img-") === 0){
-                            img.setAttribute(a.name.slice(9 - a.name.length),a.value);
+                            s.setAttr(img,a.name.slice(9 - a.name.length),a.value);
                         }
                     }
                     div.appendChild(img);
@@ -252,10 +264,10 @@
                 for (j = 0, jl = childImages.length; j < jl; j++) {
                     var ci = childImages[j];
                     if (ci.src !== null && ci.src.length > 0) {
-                        ci.setAttribute("data-src", ci.src);
+                        s.setAttr(ci,"data-src", ci.src);
                         ci.src = "";
                     }
-                    ci.setAttribute("data-slimmage", true);
+                    s.setAttr(ci,"data-slimmage", true);
                     ns.parentNode.insertBefore(ci, ns);
                     newImages++;
                 }

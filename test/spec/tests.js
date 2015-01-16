@@ -245,4 +245,41 @@ describe('slimmage', function () {
 
   });
 
+  describe('setAttribute', function(){
+
+
+
+    it('should copy the class attribute',function(){
+      var div = document.createElement("div");
+      s.setAttribute(div, "class", "t" );
+      expect(div.className).to.be("t");
+    });
+
+    it('should copy the id attribute',function(){
+      var div = document.createElement("div");
+      s.setAttribute(div, "id", "t" );
+      expect(div.id).to.be("t");
+    });
+
+    it('should copy the src attribute',function(){
+      var img = document.createElement("img");
+      s.setAttribute(img, "src", "http://example.com/i.jpg" );
+      expect(img.src).to.be("http://example.com/i.jpg");
+    });
+
+
+    it('should copy the usemap attribute',function(){
+      var img = document.createElement("img");
+      s.setAttribute(img, "usemap", "http://example.com/map" );
+      expect(img.useMap).to.be("http://example.com/map");
+    });
+
+    it('should copy the tabIndex attribute',function(){
+      var div = document.createElement("div");
+      s.setAttribute(div, "tabindex", "10" );
+      expect(div.tabIndex).to.be(10);
+    });
+
+  });
+
 });
