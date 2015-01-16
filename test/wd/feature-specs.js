@@ -31,7 +31,7 @@ describe('slimmage', function() {
       .sessionCapabilities()
       .then(function(caps) {
 
-        if (/iphone|ipad/i.test(caps.deviceName) || /android/i.test(caps.browserName) ) {
+        if (/iphone|ipad|android/i.test(caps.deviceName) || /ipad|iphone|android/i.test(caps.browserName) ) {
 
           console.log('This is a mobile device - ' + caps.deviceName);
           tests_to_call = test.mobile;
