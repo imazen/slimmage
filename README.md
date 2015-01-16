@@ -15,7 +15,7 @@ Your wait for a sane, easily managed path to responsive images has now ended.
 
 Handles any viewport size and pixel density with ease. Yes, retina and retina-like displays are supported.
 
-Our automated tests from the last API call - these may not even been a public commit - are below. Click to browse.
+Our automated tests from the last API call - these may not even been a public commit - are below. Click to browse. IE6/7/8 *do* work, but not all features are supported. Please help us improve our automated tests and turn IE6/7/8 green!
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/imazen.svg)](https://saucelabs.com/u/imazen)
 
 
@@ -98,6 +98,7 @@ Quality adjustment is enabled by default if `&quality=` is in the query.
 * `widthStep` (160) - Caching is impossible unless we limit the number of image variations. The default, 160, gives us `160, 320, 480, 640, 800, 960, 1120, 1280, 1440, 1600, 1760, 1920, 2080(2048)` - 13 variants, and keeps bandwidth waste very low.
 * `jpegQuality` (90) - The jpeg compression quality to use on low-dpr displays ( < 1.5 dppx).
 * `jpegRetinaQuality` (80) - The jpeg compression quality to use on high-dpr displays, where artifacts are much less visible.
+* `enforceCss` (false) **ALPHA** - Sets img.style.width to max the pixel value of the css `max-width` every time the img.src value is also updated. Only useful for emulating max-width on IE6/7/8, enable via conditional comments. 
 
 ### Events and extensibility
 
@@ -183,7 +184,7 @@ Feel free to fork and add links to your HTML filters/helpers here!
     Add window.slimmage.beforeAdjustSrc callback function - this allows users to inject behavior between noscript parsing and img.src edits.  
     Replace adjustImageSrcWithWidth with getImageInfo, make adjustImageSrc responsible for more. Simplifies certain kinds of extension, such as background image support.
 * 0.2.6 - Fix typo causing ‘undefined’ is null error; affects 0.2.4+. 
-* 0.4.0 - Only fire `window.slimmage.readyCallback` on first `checkResponsiveImages()` and when there have been actual modifications to images. Add window.slimmage.webpTimeout to increase likelyhood of webp usage working. Disable verbose output by default. Apply `maxWidth` after `widthStep` instead of before (lowers upper bound from 2080 to 2048). Stop inverting jpeg and webp quality values.
+* 0.4.0 - Only fire `window.slimmage.readyCallback` on first `checkResponsiveImages()` and when there have been actual modifications to images. Add window.slimmage.webpTimeout to increase likelyhood of webp usage working. Disable verbose output by default. Apply `maxWidth` after `widthStep` instead of before (lowers upper bound from 2080 to 2048). Stop inverting jpeg and webp quality values. Fix IE6/7 setAttribute bug; class value was not copied from noscript element. Add `window.slimmage.enforceCSS` setting; can emulate max-width on IE6/7/8, which lack an implementation.
 
 
 ### Contributor notes
