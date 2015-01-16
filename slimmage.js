@@ -1,5 +1,5 @@
 /**
- * @preserve Slimmage 0.4.0, use with ImageResizer. MIT/Apache2 dual licensed by Imazen 
+ * @preserve Slimmage 0.4.1, use with ImageResizer. MIT/Apache2 dual licensed by Imazen 
  */
 
 /* We often use string instead of dot notation to keep 
@@ -209,15 +209,24 @@
         if (result){
           img.src = result['src'];
           s.setAttr(img,'data-pixel-width',result['data-pixel-width']);
-          if (s['enforceCss'] && cssMaxWidth < result['data-pixel-width']){
-            img.style.width = s['getCssValue'](img,'max-width'); 
-            s.setAttr(img,'data-width-enforced',true);
-          }else if (img.getAttribute('data-width-enforced')){
-            img.style.width = 'auto';
+          if (s['enforceCss']){
+            if (cssMaxWidth < result['data-pixel-width']){
+              img.style.width = s['getCssValue'](img,'max-width'); 
+              s.setAttr(img,'data-width-enforced',true);
+            }else{
+              img.style.width = 'auto';
+            }
           }
           s['changed'].push(img);
           log("Slimming: updating " + result['src']);
-        } 
+        }else if (s['enforceCss'] && img.getAttribute('data-width-enforced')){
+          var imageWidth = parseFloat(img.getAttribute('data-pixel-width'));
+          if (!isNaN(imageWidth) && cssMaxWidth >= imageWidth){
+            img.style.width = 'auto';
+            img.removeAttribute('data-width-enforced');
+          }
+        }
+
     };
     s.cr = function (delay) {
         var i, il, j, jl, k, kl;
@@ -316,6 +325,7 @@
         w.addEventListener("load", s.cr, false);
     } else if (w.attachEvent) {
         w.attachEvent("onload", s.cr);
+        w.attachEvent("onresize",  function () { s.cr(500); });
     }
     
 }(this));
