@@ -31,9 +31,18 @@ describe('slimmage', function() {
       .sessionCapabilities()
       .then(function(caps) {
 
-        if (/iphone|ipad|android/i.test(caps.deviceName) || /ipad|iphone|android/i.test(caps.browserName) ) {
+        if (/iphone|ipad/i.test(caps.deviceName) || /ipad|iphone/i.test(caps.browserName) ) {
+          if (parseFloat(caps.version) >= 8){
+            console.log('This is an iOS device (8+) - ' + caps.deviceName);
+            tests_to_call = test.mobile;
+          }else{
+            console.log('This is an iOS device that cannot be rotated - ' + caps.deviceName);
+            tests_to_call = test.desktop_fixed;
+          }
 
-          console.log('This is a mobile device - ' + caps.deviceName);
+        }else if (/android/i.test(caps.deviceName) || /android/i.test(caps.browserName) ) {
+
+          console.log('This is an android device - ' + caps.deviceName);
           tests_to_call = test.mobile;
 
         } else if (/internet explorer/i.test(caps.browserName) && parseFloat(caps.version) <= 8.0) {
