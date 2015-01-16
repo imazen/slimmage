@@ -31,21 +31,19 @@ describe('slimmage', function() {
       .sessionCapabilities()
       .then(function(caps) {
 
-        if (/iphone/i.test(caps.deviceName) ) {
+        if (/iphone|ipad|android/i.test(caps.deviceName) ) {
 
-          console.log('This is an iPhone');
-          tests_to_call = test.mobile;
-
-        } else if (/android/i.test(caps.browserName)) {
-
-          console.log('This is an Android');
+          console.log('This is a mobile device - ' + caps.deviceName);
           tests_to_call = test.mobile;
 
         } else if (/internet explorer/i.test(caps.browserName) && parseFloat(caps.version) <= 8.0) {
 
-          console.log('This is Internet Explorer <= 8.0');
+          console.log('This is Internet Explorer ' + caps.version);
           tests_to_call = test.desktop_ie;
 
+        } else if (/opera/i.test(caps.browserName) || (/chrome/i.test(caps.browserN) && parseFloat(caps.version) <= 30) ) {
+          console.log('This browser may not support window resizing ' + caps.browserName + "  " + bro + caps.version);
+          tests_to_call = test.deskop_fixed;
         } else {
 
           console.log('Run default tests...desktop');

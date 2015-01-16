@@ -27,6 +27,13 @@ test.desktop_ie = function() {
   });
 };
 
+test.desktop_fixed = function() {
+  describe('desktop (fixed - no window resizing - ratcheting not tested)',function() {
+    test.desktopFixed.call(this, e.pages.normal, true);
+    test.desktopFixed.call(this, e.pages.webp, true);
+  });
+};
+
 
 test.mobile = function() {
   test.mobilePage.call(this, e.pages.normal);
@@ -36,6 +43,11 @@ test.mobile = function() {
 //--------------------------------------------------------------------------
 //---    Desktop specific                                                ---
 //--------------------------------------------------------------------------
+
+test.desktopFixed = function(page, is_ie) {
+  test.loadPage.call(this, page );
+  test.elements.call(this,is_ie);
+};
 
 test.desktopPage = function(page, is_ie) {
   test.changeWindowSize.call(this, e.desktop.medium.size );
