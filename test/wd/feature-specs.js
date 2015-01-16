@@ -31,7 +31,7 @@ describe('slimmage', function() {
       .sessionCapabilities()
       .then(function(caps) {
 
-        if (/iphone|ipad|android/i.test(caps.deviceName) ) {
+        if (/iphone|ipad/i.test(caps.deviceName) || /android/i.test(caps.browserName) ) {
 
           console.log('This is a mobile device - ' + caps.deviceName);
           tests_to_call = test.mobile;
@@ -41,8 +41,8 @@ describe('slimmage', function() {
           console.log('This is Internet Explorer ' + caps.version);
           tests_to_call = test.desktop_ie;
 
-        } else if (/opera/i.test(caps.browserName) || (/chrome/i.test(caps.browserN) && parseFloat(caps.version) <= 30) ) {
-          console.log('This browser may not support window resizing ' + caps.browserName + "  " + bro + caps.version);
+        } else if (/opera/i.test(caps.browserName)) {
+          console.log('This browser may not support window resizing ' + caps.browserName + "  "  + caps.version);
           tests_to_call = test.deskop_fixed;
         } else {
 

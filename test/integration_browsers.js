@@ -20,6 +20,21 @@ module.exports = {
        'screen-resolution': '1024x768'
     },
 
+     firefox18: {
+       platform: 'linux',
+       browserName: 'firefox',
+       version: '18',
+       'screen-resolution': '1024x768'
+    },
+
+     firefox19: {
+       platform: 'linux',
+       browserName: 'firefox',
+       version: '19',
+       'screen-resolution': '1024x768'
+    },
+
+
     opera12: {
        platform: 'linux',
        browserName: 'opera',
@@ -27,17 +42,16 @@ module.exports = {
        'screen-resolution': '1024x768'
     },
 
-    chrome26: {
+    chrome30: {
        platform: 'linux',
        browserName: 'chrome',
-       version: '26',
+       version: '30',
        'screen-resolution': '1024x768'
     },
 
-    chrome28: {
+    chrome_linux: {
        platform: 'linux',
        browserName: 'chrome',
-       version: '28',
        'screen-resolution': '1024x768'
     },
 
