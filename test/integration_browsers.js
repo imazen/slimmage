@@ -42,12 +42,6 @@ module.exports = {
        'screen-resolution': '1024x768'
     },
 
-    chrome30: {
-       platform: 'linux',
-       browserName: 'chrome',
-       version: '30',
-       'screen-resolution': '1024x768'
-    },
 
     chrome_linux_latest: {
        platform: 'linux',
@@ -72,7 +66,54 @@ module.exports = {
     ios_emulator_ipad: {
       'browserName': 'ipad',
       'platform': 'OS X 10.9',
-      'version': '8.0',
+      'version': '8.1',
+      'device-orientation': 'portrait'
+    },
+
+    ios_emulator: {
+      'browserName': 'iphone',
+      'platform': 'OS X 10.9',
+      'version': '8.1',
+      'device-orientation': 'portrait'
+    },
+
+    ios_emulator_ipad71: {
+      'browserName': 'ipad',
+      'platform': 'OS X 10.9',
+      'version': '7.1',
+      'device-orientation': 'portrait'
+    },
+
+    ios_emulator71: {
+      'browserName': 'iphone',
+      'platform': 'OS X 10.9',
+      'version': '7.1',
+      'device-orientation': 'portrait'
+    },
+    ios_emulator_ipad61: {
+      'browserName': 'ipad',
+      'platform': 'OS X 10.8',
+      'version': '6.1',
+      'device-orientation': 'portrait'
+    },
+
+    ios_emulator61: {
+      'browserName': 'iphone',
+      'platform': 'OS X 10.8',
+      'version': '6.1',
+      'device-orientation': 'portrait'
+    },
+    ios_emulator_ipad51: {
+      'browserName': 'ipad',
+      'platform': 'OS X 10.8',
+      'version': '5.1',
+      'device-orientation': 'portrait'
+    },
+
+    ios_emulator51: {
+      'browserName': 'iphone',
+      'platform': 'OS X 10.8',
+      'version': '5.1',
       'device-orientation': 'portrait'
     },
 
@@ -97,12 +138,10 @@ module.exports = {
 
 
 
-    android41_s3:{
+    android41:{
       browserName: 'android',
       platform: 'Linux',
       version: '4.1',
-      'deviceName': 'Samsung Galaxy S3 Emulator',
-      'device-orientation': 'portrait'
     },
     android42_s4:{
       browserName: 'android',
@@ -125,14 +164,7 @@ module.exports = {
     },
 
 
-    ios_emulator: {
-      'browserName': 'iphone',
-      'platform': 'OS X 10.9',
-      'version': '8.0',
-      // 'deviceName':'iPhone Simulator',
-      'device-orientation': 'portrait'
-    },
-
+  
     android4_0: {
       browserName: 'android',
       platform: 'Linux', 

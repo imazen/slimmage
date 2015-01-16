@@ -43,7 +43,7 @@ describe('slimmage', function() {
 
         } else if (/opera/i.test(caps.browserName)) {
           console.log('This browser may not support window resizing ' + caps.browserName + "  "  + caps.version);
-          tests_to_call = test.deskop_fixed;
+          tests_to_call = test.desktop_fixed;
         } else {
 
           console.log('Run default tests...desktop');
