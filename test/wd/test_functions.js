@@ -40,9 +40,9 @@ test.mobile = function() {
 test.desktopPage = function(page, is_ie) {
   test.changeWindowSize.call(this, e.desktop.medium.size );
   test.loadPage.call(this, page );
-  test.elements.call(this, e.desktop.medium,is_ie);
+  test.elements.call(this,is_ie);
   test.changeWindowSize.call(this, e.desktop.large.size );
-  test.elements.call(this, e.desktop.large,is_ie);
+  test.elements.call(this,is_ie);
 };
 
 test.changeWindowSize = function(size) {
