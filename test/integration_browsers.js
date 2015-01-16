@@ -49,7 +49,7 @@ module.exports = {
        'screen-resolution': '1024x768'
     },
 
-    chrome_linux: {
+    chrome_linux_latest: {
        platform: 'linux',
        browserName: 'chrome',
        'screen-resolution': '1024x768'
