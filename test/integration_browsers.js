@@ -3,10 +3,17 @@
 
 module.exports = {
 
-    explorer6: {
+   /* explorer6: {
        platform: 'Windows XP',
        browserName: 'internet explorer',
        version: '6',
+       'screen-resolution': '1024x768'
+    },*/
+
+    explorer7: {
+       platform: 'Windows XP',
+       browserName: 'internet explorer',
+       version: '7',
        'screen-resolution': '1024x768'
     },
 
@@ -77,12 +84,7 @@ module.exports = {
       'screen-resolution': '1024x768',
     },
 
-    explorer7: {
-       platform: 'Windows XP',
-       browserName: 'internet explorer',
-       version: '7',
-       'screen-resolution': '1024x768'
-    },
+ 
 
     explorer8: {
        platform: 'Windows 7',
