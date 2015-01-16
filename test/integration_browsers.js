@@ -10,12 +10,99 @@ module.exports = {
        'screen-resolution': '1024x768'
     },*/
 
+
+
+
+    firefox3: {
+       platform: 'linux',
+       browserName: 'firefox',
+       version: '3.6',
+       'screen-resolution': '1024x768'
+    },
+
+    opera12: {
+       platform: 'linux',
+       browserName: 'opera',
+       version: '12',
+       'screen-resolution': '1024x768'
+    },
+
+    chrome26: {
+       platform: 'linux',
+       browserName: 'chrome',
+       version: '26',
+       'screen-resolution': '1024x768'
+    },
+
     explorer7: {
        platform: 'Windows XP',
        browserName: 'internet explorer',
        version: '7',
        'screen-resolution': '1024x768'
     },
+
+    safari5: {
+      browserName: 'safari',
+      platform: 'OS X 10.6',
+      version: '5'
+    },
+
+
+    ios_emulator_ipad: {
+      'browserName': 'ipad',
+      'platform': 'OS X 10.9',
+      'version': '8.0',
+      'device-orientation': 'portrait'
+    },
+
+    safari7: {
+      browserName: 'safari',
+      platform: 'OS X 10.9',
+      version: '7'
+    },
+    safari6: {
+      browserName: 'safari',
+      platform: 'OS X 10.8',
+      version: '6'
+    },
+
+    safari8: {
+      browserName: 'safari',
+      platform: 'OS X 10.10',
+      version: '8'
+    },
+
+
+
+
+
+    android41_s3:{
+      browserName: 'android',
+      platform: 'Linux',
+      version: '4.1',
+      'deviceName']: 'Samsung Galaxy S3 Emulator',
+      'device-orientation']: 'portrait'
+    },
+    android42_s4:{
+      browserName: 'android',
+      platform: 'Linux',
+      version: '4.2',
+      'deviceName']: 'Samsung Galaxy S4 Emulator',
+      'device-orientation']: 'portrait'
+    },
+    android43_snexus:{
+      browserName: 'android',
+      platform: 'Linux',
+      version: '4.3',
+      'deviceName']: 'Samsung Galaxy Nexus Emulator',
+      'device-orientation']: 'portrait'
+    },
+    android4_4: {
+      browserName: 'android',
+      platform: 'Linux', 
+      version: '4.4'
+    },
+
 
     ios_emulator: {
       'browserName': 'iphone',
@@ -38,12 +125,7 @@ module.exports = {
       'screen-resolution': '1024x768'
     },
 
-    explorer11: {
-      platform: 'Windows 8.1',
-      browserName: 'internet explorer',
-      version: '11',
-      'screen-resolution': '1024x768'
-    },
+ 
 
     firefox_windows: {
       browserName: 'firefox',
@@ -84,7 +166,6 @@ module.exports = {
       'screen-resolution': '1024x768',
     },
 
- 
 
     explorer8: {
        platform: 'Windows 7',
@@ -107,11 +188,12 @@ module.exports = {
       'screen-resolution': '1024x768'
     },
 
+   explorer11: {
+      platform: 'Windows 8.1',
+      browserName: 'internet explorer',
+      version: '11',
+      'screen-resolution': '1024x768'
+    },
 
-    android4_4: {
-      browserName: 'android',
-      platform: 'Linux', 
-      version: '4.4'
-    }
 
 };
