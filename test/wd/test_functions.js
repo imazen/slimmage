@@ -148,23 +148,18 @@ test.elements = function(is_ie){
     // Calculate halfsize and halfsize_src
     before(function(done) {
       var chain = this.browser;
-      if (is_ie){
-        dpr = 1;
-        quality = 90;
-        format="&format=jpg&quality=90";
-      }else{
-        chain = chain
-          .safeExecute('[window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp]')
-          .then(function(val){
-            dpr = val[0];
-            if (dpr > 1.49){
-              quality = val[1] ? 65 : 80;
-            }else{
-              quality = val[1] ? 78 : 90;
-            }
-            format = val[1] ? "&format=webp&quality=" + quality : "&format=jpg&quality=" + quality;
-          });
-      }
+      chain = chain
+        .safeExecute('[window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp]')
+        .then(function(val){
+          dpr = val[0];
+          if (dpr > 1.49){
+            quality = val[1] ? 65 : 80;
+          }else{
+            quality = val[1] ? 78 : 90;
+          }
+          format = val[1] ? "&format=webp&quality=" + quality : "&format=jpg&quality=" + quality;
+        });
+      
 
       chain.elementById('container')
         .getSize()
