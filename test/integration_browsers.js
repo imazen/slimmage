@@ -80,22 +80,22 @@ module.exports = {
       browserName: 'android',
       platform: 'Linux',
       version: '4.1',
-      'deviceName']: 'Samsung Galaxy S3 Emulator',
-      'device-orientation']: 'portrait'
+      'deviceName': 'Samsung Galaxy S3 Emulator',
+      'device-orientation': 'portrait'
     },
     android42_s4:{
       browserName: 'android',
       platform: 'Linux',
       version: '4.2',
-      'deviceName']: 'Samsung Galaxy S4 Emulator',
-      'device-orientation']: 'portrait'
+      'deviceName': 'Samsung Galaxy S4 Emulator',
+      'device-orientation': 'portrait'
     },
     android43_snexus:{
       browserName: 'android',
       platform: 'Linux',
       version: '4.3',
-      'deviceName']: 'Samsung Galaxy Nexus Emulator',
-      'device-orientation']: 'portrait'
+      'deviceName': 'Samsung Galaxy Nexus Emulator',
+      'device-orientation': 'portrait'
     },
     android4_4: {
       browserName: 'android',
