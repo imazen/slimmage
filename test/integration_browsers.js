@@ -42,6 +42,13 @@ module.exports = {
        'screen-resolution': '1024x768'
     },
 
+    opera11: {
+       platform: 'linux',
+       browserName: 'opera',
+       version: '11',
+       'screen-resolution': '1024x768'
+    },
+
 
     chrome_linux_latest: {
        platform: 'linux',
