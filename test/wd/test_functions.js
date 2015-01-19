@@ -34,7 +34,6 @@ test.desktop_fixed = function() {
   });
 };
 
-
 test.mobile = function() {
   test.mobilePage.call(this, e.pages.normal);
   test.mobilePage.call(this, e.pages.webp);
@@ -44,17 +43,17 @@ test.mobile = function() {
 //---    Desktop specific                                                ---
 //--------------------------------------------------------------------------
 
-test.desktopFixed = function(page, is_ie) {
+test.desktopFixed = function(page) {
   test.loadPage.call(this, page );
-  test.elements.call(this,is_ie);
+  test.elements.call(this);
 };
 
-test.desktopPage = function(page, is_ie) {
+test.desktopPage = function(page) {
   test.changeWindowSize.call(this, e.desktop.medium.size );
   test.loadPage.call(this, page );
-  test.elements.call(this,is_ie);
+  test.elements.call(this);
   test.changeWindowSize.call(this, e.desktop.large.size );
-  test.elements.call(this,is_ie);
+  test.elements.call(this);
 };
 
 test.changeWindowSize = function(size) {
@@ -148,7 +147,7 @@ test.loadPage = function(page_details) {
   });
 };
 
-test.elements = function(is_ie){
+test.elements = function(){
   var dpr = 1;
   var halfsize; // Based on the size of the body tag
   var halfsize_src;
@@ -169,9 +168,9 @@ test.elements = function(is_ie){
           }else{
             quality = val[1] ? 78 : 90;
           }
-          format = val[1] ? "&format=webp&quality=" + quality : "&format=jpg&quality=" + quality;
+          format = val[1] ? '&format=webp&quality=' + quality : '&format=jpg&quality=' + quality;
         });
-      
+
 
       chain.elementById('container')
         .getSize()
