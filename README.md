@@ -7,7 +7,7 @@ Your wait for a sane, easily managed path to responsive images has now ended.
 
 
 * **Media queries, breakpoints, nested percentages, & `max-width` work as expected**.
-* **Works on > 99% of browsers. 3KB minified *vanilla js*, 1.5KB compressed.** [Download minified version via releases tab](https://github.com/imazen/slimmage/releases).
+* **Works on > 99% of browsers. 5KB minified *vanilla js*, 2KB compressed.** [Download minified version via releases tab](https://github.com/imazen/slimmage/releases).
 * **Cookie-free; works on first page load. Works with CDNs**.
 * **Fully accessible; degrades gracefully without javascript**
 * **Massive bandwidth reduction. No duplicate requests. Can auto-enable WebP and adjust compression based on pixel density**
@@ -15,11 +15,12 @@ Your wait for a sane, easily managed path to responsive images has now ended.
 
 Handles any viewport size and pixel density with ease. Yes, retina and retina-like displays are supported.
 
-Our automated tests from the last API call - these may not even been a public commit - are below. Click to browse. IE6/7/8 *do* work, but not all features are supported. Please help us improve our automated tests and turn IE6/7/8 green!
+Our automated tests from the last API call - these may not even been a public commit - are below. Click to browse. IE6 and iOS *do* work, but our (free oss plan!) SauceLabs automated testing on those platforms has been unreliable at best.
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/imazen.svg)](https://saucelabs.com/u/imazen)
 
 
-0.2.3 was manually tested on IE6-10, Firefox 3.6-23, Opera 11-12, Safari 5-6, Chrome 14-28, Opera Mobile, and over a dozen mobile Webkit browsers. - essentially everything [supported by BrowserStack](http://www.browserstack.com/screenshots). In theory we should be supporting over 99.5% of browsers.
+0.2.3 was manually tested on IE6-10, Firefox 3.6-23, Opera 11-12, Safari 5-6, Chrome 14-28, Opera Mobile, and over a dozen mobile Webkit browsers. - essentially everything [supported by BrowserStack](http://www.browserstack.com/screenshots) in 2013 to mid-2014 when we were paying customers. In theory we should be supporting over 99.5% of browsers. 
+Starting in 2015, BrowserStack has given us a free OSS subscription, which has been very useful in manual testing. We haven't yet added automated tests with their service, but hope to soon (PR anyone?). 
 
 MIT/Apache dual licensed by [Imazen](http://imazen.io).
 
