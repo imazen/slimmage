@@ -29,8 +29,8 @@ test.desktop_ie = function() {
 
 test.desktop_fixed = function() {
   describe('desktop (fixed - no window resizing - ratcheting not tested)',function() {
-    test.desktopFixed.call(this, e.pages.normal, true);
-    test.desktopFixed.call(this, e.pages.webp, true);
+    test.desktopFixed.call(this, e.pages.normal);
+    test.desktopFixed.call(this, e.pages.webp);
   });
 };
 
