@@ -184,6 +184,15 @@ test.elements = function(){
         .nodeify(done);
     });
 
+    describe('last_element',function() {
+      it('load before continuing the tests',function(done) {
+        this.browser
+          .waitForElementById('last_element', e.explicit_wait)
+          .nodeify(done);
+      });
+
+    });
+
     describe('fixedwidth_155', function() {
       it('src url should ratchet up to nearest step', function(done) {
         var fix155_src = e.calc_nearest_slim_step(dpr * 155);
