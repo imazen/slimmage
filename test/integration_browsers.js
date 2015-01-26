@@ -37,15 +37,13 @@ module.exports = {
     opera12: {
        platform: 'linux',
        browserName: 'opera',
-       version: '12',
-       'screen-resolution': '1024x768'
+       version: '12'
     },
 
     opera11: {
        platform: 'windows',
        browserName: 'opera',
-       version: '11',
-       'screen-resolution': '1024x768'
+       version: '11'
     },
 
 
