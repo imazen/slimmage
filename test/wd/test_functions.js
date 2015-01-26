@@ -35,8 +35,10 @@ test.desktop_fixed = function() {
 };
 
 test.mobile = function() {
-  test.mobilePage.call(this, e.pages.normal);
-  test.mobilePage.call(this, e.pages.webp);
+  describe('mobile',function() {
+    test.mobilePage.call(this, e.pages.normal);
+    test.mobilePage.call(this, e.pages.webp);
+  });
 };
 
 //--------------------------------------------------------------------------
