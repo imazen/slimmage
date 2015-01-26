@@ -140,9 +140,12 @@ test.loadPage = function(page_details) {
 
     it('should load the right page', function(done) {
       chain
-      .title()
-      .should.become(page_details.title)
-      .nodeify(done);
+        .waitFor(util.asserter(function(t) {
+          return t
+          .title()
+          .should.become(page_details.title);
+        }), e.explicit_wait_page_loading) // repeat the above until success or timeout
+        .nodeify(done);
     });
   });
 };
