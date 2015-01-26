@@ -166,6 +166,9 @@ test.elements = function(){
       this.browser
         .safeExecute('[window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp]')
         .then(function(val){
+          if (val == null){
+            val = [1,false];
+          }
           dpr = val[0];
           if (dpr > 1.49){
             quality = val[1] ? 65 : 80;
