@@ -46,7 +46,7 @@ module.exports = function (grunt) {
     mochaWebdriver: {
       options: {
         usePromises: true,
-        timeout: 60000, // TODO: Add reasonable timeout
+        timeout: 5 * 60 * 1000, // TODO: Add reasonable timeout
         reporter: 'spec'
       },
       phantomjs: {

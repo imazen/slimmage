@@ -13,7 +13,8 @@ expected.calc_nearest_slim_step = function (val) {
 
 expected.win_tollerance = 30; // = px; tolerance for padding/margin/window-frame
 expected.body_tollerance = 50; // = px; chrome has a body size of 759px (with the window at 880px)
-expected.explicit_wait = 7 * 1000;
+expected.explicit_wait = 4 * 60 * 1000;
+expected.explicit_wait_page_loading = 4 * 60 * 1000;
 
 // given->expected for the repeatable tests run
 expected.pages = {
