@@ -161,8 +161,7 @@ test.elements = function(){
 
     // Calculate halfsize and halfsize_src
     before(function(done) {
-      var chain = this.browser;
-      chain = chain
+      this.browser
         .safeExecute('[window.devicePixelRatio || 1, window.slimmage && window.slimmage.webp]')
         .then(function(val){
           dpr = val[0];
@@ -172,14 +171,6 @@ test.elements = function(){
             quality = val[1] ? 78 : 90;
           }
           format = val[1] ? '&format=webp&quality=' + quality : '&format=jpg&quality=' + quality;
-        });
-
-
-      chain.elementById('container')
-        .getSize()
-        .then(function(size) {
-          halfsize = size.width/2;
-          halfsize_src = e.calc_nearest_slim_step(halfsize * dpr);
         })
         .nodeify(done);
     });
@@ -191,6 +182,16 @@ test.elements = function(){
           .nodeify(done);
       });
 
+      it('should set halfsize and halfsize_src for tests',function(done) {
+        this.browser
+          .elementById('container')
+          .getSize()
+          .then(function(size) {
+            halfsize = size.width/2;
+            halfsize_src = e.calc_nearest_slim_step(halfsize * dpr);
+          })
+          .nodeify(done);
+      });
     });
 
     describe('fixedwidth_155', function() {
