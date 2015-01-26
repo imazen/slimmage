@@ -12,7 +12,6 @@ module.exports = {
 
 
 
-
     firefox3: {
        platform: 'linux',
        browserName: 'firefox',
@@ -70,6 +69,7 @@ module.exports = {
     },
 
 
+
     ios_emulator_ipad: {
       'browserName': 'ipad',
       'platform': 'OS X 10.9',
@@ -84,19 +84,6 @@ module.exports = {
       'device-orientation': 'portrait'
     },
 
-    ios_emulator_ipad71: {
-      'browserName': 'ipad',
-      'platform': 'OS X 10.9',
-      'version': '7.1',
-      'device-orientation': 'portrait'
-    },
-
-    ios_emulator71: {
-      'browserName': 'iphone',
-      'platform': 'OS X 10.9',
-      'version': '7.1',
-      'device-orientation': 'portrait'
-    },
     ios_emulator_ipad61: {
       'browserName': 'ipad',
       'platform': 'OS X 10.8',
@@ -110,6 +97,7 @@ module.exports = {
       'version': '6.1',
       'device-orientation': 'portrait'
     },
+
     ios_emulator_ipad51: {
       'browserName': 'ipad',
       'platform': 'OS X 10.8',
@@ -123,6 +111,28 @@ module.exports = {
       'version': '5.1',
       'device-orientation': 'portrait'
     },
+
+  // ......................... failing
+    // // Failed to load
+    // // This has an issue to do with WEBVIEW
+    // // With the 'title' command
+    // // ...it gives the error: Not implemented in this context, try switching into or out of a web view
+    // ios_emulator_ipad71: {
+    //   'browserName': 'ipad',
+    //   'platform': 'OS X 10.9',
+    //   'version': '7.1',
+    //   'device-orientation': 'portrait',
+    //   'capture-html': true,
+    //   'sauce-advisor': false
+    // },
+
+   //  ios_emulator71: {
+   //    'browserName': 'iphone',
+   //    'platform': 'OS X 10.9',
+   //    'version': '7.1',
+   //    'device-orientation': 'portrait'
+   //  },
+  //  .......................... end of failing
 
     safari7: {
       browserName: 'safari',
@@ -140,7 +150,6 @@ module.exports = {
       platform: 'OS X 10.10',
       version: '8'
     },
-
 
 
 
@@ -166,15 +175,15 @@ module.exports = {
     },
     android4_4: {
       browserName: 'android',
-      platform: 'Linux', 
+      platform: 'Linux',
       version: '4.4'
     },
 
 
-  
+
     android4_0: {
       browserName: 'android',
-      platform: 'Linux', 
+      platform: 'Linux',
       version: '4.0'
     },
 
@@ -185,7 +194,7 @@ module.exports = {
       'screen-resolution': '1024x768'
     },
 
- 
+
 
     firefox_windows: {
       browserName: 'firefox',
@@ -196,7 +205,7 @@ module.exports = {
 
     safari7_mac: {
       browserName: 'safari',
-      platform: 'OS X 10.9', 
+      platform: 'OS X 10.9',
       version: '7',
       deviceName: '',
       'screen-resolution': '1024x768',
@@ -209,9 +218,9 @@ module.exports = {
       version: '34',
       'screen-resolution': '1024x768'
     },
-    
+
     firefox_mac: {
-      browserName: 'firefox', 
+      browserName: 'firefox',
       platform: 'OS X 10.10',
       version: '34',
       deviceName: '',
@@ -219,7 +228,7 @@ module.exports = {
     },
 
     chrome_mac: {
-      browserName: 'chrome', 
+      browserName: 'chrome',
       platform: 'OS X 10.10',
       version: '',
       deviceName: '',
