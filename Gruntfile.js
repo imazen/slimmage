@@ -67,10 +67,12 @@ module.exports = function (grunt) {
           testName: title, 
           browsers: _.values(integration_browsers),
           tunnelArgs: ['-v', '--doctor'],
+          build: process.env.TRAVIS_BUILD_NUMBER || 0,
           concurrency: 3, // how many browsers to be run in parallel
           sauceConfig: {
             'record-video': false,
             'video-upload-on-pass': false,
+            build: process.env.TRAVIS_BUILD_NUMBER || 0,
           }
         }
       }
@@ -83,7 +85,7 @@ module.exports = function (grunt) {
             'http://127.0.0.1:'+port+'/test/index.html'
           ],
           browsers: _.values(unit_browsers),
-          build: process.env.TRAVIS_JOB_ID,
+          build: process.env.TRAVIS_BUILD_NUMBER || 0,
           pollInterval: 2000, // timeout
           maxRetries: 1,
           maxPollRetries: 1,
@@ -94,7 +96,7 @@ module.exports = function (grunt) {
             'record-video': false,
             tags: [slug, 'unit'],
             'video-upload-on-pass': false,
-            build: process.env.TRAVIS_JOB_ID || 0,
+            build: process.env.TRAVIS_BUILD_NUMBER || 0,
           }
         }
       }
