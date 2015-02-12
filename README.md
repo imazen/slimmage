@@ -216,7 +216,6 @@ If you don’t need those images to be responsive on IE6/7, you can add this cod
     }
 
 
-
 ### Other approaches
 
 * [&lt;picture>](http://responsiveimages.org/) (good if you need art direction)
