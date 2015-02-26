@@ -181,6 +181,12 @@ describe('slimmage', function () {
       expect(result.src).to.be("im?width=80&height=45&zoom=2"); //But only because how zoom is interpreted.
     });
 
+    it('should not change the william and harry querystring variables', function(){
+      var dpr = window.devicePixelRatio || 1;
+      var result = s.getImageInfo(100/dpr,"im?width=16&william=130&harry=90",0);
+      expect(result.src).to.be("im?width=160&william=130&harry=90");
+    });
+
   });
 
   var css_ids = ['twenty_px','twenty_per','two_em','two_cm','two_in'];
