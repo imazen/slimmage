@@ -187,6 +187,7 @@ Feel free to fork and add links to your HTML filters/helpers here!
 * 0.2.6 - Fix typo causing ‘undefined’ is null error; affects 0.2.4+. 
 * 0.4.0 - Only fire `window.slimmage.readyCallback` on first `checkResponsiveImages()` and when there have been actual modifications to images. Add window.slimmage.webpTimeout to increase likelyhood of webp usage working. Disable verbose output by default. Apply `maxWidth` after `widthStep` instead of before (lowers upper bound from 2080 to 2048). Stop inverting jpeg and webp quality values. Fix IE6/7 setAttribute bug; class value was not copied from noscript element. Add `window.slimmage.enforceCSS` setting; can emulate max-width on IE6/7/8, which lack an implementation.
 * 0.4.1 - Handle resize event on IE 7/8, and increase image size. Fixes “failed to ratched” errors. Improve fluidity of enforceCss when max-width no longer needs to be applied.
+* 0.4.2 - Fix bug causing any parameters starting with w or h to be removed or corrupted. [Contributed by @Jeavon](https://github.com/imazen/slimmage/pull/47) Also fixes [#50](https://github.com/imazen/slimmage/issues/50)
 
 ### Contributor notes
 
