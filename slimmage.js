@@ -186,8 +186,8 @@
                 if (k.match(/^format$/i) && data['webp']) { return d + "format=webp"; }
                 if (k.match(/^quality/i)) { return d + "quality=" + data['quality']; }
                 
-                if (k.match(/^w|width|maxwidth$/i)) { return d + k + "=" + c.w;}
-                if (k.match(/^h|height|maxheight$/i)) { return d + k + "=" + c.h;}
+                if (k.match(/^(w|width|maxwidth)$/i)) { return d + k + "=" + c.w;}
+                if (k.match(/^(h|height|maxheight)$/i)) { return d + k + "=" + c.h;}
                 
                 return p;
               }, 
