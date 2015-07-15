@@ -228,7 +228,7 @@
         }
 
     };
-    s.cr = function (delay) {
+    s.cr = function (delay, callback) {
         var i, il, j, jl, k, kl;
 
         if (s.timeoutid > 0) w.clearTimeout(s.timeoutid);
@@ -283,6 +283,10 @@
                 //2. Remove old noscript tags
                 ns.parentNode.removeChild(ns);
             }
+			
+			if (callback != null) {				
+				callback();
+			}
         }
 
         //3. Let plugins inject custom behavior
