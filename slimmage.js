@@ -239,7 +239,7 @@
           delay = s['webpTimeout'];
         }
         if (delay && delay > 0) {
-            s.timeoutid = w.setTimeout(s.cr, delay);
+            s.timeoutid = w.setTimeout(s.cr(0, callback), delay);
             return;
         }
         var stopwatch = new Date().getTime();
@@ -283,10 +283,6 @@
                 //2. Remove old noscript tags
                 ns.parentNode.removeChild(ns);
             }
-			
-			if (callback != null) {				
-				callback();
-			}
         }
 
         //3. Let plugins inject custom behavior
@@ -315,6 +311,10 @@
         }
         
         log("Slimmage: restored " + newImages + " images from noscript tags, checked " + totalImages + " images, changed " + changed.length + ". " + (new Date().getTime() - stopwatch) + "ms");
+		
+        if (callback != null) {
+            callback();
+        }
     };
 
     s['checkResponsiveImages'] = s.cr;
