@@ -1,5 +1,5 @@
 /**
- * @preserve Slimmage Background Plugin 0.4.2, use with ImageResizer. MIT/Apache2 dual licensed by Imazen and HiQ Finland and ProWorks Corporation
+ * @preserve Slimmage Background Plugin 0.4.2, use with ImageResizer. MIT/Apache2 licensed by Imazen, HiQ Finland, and ProWorks Corporation
  */
 
 /* We often use string instead of dot notation to keep 
