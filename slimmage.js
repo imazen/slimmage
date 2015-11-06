@@ -1,5 +1,5 @@
 /**
- * @preserve Slimmage 0.4.1, use with ImageResizer. MIT/Apache2 dual licensed by Imazen 
+ * @preserve Slimmage 0.4.2, use with ImageResizer. MIT/Apache2 dual licensed by Imazen 
  */
 
 /* We often use string instead of dot notation to keep 
