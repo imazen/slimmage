@@ -10,6 +10,11 @@
     // Enable strict mode
     "use strict";
 
+    // Make sure w is window (For babel-transpiled environments the 'this' keyword may not point to window)
+    if(!w || !w.document) {
+        w = window;
+    }
+
     var s =  window['slimmage'] || {};
     window['slimmage'] = s;
     if (s['verbose'] === undefined) {           s['verbose'] = false;}
