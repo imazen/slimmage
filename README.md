@@ -11,7 +11,12 @@ Your wait for a sane, easily managed path to responsive images has now ended.
 * **Cookie-free; works on first page load. Works with CDNs**.
 * **Fully accessible; degrades gracefully without javascript**
 * **Massive bandwidth reduction. No duplicate requests. Can auto-enable WebP and adjust compression based on pixel density**
-* **Works with any [RIAPI-compliant](http://riapi.org) backend. [ImageResizer](http://imageresizing.net) is preferred.**
+* **Works with any [RIAPI-compliant](http://riapi.org) backend. [ImageResizer](http://imageresizing.net) is a great backend if you're on windows.**
+
+Not on windows? 
+
+#### Check out [imageflow.io](https://www.imageflow.io)
+#### And imazen/[libimageflow](https://github.com/imazen/imageflow) for an alternate backend.
 
 Handles any viewport size and pixel density with ease. Yes, retina and retina-like displays are supported.
 
