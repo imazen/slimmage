@@ -1,3 +1,9 @@
+You should probably use `srcset` now that it has landed in all major browsers, and the polyfills are more reliable. Check out [Using Responsive Images Now](http://alistapart.com/article/using-responsive-images-now) and Ben Seymour's book [Practical Responsive Images](http://responsiveimag.es/). 
+
+Check out [Imageflow](http://www.imageflow.io/) or [ImageResizer](https://imageresizing.net) for a back-end. 
+
+When I created Slimmage.js, everything was broken, and I spent months creating a fully tested,  cross-browser solution. Today, IE6 is a distant memory, and our integration tests have broken with new releases of SauceLabs (and possibly due to browser changes, although we don't have any open bug reports). 
+
 ## Slimmage - sane & simple responsive images
 [![master](https://img.shields.io/travis/imazen/slimmage/master.svg?label=master)](https://travis-ci.org/imazen/slimmage/builds) [![unstable](https://img.shields.io/travis/imazen/slimmage/unstable.svg?label=unstable)](https://travis-ci.org/imazen/slimmage/builds) 
 
