@@ -1,5 +1,15 @@
 You should probably use `srcset` now that it has landed in all major browsers, and the polyfills are more reliable. Check out [Using Responsive Images Now](http://alistapart.com/article/using-responsive-images-now) and Ben Seymour's book [Practical Responsive Images](http://responsiveimag.es/). 
 
+-----
+
+I don't have the resources to maintain this project; it's continued stability relies upon the willingness of volunteers to pitch in. I hand out push access quite readily, just sumbit a PR. 
+
+Automated integration tests *are* a requirement for this kind of project; you can't feasibly perform the manual testing that is required. 
+
+Bitrot in the automated test suite is the only open bug: https://github.com/imazen/slimmage/issues/58 No source changed, but things broke. Could be the test service, or it could be new browser versions. Why not give debugging it a try?
+
+-----
+
 Check out [Imageflow](http://www.imageflow.io/) or [ImageResizer](https://imageresizing.net) for a back-end. 
 
 When I created Slimmage.js, everything was broken, and I spent months creating a fully tested,  cross-browser solution. Today, IE6 is a distant memory, and our integration tests have broken with new releases of SauceLabs (and possibly due to browser changes, although we don't have any open bug reports). 
