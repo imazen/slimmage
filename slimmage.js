@@ -228,7 +228,7 @@
         }
 
     };
-    s.cr = function (delay) {
+    s.cr = function (delay, callback) {
         var i, il, j, jl, k, kl;
 
         if (s.timeoutid > 0) w.clearTimeout(s.timeoutid);
@@ -239,7 +239,7 @@
           delay = s['webpTimeout'];
         }
         if (delay && delay > 0) {
-            s.timeoutid = w.setTimeout(s.cr, delay);
+            s.timeoutid = w.setTimeout(s.cr(0, callback), delay);
             return;
         }
         var stopwatch = new Date().getTime();
@@ -311,6 +311,10 @@
         }
         
         log("Slimmage: restored " + newImages + " images from noscript tags, checked " + totalImages + " images, changed " + changed.length + ". " + (new Date().getTime() - stopwatch) + "ms");
+		
+        if (callback != null) {
+            callback();
+        }
     };
 
     s['checkResponsiveImages'] = s.cr;
