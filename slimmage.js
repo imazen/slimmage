@@ -81,6 +81,11 @@
       //We can return pixels directly, but not other units
       if (val.slice(-2) == "px") return parseFloat(val.slice(0,-2));
 
+      // IE 8 will return "none" for max-width when not set.
+      // However, "none" is not a valid value for the "width" style
+      // and will cause an exception.
+      val === "none" && (val = "");
+
       //Create a temporary sibling div to resolve units into pixels.
       var temp = document.createElement("div");
       temp.style.overflow = temp.style.visibility = "hidden"; 
