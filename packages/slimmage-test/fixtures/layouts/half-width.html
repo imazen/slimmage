@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Half Width Layout</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .container { width: 50%; }
+    img { display: block; width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <img id="img" data-testid="img-half-width" alt="Half width">
+  </div>
+  <script type="module">
+    import { createSlimmage } from '/slimmage-core/index.js';
+    createSlimmage(document.getElementById('img'), {
+      src: '/image?width=160&quality=85&format=jpeg',
+      container: '#container',
+      preferredFormat: 'jpeg',
+      lazy: false,
+    });
+  </script>
+</body>
+</html>

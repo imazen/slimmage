@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox Layout</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+    }
+    .flex-item { flex: 1 1 200px; min-width: 0; }
+    img { display: block; width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <div class="flex">
+    <div class="flex-item" id="cell-0"><img id="img-0" data-testid="flex-img-0" alt="Flex 0"></div>
+    <div class="flex-item" id="cell-1"><img id="img-1" data-testid="flex-img-1" alt="Flex 1"></div>
+    <div class="flex-item" id="cell-2"><img id="img-2" data-testid="flex-img-2" alt="Flex 2"></div>
+  </div>
+  <script type="module">
+    import { createSlimmage } from '/slimmage-core/index.js';
+    for (let i = 0; i < 3; i++) {
+      createSlimmage(document.getElementById(`img-${i}`), {
+        src: `/image?width=160&quality=85&format=jpeg&id=${i}`,
+        container: `#cell-${i}`,
+        preferredFormat: 'jpeg',
+        lazy: false,
+      });
+    }
+  </script>
+</body>
+</html>

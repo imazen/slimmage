@@ -1,0 +1,13 @@
+{
+  "name": "slimmage-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "server": "bun run server/index.ts",
+    "test": "bunx playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "slimmage-core": "workspace:*"
+  }
+}

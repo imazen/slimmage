@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazy Loading Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .container { width: 100%; max-width: 800px; margin: 0 auto; }
+    .spacer { height: 3000px; background: linear-gradient(#eee, #ddd); }
+    img { display: block; width: 100%; height: auto; }
+    h2 { padding: 10px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Above fold (eager)</h2>
+    <div id="eager-container">
+      <img id="img-eager" data-testid="img-eager" alt="Eager">
+    </div>
+
+    <div class="spacer"></div>
+
+    <h2>Below fold (lazy)</h2>
+    <div id="lazy-container">
+      <img id="img-lazy" data-testid="img-lazy" alt="Lazy">
+    </div>
+
+    <h2>Below fold (lazy, high priority)</h2>
+    <div id="priority-container">
+      <img id="img-priority" data-testid="img-priority" alt="Priority">
+    </div>
+  </div>
+  <script type="module">
+    import { createSlimmage } from '/slimmage-core/index.js';
+
+    // Eager (above fold, not lazy)
+    createSlimmage(document.getElementById('img-eager'), {
+      src: '/image?width=160&quality=85&format=jpeg&id=eager',
+      container: '#eager-container',
+      preferredFormat: 'jpeg',
+      lazy: false,
+    });
+
+    // Lazy (below fold)
+    createSlimmage(document.getElementById('img-lazy'), {
+      src: '/image?width=160&quality=85&format=jpeg&id=lazy',
+      container: '#lazy-container',
+      preferredFormat: 'jpeg',
+      lazy: true,
+      lazyMargin: '200px',
+    });
+
+    // High priority overrides lazy
+    createSlimmage(document.getElementById('img-priority'), {
+      src: '/image?width=160&quality=85&format=jpeg&id=priority',
+      container: '#priority-container',
+      preferredFormat: 'jpeg',
+      lazy: true,
+      fetchPriority: 'high',
+    });
+  </script>
+</body>
+</html>

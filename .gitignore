@@ -1,10 +1,10 @@
-.vimrc
-env
-env.json
 node_modules/
+dist/
+.vite/
+*.tsbuildinfo
 *.log
+bun.lockb
+.DS_Store
+/test-results/
+/playwright-report/
 **/*.swp
-gittest/
-/slimmage.min.js
-/slimmage.min.js.gz
-test/bs-config.js

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slimmage Vanilla JS Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; padding: 20px; }
+    .container { width: 100%; max-width: 800px; margin: 0 auto; }
+    .card { width: 50%; padding: 10px; }
+    .full { width: 100%; }
+    .spacer { height: 2000px; background: #f0f0f0; }
+    img { display: block; width: 100%; height: auto; }
+    h2 { margin: 10px 0; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Full-width image (container = .container)</h2>
+    <div class="full" id="full-container">
+      <img id="img-full" data-testid="img-full" alt="Full width test">
+    </div>
+
+    <h2>Half-width image (container = .card)</h2>
+    <div class="card" id="card-container">
+      <img id="img-card" data-testid="img-card" alt="Card test">
+    </div>
+
+    <h2>Below-fold lazy image</h2>
+    <div class="spacer"></div>
+    <div class="full" id="lazy-container">
+      <img id="img-lazy" data-testid="img-lazy" alt="Lazy test">
+    </div>
+  </div>
+
+  <script type="module">
+    import { createSlimmage } from '/slimmage-core/index.js';
+
+    // Full-width image
+    createSlimmage(document.getElementById('img-full'), {
+      src: '/image?width=160&quality=85&format=jpeg',
+      container: '#full-container',
+      preferredFormat: 'jpeg',
+      lazy: false,
+    });
+
+    // Card image
+    createSlimmage(document.getElementById('img-card'), {
+      src: '/image?width=160&quality=85&format=jpeg',
+      container: '#card-container',
+      preferredFormat: 'jpeg',
+      lazy: false,
+    });
+
+    // Lazy image
+    createSlimmage(document.getElementById('img-lazy'), {
+      src: '/image?width=160&quality=85&format=jpeg',
+      container: '#lazy-container',
+      preferredFormat: 'jpeg',
+      lazy: true,
+      lazyMargin: '200px',
+    });
+  </script>
+</body>
+</html>

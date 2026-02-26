@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Resize Layout</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { display: flex; height: 100vh; }
+    .sidebar {
+      width: 250px;
+      background: #333;
+      transition: width 0.3s;
+      flex-shrink: 0;
+    }
+    .sidebar.collapsed { width: 0; overflow: hidden; }
+    .main { flex: 1; min-width: 0; padding: 10px; }
+    .toggle {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 100;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    img { display: block; width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar"></div>
+  <div class="main" id="main-content">
+    <button class="toggle" id="toggle" data-testid="toggle-btn">Toggle Sidebar</button>
+    <div id="img-container" style="width: 100%;">
+      <img id="img" data-testid="dynamic-img" alt="Dynamic resize">
+    </div>
+  </div>
+  <script type="module">
+    import { createSlimmage } from '/slimmage-core/index.js';
+
+    document.getElementById('toggle').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('collapsed');
+    });
+
+    createSlimmage(document.getElementById('img'), {
+      src: '/image?width=160&quality=85&format=jpeg',
+      container: '#img-container',
+      preferredFormat: 'jpeg',
+      lazy: false,
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slimmage Web Component Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; padding: 20px; }
+    .container { width: 100%; max-width: 800px; margin: 0 auto; }
+    .card { width: 50%; padding: 10px; }
+    .full { width: 100%; }
+    h2 { margin: 10px 0; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Full-width web component</h2>
+    <div class="full" id="full-container">
+      <slimmage-img
+        data-testid="wc-full"
+        src="/image?width=160&quality=85&format=jpeg"
+        preferred-format="jpeg"
+        lazy="false"
+      ></slimmage-img>
+    </div>
+
+    <h2>Half-width web component</h2>
+    <div class="card" id="card-container">
+      <slimmage-img
+        data-testid="wc-card"
+        src="/image?width=160&quality=85&format=jpeg"
+        preferred-format="jpeg"
+        lazy="false"
+      ></slimmage-img>
+    </div>
+  </div>
+
+  <script type="module" src="/slimmage-wc/index.js"></script>
+</body>
+</html>

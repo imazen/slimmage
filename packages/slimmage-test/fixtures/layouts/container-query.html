@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Container Query Layout</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .wrapper { width: 100%; }
+    .cq-container {
+      container-type: inline-size;
+      width: 50%;
+    }
+    img { display: block; width: 100%; height: auto; }
+    @container (min-width: 400px) {
+      .cq-label { color: green; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="cq-container" id="cq-container">
+      <p class="cq-label">Container query target</p>
+      <img id="img" data-testid="cq-img" alt="Container query">
+    </div>
+  </div>
+  <script type="module">
+    import { createSlimmage } from '/slimmage-core/index.js';
+    createSlimmage(document.getElementById('img'), {
+      src: '/image?width=160&quality=85&format=jpeg',
+      container: '#cq-container',
+      preferredFormat: 'jpeg',
+      lazy: false,
+    });
+  </script>
+</body>
+</html>
