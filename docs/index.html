@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>slimmage — Container-Responsive Images</title>
+  <style>
+    :root {
+      --bg: #0b0b11;
+      --surface: #141420;
+      --surface-2: #1c1c2c;
+      --border: #2a2a3e;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --accent: #818cf8;
+      --accent-2: #a78bfa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --mono: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+      --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --radius: 10px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---- Hero ---- */
+    .hero {
+      padding: 80px 0 48px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero .tagline {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+    .hero .explainer {
+      max-width: 620px;
+      margin: 20px auto 0;
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .hero code {
+      font-family: var(--mono);
+      font-size: 0.85em;
+      background: var(--surface-2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    /* ---- Sections ---- */
+    section {
+      padding: 56px 0;
+      border-top: 1px solid var(--border);
+    }
+    section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    section .desc {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+      max-width: 600px;
+    }
+
+    /* ---- Card ---- */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    /* ---- Resize Demo ---- */
+    .resize-outer {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .resize-box {
+      position: relative;
+      width: 65%;
+      min-width: 180px;
+      max-width: 100%;
+    }
+    .resize-box img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+    .resize-handle {
+      position: absolute;
+      right: -1px;
+      top: 0;
+      bottom: 0;
+      width: 24px;
+      cursor: col-resize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(129,140,248,0.12);
+      border-left: 2px solid rgba(129,140,248,0.3);
+      transition: background 0.15s, border-color 0.15s;
+      z-index: 2;
+      touch-action: none;
+    }
+    .resize-handle:hover, .resize-handle.active {
+      background: rgba(129,140,248,0.25);
+      border-left-color: var(--accent);
+    }
+    .resize-handle .grip {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .resize-handle .grip span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.5;
+      transition: opacity 0.15s;
+    }
+    .resize-handle:hover .grip span, .resize-handle.active .grip span {
+      opacity: 1;
+    }
+    .resize-width-label {
+      position: absolute;
+      bottom: -28px;
+      right: -20px;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .resize-handle:hover .resize-width-label,
+    .resize-handle.active .resize-width-label {
+      opacity: 1;
+    }
+
+    /* ---- Info Grid ---- */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .info-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .info-item .label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-bottom: 2px;
+    }
+    .info-item .val {
+      font-family: var(--mono);
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .info-item .val.accent { color: var(--accent); }
+    .info-item .val.green { color: var(--green); }
+    .info-item .val.yellow { color: var(--yellow); }
+
+    /* ---- Request Log ---- */
+    .log-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin: 20px 0 8px;
+    }
+    .log {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      max-height: 180px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .log-entry {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 10px;
+      margin: 3px 0;
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 4px 4px 0;
+      flex-wrap: wrap;
+    }
+    .log-entry.skipped {
+      border-left-color: var(--yellow);
+      opacity: 0.7;
+    }
+    .log-entry.loaded {
+      border-left-color: var(--green);
+    }
+    .log-tag {
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .log-tag.green { background: rgba(52,211,153,0.15); color: var(--green); }
+    .log-tag.yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
+
+    .log-bar-bg {
+      flex: 1;
+      min-width: 60px;
+      height: 6px;
+      background: var(--surface-2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .log-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--accent);
+      transition: width 0.3s;
+    }
+
+    /* ---- CLS Demo ---- */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 600px) {
+      .comparison { grid-template-columns: 1fr; }
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .panel-head {
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dot.red { background: var(--red); }
+    .dot.green { background: var(--green); }
+
+    .cls-body {
+      padding: 14px;
+    }
+    .cls-img-area {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--surface-2);
+      min-height: 0;
+    }
+    .cls-img-area img {
+      display: block;
+      width: 100%;
+    }
+    .cls-below {
+      margin-top: 12px;
+      padding: 10px;
+      background: var(--surface-2);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      position: relative;
+    }
+    .cls-below .marker {
+      position: absolute;
+      top: -6px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 2px;
+    }
+    .shift-label {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+    .shift-label.red { color: var(--red); }
+    .shift-label.green { color: var(--green); }
+
+    /* ---- Buttons ---- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: 1px solid var(--accent);
+      background: rgba(129,140,248,0.1);
+      color: var(--accent);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      user-select: none;
+    }
+    .btn:hover { background: rgba(129,140,248,0.2); }
+    .btn:active { transform: scale(0.97); }
+    .btn.outline {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text-dim);
+    }
+    .btn.outline:hover { background: var(--surface-2); }
+    .btn.ghost {
+      background: transparent;
+      border-color: transparent;
+      color: var(--text-dim);
+    }
+    .btn.ghost:hover { background: var(--surface); }
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+
+    /* ---- Grid Demo ---- */
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .slider-row label {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .slider-row input[type="range"] {
+      flex: 1;
+      max-width: 200px;
+      accent-color: var(--accent);
+    }
+    .slider-row .slider-val {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1.1rem;
+      min-width: 24px;
+      text-align: center;
+    }
+    .image-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      transition: grid-template-columns 0.3s;
+    }
+    .grid-cell {
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .grid-cell img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .grid-widths {
+      margin-top: 12px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    /* ---- Ratchet Demo ---- */
+    .ratchet-viz {
+      margin-bottom: 16px;
+    }
+    .ratchet-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ratchet-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ratchet-bar-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      width: 72px;
+      text-align: right;
+    }
+    .ratchet-bar-track {
+      flex: 1;
+      height: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .ratchet-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.35s ease;
+    }
+    .ratchet-bar-fill.container { background: var(--accent); opacity: 0.5; }
+    .ratchet-bar-fill.loaded { background: var(--green); opacity: 0.7; }
+    .ratchet-bar-val {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      min-width: 50px;
+    }
+    .ratchet-img-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: width 0.35s ease;
+      margin-bottom: 16px;
+    }
+    .ratchet-img-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* ---- How It Works ---- */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .how-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .how-card .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(129,140,248,0.15);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+    .how-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .how-card p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .how-card code {
+      font-family: var(--mono);
+      font-size: 0.8em;
+      background: var(--surface-2);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--accent);
+    }
+
+    /* ---- Footer ---- */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ---- Toggle ---- */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+    .toggle {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      background: var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+      padding: 0;
+    }
+    .toggle.on { background: var(--accent); }
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      transition: left 0.2s;
+    }
+    .toggle.on::after { left: 18px; }
+
+    /* ---- Utility ---- */
+    .mt-sm { margin-top: 12px; }
+    .note {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-style: italic;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ Hero ============ -->
+  <header class="hero">
+    <div class="wrap">
+      <h1>slimmage</h1>
+      <p class="tagline">Container-responsive images via ResizeObserver.</p>
+      <p class="explainer">
+        <code>srcset</code> and <code>sizes</code> select images based on the <em>viewport</em>.
+        But what if your image is inside a sidebar, a grid cell, or a resizable panel?
+        Slimmage watches the <em>container</em> and requests the right image resolution for the
+        actual layout — with width-stepping for CDN cache efficiency, ratchet behavior to avoid
+        redundant downloads, and aspect-ratio hints for zero layout shift.
+      </p>
+    </div>
+  </header>
+
+  <!-- ============ Section 1: Interactive Resize ============ -->
+  <section>
+    <div class="wrap">
+      <h2>Drag to Resize</h2>
+      <p class="desc">
+        The image URL updates based on the container width — not the viewport.
+        Width is snapped to the nearest 160px step for CDN cacheability.
+        Drag the handle to see it in action.
+      </p>
+
+      <div class="toggle-row">
+        <button class="toggle" id="dpr-toggle" aria-label="Toggle DPR awareness"></button>
+        <span>DPR-aware (<span id="dpr-label">off — treating as 1×</span>)</span>
+      </div>
+
+      <div class="resize-outer" id="resize-outer">
+        <div class="resize-box" id="resize-box">
+          <img id="resize-img" alt="Container-responsive image">
+          <div class="resize-handle" id="resize-handle">
+            <div class="grip"><span></span><span></span><span></span></div>
+            <div class="resize-width-label" id="resize-width-label"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-grid" id="resize-info"></div>
+
+      <div class="log-title">Request Log</div>
+      <div class="log" id="resize-log"></div>
+    </div>
+  </section>
+
+  <!-- ============ Section 2: Layout Stability ============ -->
+  <section>
+    <div class="wrap">
+      <h2>Layout Stability</h2>
+      <p class="desc">
+        Without an aspect-ratio hint, content below the image shifts when the image loads.
+        Slimmage sets <code>aspect-ratio</code> on the img element to reserve the correct space before loading.
+      </p>
+
+      <div class="comparison" id="cls-comparison">
+        <div class="panel">
+          <div class="panel-head"><span class="dot red"></span> Without aspect-ratio</div>
+          <div class="cls-body">
+            <div class="cls-img-area" id="cls-area-without"></div>
+            <div class="cls-below" id="cls-below-without">
+              <p>This content sits below the image.</p>
+              <span class="shift-label" id="cls-shift-without"></span>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="dot green"></span> With aspect-ratio: 16/9</div>
+          <div class="cls-body">
+            <div class="cls-img-area" id="cls-area-with"></div>
+            <div class="cls-below" id="cls-below-with">
+              <p>This content sits below the image.</p>
+              <span class="shift-label" id="cls-shift-with"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" id="cls-btn">Simulate Load</button>
+      <p class="note">Click to clear and reload both images. Watch the content position in the left panel.</p>
+    </div>
+  </section>
+
+  <!-- ============ Section 3: Dynamic Grid ============ -->
+  <section>
+    <div class="wrap">
+      <h2>Dynamic Grid</h2>
+      <p class="desc">
+        Each grid cell is an independent container. Change the column count and
+        each image adapts to its own cell width.
+      </p>
+
+      <div class="slider-row">
+        <label for="grid-slider">Columns</label>
+        <input type="range" min="1" max="4" value="3" id="grid-slider">
+        <span class="slider-val" id="grid-cols-val">3</span>
+      </div>
+
+      <div class="image-grid" id="image-grid"></div>
+      <div class="grid-widths" id="grid-widths"></div>
+    </div>
+  </section>
+
+  <!-- ============ Section 4: Ratchet ============ -->
+  <section>
+    <div class="wrap">
+      <h2>Ratchet: Never Re-download</h2>
+      <p class="desc">
+        Once a larger image is loaded, shrinking the container doesn't trigger a smaller request.
+        The browser's cached image renders at the smaller size for free.
+      </p>
+
+      <div class="btn-group">
+        <button class="btn" id="ratchet-grow">Grow +160px</button>
+        <button class="btn outline" id="ratchet-shrink">Shrink −160px</button>
+        <button class="btn ghost" id="ratchet-reset">Reset</button>
+      </div>
+
+      <div class="ratchet-viz">
+        <div class="ratchet-bars">
+          <div class="ratchet-bar-row">
+            <span class="ratchet-bar-label">Container</span>
+            <div class="ratchet-bar-track"><div class="ratchet-bar-fill container" id="bar-container"></div></div>
+            <span class="ratchet-bar-val" id="val-container">480px</span>
+          </div>
+          <div class="ratchet-bar-row">
+            <span class="ratchet-bar-label">Loaded</span>
+            <div class="ratchet-bar-track"><div class="ratchet-bar-fill loaded" id="bar-loaded"></div></div>
+            <span class="ratchet-bar-val" id="val-loaded">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ratchet-img-wrap" id="ratchet-wrap">
+        <img id="ratchet-img" alt="Ratchet demo">
+      </div>
+
+      <div class="log-title">Request Log</div>
+      <div class="log" id="ratchet-log"></div>
+    </div>
+  </section>
+
+  <!-- ============ Section 5: How It Works ============ -->
+  <section>
+    <div class="wrap">
+      <h2>How It Works</h2>
+      <p class="desc">Three steps, zero configuration beyond the template URL.</p>
+
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="num">1</div>
+          <h3>Observe</h3>
+          <p>A shared <code>ResizeObserver</code> watches the container element's inline size. Not the viewport — the actual container.</p>
+        </div>
+        <div class="how-card">
+          <div class="num">2</div>
+          <h3>Compute</h3>
+          <p>Container width × DPR, snapped to the nearest step (default 160px). Width-stepping means fewer unique URLs and better CDN cache hit rates.</p>
+        </div>
+        <div class="how-card">
+          <div class="num">3</div>
+          <h3>Load</h3>
+          <p><code>img.src</code> is set with optimal RIAPI parameters. The ratchet prevents re-downloading smaller sizes. Format detection picks WebP or AVIF when supported.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Footer ============ -->
+  <footer>
+    <div class="wrap">
+      <p>slimmage — container-responsive images for the real web.</p>
+    </div>
+  </footer>
+
+  <!-- ============ JavaScript ============ -->
+  <script type="module">
+    import {
+      createSlimmage,
+      stepWidth,
+      effectiveDpr,
+      computeQuality,
+    } from './slimmage-core.js';
+
+    // ----------------------------------------------------------------
+    // SVG image generator — produces visually distinct images per step
+    // ----------------------------------------------------------------
+    const PALETTES = [
+      ['#3b82f6', '#1d4ed8'], // blue
+      ['#8b5cf6', '#6d28d9'], // violet
+      ['#ec4899', '#be185d'], // pink
+      ['#f97316', '#c2410c'], // orange
+      ['#eab308', '#a16207'], // amber
+      ['#22c55e', '#15803d'], // green
+      ['#06b6d4', '#0e7490'], // cyan
+      ['#6366f1', '#4338ca'], // indigo
+      ['#a855f7', '#7c3aed'], // purple
+      ['#f43f5e', '#be123c'], // rose
+    ];
+
+    function generateSvg(width, height, quality) {
+      const step = Math.floor(width / 160) % PALETTES.length;
+      const [c1, c2] = PALETTES[step];
+      const fs = Math.max(13, Math.min(56, width / 8));
+      const sub = Math.max(10, Math.min(26, width / 14));
+
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${c1}"/>
+            <stop offset="100%" stop-color="${c2}"/>
+          </linearGradient>
+          <pattern id="d" width="40" height="40" patternUnits="userSpaceOnUse">
+            <circle cx="20" cy="20" r="0.8" fill="rgba(255,255,255,0.07)"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#g)"/>
+        <rect width="100%" height="100%" fill="url(#d)"/>
+        <text x="50%" y="44%" font-family="system-ui,-apple-system,sans-serif" font-size="${fs}" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central" opacity="0.92">${width} × ${height}</text>
+        <text x="50%" y="${height > 100 ? 62 : 78}%" font-family="ui-monospace,monospace" font-size="${sub}" fill="white" text-anchor="middle" dominant-baseline="central" opacity="0.4">quality ${quality}</text>
+      </svg>`;
+
+      return 'data:image/svg+xml,' + encodeURIComponent(svg);
+    }
+
+    /**
+     * Creates an onBeforeLoad callback that:
+     * 1. Calls the optional onInfo handler with the computed RIAPI params
+     * 2. Replaces the URL with a generated SVG (since we have no image server)
+     */
+    function makeBeforeLoad(onInfo) {
+      return (info) => {
+        if (onInfo) onInfo(info);
+        const u = new URL(info.url, location.href);
+        const w = parseInt(u.searchParams.get('width') || '0') || info.requestedWidth;
+        const h = parseInt(u.searchParams.get('height') || '0') || Math.round(w * 9 / 16);
+        const q = parseInt(u.searchParams.get('quality') || '85');
+        return { ...info, url: generateSvg(w, h, q) };
+      };
+    }
+
+    // ================================================================
+    //  Section 1: Interactive Resize
+    // ================================================================
+    (function initResizeDemo() {
+      const outer = document.getElementById('resize-outer');
+      const box = document.getElementById('resize-box');
+      const img = document.getElementById('resize-img');
+      const handle = document.getElementById('resize-handle');
+      const infoEl = document.getElementById('resize-info');
+      const logEl = document.getElementById('resize-log');
+      const dprToggle = document.getElementById('dpr-toggle');
+      const dprLabelEl = document.getElementById('dpr-label');
+
+      let dprAware = false;
+      let cleanup = null;
+      let requestCount = 0;
+      let currentLoadedWidth = 0;
+
+      function renderInfo(containerWidth) {
+        const dpr = effectiveDpr(dprAware, 3);
+        const ideal = containerWidth * dpr;
+        const stepped = stepWidth(ideal, 160, 4096);
+        const q = computeQuality(85, dpr, 10);
+        const ratchet = stepped < currentLoadedWidth && currentLoadedWidth > 0;
+        const status = currentLoadedWidth === 0 ? 'pending'
+          : ratchet ? 'ratchet'
+          : 'loaded';
+        const statusCls = ratchet ? 'yellow' : 'green';
+
+        infoEl.innerHTML = `
+          <div class="info-item"><div class="label">Container</div><div class="val">${Math.round(containerWidth)}px</div></div>
+          <div class="info-item"><div class="label">DPR</div><div class="val">${dpr}×</div></div>
+          <div class="info-item"><div class="label">Ideal Width</div><div class="val">${Math.round(ideal)}px</div></div>
+          <div class="info-item"><div class="label">Stepped Width</div><div class="val accent">${stepped}px</div></div>
+          <div class="info-item"><div class="label">Quality</div><div class="val">${q}</div></div>
+          <div class="info-item"><div class="label">Status</div><div class="val ${statusCls}">${status}</div></div>
+        `;
+      }
+
+      function addLogEntry(info) {
+        requestCount++;
+        const pct = Math.round(info.requestedWidth / 4096 * 100);
+        const entry = document.createElement('div');
+        entry.className = 'log-entry loaded';
+        entry.innerHTML = `
+          <span>#${requestCount}</span>
+          <span><strong>${info.requestedWidth}×${Math.round(info.requestedWidth * 9 / 16)}</strong></span>
+          <span>q${info.quality}</span>
+          <span class="log-bar-bg"><span class="log-bar-fill" style="width:${pct}%"></span></span>
+          ${info.previousWidth > 0 ? `<span style="color:var(--text-dim)">was ${info.previousWidth}px</span>` : '<span class="log-tag green">initial</span>'}
+        `;
+        logEl.prepend(entry);
+      }
+
+      function startSlimmage() {
+        if (cleanup) cleanup();
+        requestCount = 0;
+        currentLoadedWidth = 0;
+        logEl.innerHTML = '';
+
+        cleanup = createSlimmage(img, {
+          src: '/image?width=160&height=90&quality=85&format=jpeg',
+          container: '#resize-box',
+          preferredFormat: 'jpeg',
+          lazy: false,
+          dprAware,
+          maxDpr: 3,
+          quality: 85,
+          qualityDprStep: 10,
+          aspectRatio: 16 / 9,
+          onBeforeLoad: makeBeforeLoad((info) => {
+            currentLoadedWidth = info.requestedWidth;
+            addLogEntry(info);
+            renderInfo(info.containerWidth);
+          }),
+        });
+      }
+
+      const widthLabel = document.getElementById('resize-width-label');
+
+      // Observe container for continuous info updates (including ratchet state)
+      const infoObserver = new ResizeObserver(entries => {
+        const w = entries[0].contentRect.width;
+        if (w > 0) {
+          renderInfo(w);
+          if (widthLabel) widthLabel.textContent = `${Math.round(w)}px`;
+        }
+      });
+      infoObserver.observe(box);
+
+      // Drag handle
+      let dragging = false;
+      handle.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        handle.setPointerCapture(e.pointerId);
+        handle.classList.add('active');
+        document.body.style.userSelect = 'none';
+      });
+      window.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const rect = outer.getBoundingClientRect();
+        const w = Math.max(180, Math.min(rect.width, e.clientX - rect.left));
+        box.style.width = `${w}px`;
+      });
+      window.addEventListener('pointerup', () => {
+        if (dragging) {
+          dragging = false;
+          handle.classList.remove('active');
+          document.body.style.userSelect = '';
+        }
+      });
+
+      // DPR toggle
+      dprToggle.addEventListener('click', () => {
+        dprAware = !dprAware;
+        dprToggle.classList.toggle('on', dprAware);
+        const rawDpr = window.devicePixelRatio || 1;
+        dprLabelEl.textContent = dprAware
+          ? `on — device is ${rawDpr}×`
+          : 'off — treating as 1×';
+        startSlimmage();
+      });
+
+      startSlimmage();
+    })();
+
+    // ================================================================
+    //  Section 2: Layout Stability (CLS)
+    // ================================================================
+    (function initClsDemo() {
+      const btn = document.getElementById('cls-btn');
+      const areaWithout = document.getElementById('cls-area-without');
+      const areaWith = document.getElementById('cls-area-with');
+      const belowWithout = document.getElementById('cls-below-without');
+      const belowWith = document.getElementById('cls-below-with');
+      const shiftWithout = document.getElementById('cls-shift-without');
+      const shiftWith = document.getElementById('cls-shift-with');
+
+      let running = false;
+
+      // Measure position of content RELATIVE to its panel (immune to stacking shifts)
+      function relativeOffset(panel, content) {
+        return content.getBoundingClientRect().top - panel.getBoundingClientRect().top;
+      }
+
+      const panelWithout = areaWithout.closest('.panel');
+      const panelWith = areaWith.closest('.panel');
+
+      btn.addEventListener('click', () => {
+        if (running) return;
+        running = true;
+        btn.textContent = 'Loading...';
+
+        // Step 1: Clear images
+        areaWithout.innerHTML = '';
+        areaWith.innerHTML = '';
+        shiftWithout.textContent = '';
+        shiftWith.textContent = '';
+
+        // Insert empty img elements
+        const imgW = document.createElement('img');
+        imgW.style.cssText = 'width:100%;display:block;';
+        areaWithout.appendChild(imgW);
+
+        const imgA = document.createElement('img');
+        imgA.style.cssText = 'width:100%;display:block;aspect-ratio:16/9;';
+        areaWith.appendChild(imgA);
+
+        // Step 2: Wait for "before" state to render
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const beforeW = relativeOffset(panelWithout, belowWithout);
+            const beforeA = relativeOffset(panelWith, belowWith);
+
+            // Step 3: Delayed load
+            setTimeout(() => {
+              const containerW = areaWithout.getBoundingClientRect().width;
+              const stepped = stepWidth(containerW, 160, 4096);
+              const h = Math.round(stepped * 9 / 16);
+
+              imgW.src = generateSvg(stepped, h, 85);
+              imgA.src = generateSvg(stepped, h, 85);
+
+              requestAnimationFrame(() => {
+                const afterW = relativeOffset(panelWithout, belowWithout);
+                const afterA = relativeOffset(panelWith, belowWith);
+
+                const shiftW = Math.round(afterW - beforeW);
+                const shiftA = Math.round(afterA - beforeA);
+
+                shiftWithout.textContent = shiftW > 1
+                  ? `\u2193 Shifted ${shiftW}px`
+                  : '\u2713 Stable';
+                shiftWithout.className = 'shift-label ' + (shiftW > 1 ? 'red' : 'green');
+
+                shiftWith.textContent = shiftA > 1
+                  ? `\u2193 Shifted ${shiftA}px`
+                  : '\u2713 Stable';
+                shiftWith.className = 'shift-label ' + (shiftA > 1 ? 'green' : 'green');
+
+                // FLIP animation for "without" panel text
+                if (shiftW > 1) {
+                  belowWithout.style.transform = `translateY(${-shiftW}px)`;
+                  belowWithout.style.transition = 'none';
+                  requestAnimationFrame(() => {
+                    belowWithout.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+                    belowWithout.style.transform = '';
+                  });
+                }
+
+                running = false;
+                btn.textContent = 'Simulate Load';
+              });
+            }, 500);
+          });
+        });
+      });
+
+      // Trigger initial load
+      btn.click();
+    })();
+
+    // ================================================================
+    //  Section 3: Dynamic Grid
+    // ================================================================
+    (function initGridDemo() {
+      const grid = document.getElementById('image-grid');
+      const slider = document.getElementById('grid-slider');
+      const colsVal = document.getElementById('grid-cols-val');
+      const widthsEl = document.getElementById('grid-widths');
+      const cleanups = [];
+      const widths = {};
+
+      function updateWidths() {
+        const vals = Object.values(widths);
+        if (vals.length === 0) return;
+        const unique = [...new Set(vals)].sort((a, b) => a - b);
+        widthsEl.textContent = `Requested widths: ${unique.map(w => w + 'px').join(', ')}`;
+      }
+
+      for (let i = 0; i < 6; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'grid-cell';
+        cell.id = `grid-cell-${i}`;
+
+        const img = document.createElement('img');
+        img.id = `grid-img-${i}`;
+        img.alt = `Grid image ${i + 1}`;
+        cell.appendChild(img);
+        grid.appendChild(cell);
+
+        cleanups.push(createSlimmage(img, {
+          src: `/image?width=160&height=120&quality=85&format=jpeg`,
+          container: `#grid-cell-${i}`,
+          preferredFormat: 'jpeg',
+          lazy: false,
+          dprAware: false,
+          aspectRatio: 4 / 3,
+          onBeforeLoad: makeBeforeLoad((info) => {
+            widths[i] = info.requestedWidth;
+            updateWidths();
+          }),
+        }));
+      }
+
+      slider.addEventListener('input', () => {
+        const cols = slider.value;
+        colsVal.textContent = cols;
+        grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+      });
+    })();
+
+    // ================================================================
+    //  Section 4: Ratchet
+    // ================================================================
+    (function initRatchetDemo() {
+      const wrap = document.getElementById('ratchet-wrap');
+      const img = document.getElementById('ratchet-img');
+      const logEl = document.getElementById('ratchet-log');
+      const growBtn = document.getElementById('ratchet-grow');
+      const shrinkBtn = document.getElementById('ratchet-shrink');
+      const resetBtn = document.getElementById('ratchet-reset');
+      const barContainer = document.getElementById('bar-container');
+      const barLoaded = document.getElementById('bar-loaded');
+      const valContainer = document.getElementById('val-container');
+      const valLoaded = document.getElementById('val-loaded');
+
+      const MAX_VIZ = 1600;
+      let containerWidth = 480;
+      let loadedWidth = 0;
+      let cleanup = null;
+
+      function updateBars() {
+        barContainer.style.width = `${(containerWidth / MAX_VIZ) * 100}%`;
+        barLoaded.style.width = `${(loadedWidth / MAX_VIZ) * 100}%`;
+        valContainer.textContent = `${containerWidth}px`;
+        valLoaded.textContent = loadedWidth > 0 ? `${loadedWidth}px` : '—';
+      }
+
+      function addLog(html, cls) {
+        const entry = document.createElement('div');
+        entry.className = `log-entry ${cls}`;
+        entry.innerHTML = html;
+        logEl.prepend(entry);
+      }
+
+      function start() {
+        if (cleanup) cleanup();
+        loadedWidth = 0;
+        logEl.innerHTML = '';
+        wrap.style.width = `${containerWidth}px`;
+        updateBars();
+
+        cleanup = createSlimmage(img, {
+          src: '/image?width=160&height=90&quality=85&format=jpeg',
+          container: '#ratchet-wrap',
+          preferredFormat: 'jpeg',
+          lazy: false,
+          dprAware: false,
+          aspectRatio: 16 / 9,
+          onBeforeLoad: makeBeforeLoad((info) => {
+            const prev = loadedWidth;
+            loadedWidth = info.requestedWidth;
+            updateBars();
+            addLog(
+              `<span>\u2191</span> ${prev || 0} \u2192 <strong>${info.requestedWidth}px</strong> <span class="log-tag green">loaded</span>`,
+              'loaded'
+            );
+          }),
+        });
+      }
+
+      growBtn.addEventListener('click', () => {
+        containerWidth = Math.min(containerWidth + 160, 1440);
+        wrap.style.width = `${containerWidth}px`;
+        updateBars();
+      });
+
+      shrinkBtn.addEventListener('click', () => {
+        const prev = containerWidth;
+        containerWidth = Math.max(containerWidth - 160, 160);
+        wrap.style.width = `${containerWidth}px`;
+        updateBars();
+
+        // The ratchet will prevent a new request — log it ourselves
+        const steppedAfter = stepWidth(containerWidth, 160, 4096);
+        if (steppedAfter <= loadedWidth && loadedWidth > 0) {
+          addLog(
+            `<span>\u2193</span> Container ${containerWidth}px \u2264 Loaded ${loadedWidth}px <span class="log-tag yellow">ratchet: skipped</span>`,
+            'skipped'
+          );
+        }
+      });
+
+      resetBtn.addEventListener('click', () => {
+        containerWidth = 480;
+        start();
+      });
+
+      start();
+    })();
+  </script>
+</body>
+</html>
