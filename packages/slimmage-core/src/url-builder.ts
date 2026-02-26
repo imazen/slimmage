@@ -37,9 +37,12 @@ function resolveFormat(preferredFormat: ImageFormat, support: FormatSupport): Im
   }
   if (preferredFormat === 'avif' && support.avif) return 'avif';
   if (preferredFormat === 'webp' && support.webp) return 'webp';
-  // If preferred format not supported, use best available
+  // If preferred format not supported, use best available fallback
   if (preferredFormat === 'avif' && !support.avif) {
     return support.webp ? 'webp' : 'jpeg';
+  }
+  if (preferredFormat === 'webp' && !support.webp) {
+    return support.avif ? 'avif' : 'jpeg';
   }
   return preferredFormat;
 }

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { stepWidth, computeQuality } from '../src/width-calculator.js';
+import { stepWidth, effectiveDpr, computeQuality } from '../src/width-calculator.js';
 
 describe('stepWidth', () => {
   const step = 160;
@@ -81,5 +81,51 @@ describe('computeQuality', () => {
 
   test('at DPR < 1 returns base quality', () => {
     expect(computeQuality(85, 0.5, 10)).toBe(85);
+  });
+
+  test('fractional DPR floors the step count', () => {
+    // DPR 1.5: floor(1.5-1) = 0, so no reduction
+    expect(computeQuality(85, 1.5, 10)).toBe(85);
+    // DPR 2.9: floor(2.9-1) = 1, one step reduction
+    expect(computeQuality(85, 2.9, 10)).toBe(75);
+    // DPR 3.0: floor(3.0-1) = 2, two step reduction
+    expect(computeQuality(85, 3.0, 10)).toBe(65);
+  });
+
+  test('zero qualityDprStep means no reduction', () => {
+    expect(computeQuality(85, 3, 0)).toBe(85);
+  });
+
+  test('quality 100 at various DPRs', () => {
+    expect(computeQuality(100, 1, 10)).toBe(100);
+    expect(computeQuality(100, 2, 10)).toBe(90);
+    expect(computeQuality(100, 3, 10)).toBe(80);
+  });
+
+  test('large DPR does not crash', () => {
+    const q = computeQuality(85, 10, 10);
+    expect(q).toBe(10); // floor clamped
+  });
+
+  test('DPR exactly 1 returns base', () => {
+    expect(computeQuality(50, 1.0, 10)).toBe(50);
+  });
+});
+
+describe('effectiveDpr', () => {
+  test('returns 1 when dprAware is false', () => {
+    expect(effectiveDpr(false, 3)).toBe(1);
+  });
+
+  test('caps at maxDpr', () => {
+    // In test env (non-browser), window.devicePixelRatio may be 1 or undefined
+    const dpr = effectiveDpr(true, 1);
+    expect(dpr).toBeLessThanOrEqual(1);
+    expect(dpr).toBeGreaterThanOrEqual(1);
+  });
+
+  test('maxDpr of 0.5 caps even at DPR 1', () => {
+    const dpr = effectiveDpr(true, 0.5);
+    expect(dpr).toBe(0.5);
   });
 });

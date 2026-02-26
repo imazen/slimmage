@@ -64,6 +64,8 @@ test.describe('dynamic resize', () => {
       firstWidth,
       { timeout: 3000 },
     );
+    // Wait for response to be collected after img.src changed
+    await page.waitForTimeout(300);
 
     const widths = requests.map(r => r.width);
     const largerRequests = widths.filter(w => w > firstWidth);

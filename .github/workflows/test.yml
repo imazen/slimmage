@@ -1,0 +1,90 @@
+name: Tests
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: cd packages/slimmage-core && bun test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - name: Build slimmage-core
+        run: cd packages/slimmage-core && bun run build
+      - name: Build slimmage-wc
+        run: cd packages/slimmage-wc && bun run build
+      - name: Build slimmage-svelte
+        run: cd packages/slimmage-svelte && bun run build
+      - name: Build slimmage-react
+        run: cd packages/slimmage-react && bun run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: packages/*/dist/
+
+  playwright:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: packages/
+      - name: Install Playwright browsers
+        run: cd packages/slimmage-test && bunx playwright install --with-deps ${{ matrix.browser }}
+      - name: Run Playwright tests (${{ matrix.browser }})
+        run: cd packages/slimmage-test && bunx playwright test --project=${{ matrix.browser }}
+        env:
+          BUN_PATH: bun
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: packages/slimmage-test/test-results/
+          retention-days: 7
+
+  playwright-mobile:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [mobile-chrome, mobile-safari]
+        include:
+          - project: mobile-chrome
+            browser: chromium
+          - project: mobile-safari
+            browser: webkit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: packages/
+      - name: Install Playwright browsers
+        run: cd packages/slimmage-test && bunx playwright install --with-deps ${{ matrix.browser }}
+      - name: Run Playwright tests (${{ matrix.project }})
+        run: cd packages/slimmage-test && bunx playwright test --project=${{ matrix.project }}
+        env:
+          BUN_PATH: bun

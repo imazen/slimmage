@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Callbacks Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .container { width: 100%; }
+    img { display: block; width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <img id="img" data-testid="img-callbacks" alt="Callbacks test">
+  </div>
+
+  <script type="module">
+    import { createSlimmage } from '/slimmage-core/index.js';
+
+    // Store callback data globally for Playwright to read
+    window.__slimmageCallbacks = {
+      beforeLoadCalls: [],
+      loadCalls: [],
+    };
+
+    const cleanup = createSlimmage(document.getElementById('img'), {
+      src: '/image?width=160&quality=85&format=jpeg',
+      container: '#container',
+      preferredFormat: 'jpeg',
+      lazy: false,
+      onBeforeLoad: (info) => {
+        window.__slimmageCallbacks.beforeLoadCalls.push({
+          containerWidth: info.containerWidth,
+          requestedWidth: info.requestedWidth,
+          quality: info.quality,
+          format: info.format,
+          url: info.url,
+          previousUrl: info.previousUrl,
+          dpr: info.dpr,
+        });
+        return info;
+      },
+      onLoad: (info) => {
+        window.__slimmageCallbacks.loadCalls.push({
+          containerWidth: info.containerWidth,
+          requestedWidth: info.requestedWidth,
+          quality: info.quality,
+          url: info.url,
+        });
+      },
+    });
+
+    // Expose cleanup for testing
+    window.__slimmageCleanup = cleanup;
+  </script>
+</body>
+</html>
