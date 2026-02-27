@@ -8,11 +8,11 @@ Container-responsive images via ResizeObserver. ~3KB gzipped, zero dependencies.
 
 **[Live demo](https://imazen.github.io/slimmage/)**
 
-## Why not srcset?
+## When to use srcset, and when to use slimmage
 
-`srcset` with `sizes` requires you to predict how wide the image will be at every viewport breakpoint, accounting for padding, margins, sidebars, and CSS grid math. Get it wrong and the browser downloads the wrong size. Get it right and it breaks next time someone touches the layout.
+If you can reliably calculate the size an image will be at every viewport breakpoint — fixed layouts, simple pages, marketing landing pages — use `srcset` and `sizes`. It's native, requires no JS, and the browser can start fetching before layout completes. [srcset.tips](https://www.srcset.tips/en/introduction/) is a good resource for getting the `sizes` attribute right.
 
-Slimmage measures the container at runtime. No guessing.
+Where `srcset` breaks down is layouts where image size depends on *container* state rather than viewport state: sidebars that collapse, CSS grid with `auto-fit`, resizable panels, tab widgets, accordions, or anything where the image width can't be expressed as a viewport calculation. In those cases, `sizes` can't describe the relationship and the browser picks the wrong file. Slimmage measures the container at runtime instead of predicting it at authoring time.
 
 ## Install
 
