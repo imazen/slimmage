@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Container Query Background Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    .outer {
+      width: 100%;
+      container-type: inline-size;
+      container-name: hero;
+    }
+
+    .bg-box {
+      width: 100%;
+      height: 300px;
+      /* Default: smallest image */
+      background-image: url('/image?width=480&quality=85&format=jpeg&id=bg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* At 480px+ container width, switch to medium image */
+    @container hero (min-width: 480px) {
+      .bg-box {
+        background-image: url('/image?width=800&quality=85&format=jpeg&id=bg');
+      }
+    }
+
+    /* At 800px+ container width, switch to large image */
+    @container hero (min-width: 800px) {
+      .bg-box {
+        background-image: url('/image?width=1200&quality=85&format=jpeg&id=bg');
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="outer" id="outer">
+    <div class="bg-box" id="bg-box" data-testid="bg-box"></div>
+  </div>
+</body>
+</html>

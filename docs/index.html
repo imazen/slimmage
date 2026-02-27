@@ -578,6 +578,287 @@
       font-style: italic;
       margin-top: 16px;
     }
+
+    /* ---- Getting Started ---- */
+    .install-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+    }
+    .install-tab {
+      padding: 6px 16px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: inherit;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .install-tab:first-child { border-radius: 6px 0 0 0; }
+    .install-tab:last-child { border-radius: 0 6px 0 0; }
+    .install-tab.active {
+      background: var(--surface-2);
+      color: var(--accent);
+    }
+    .code-block {
+      position: relative;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 0 6px 6px 6px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+    .code-block.rounded-top { border-radius: 6px; }
+    .code-block pre {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--text);
+      white-space: pre;
+    }
+    .code-block .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 3px 8px;
+      font-size: 0.65rem;
+      font-family: inherit;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .code-block .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .code-block .copy-btn.copied { color: var(--green); border-color: var(--green); }
+    .framework-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .framework-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .framework-card h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .framework-card pre {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--text-dim);
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .hl-kw { color: var(--accent); }
+    .hl-str { color: var(--green); }
+    .hl-cmt { color: var(--text-dim); opacity: 0.6; }
+    .hl-fn { color: var(--accent-2); }
+    .hl-tag { color: var(--red); }
+
+    /* ---- Below-Resolution Demo ---- */
+    .below-res-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .maxwidth-btns {
+      display: flex;
+      gap: 4px;
+    }
+    .maxwidth-btn {
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: var(--mono);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .maxwidth-btn.active {
+      background: rgba(129,140,248,0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .below-res-indicator {
+      display: none;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: rgba(251,191,36,0.12);
+      border: 1px solid rgba(251,191,36,0.3);
+      border-radius: 6px;
+      color: var(--yellow);
+    }
+    .below-res-indicator.visible { display: inline-flex; align-items: center; gap: 6px; }
+
+    /* ---- Container Query BG Demo ---- */
+    .cq-demo-outer {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .cq-demo-resizer {
+      position: relative;
+      width: 65%;
+      min-width: 240px;
+      max-width: 100%;
+      container-type: inline-size;
+      container-name: hero-bg;
+    }
+    .cq-bg-box {
+      width: 100%;
+      height: 240px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 6px;
+      transition: background-image 0.2s;
+    }
+    .cq-breakpoint-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .cq-breakpoint-label.small { background: rgba(59,130,246,0.8); color: white; }
+    .cq-breakpoint-label.medium { background: rgba(139,92,246,0.8); color: white; }
+    .cq-breakpoint-label.large { background: rgba(34,197,94,0.8); color: white; }
+    .tradeoffs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (max-width: 600px) {
+      .tradeoffs { grid-template-columns: 1fr; }
+    }
+    .tradeoff-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .tradeoff-card h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .tradeoff-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .tradeoff-card li {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      padding-left: 18px;
+      position: relative;
+    }
+    .tradeoff-card li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+    }
+    .tradeoff-card.css-wins li::before { color: var(--green); }
+    .tradeoff-card.js-wins li::before { color: var(--accent); }
+
+    /* ---- API Reference ---- */
+    .api-table-wrap {
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+    .api-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .api-table th {
+      text-align: left;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-dim);
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .api-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .api-table td:first-child {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .api-table td:nth-child(2) {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--accent-2);
+      white-space: nowrap;
+    }
+    .api-table td:nth-child(3) {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+    .api-table td:last-child {
+      color: var(--text-dim);
+    }
+    .api-section {
+      margin-bottom: 24px;
+    }
+    .api-section h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .api-section h3 code {
+      font-family: var(--mono);
+      font-size: 0.92em;
+      background: var(--surface-2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+    .api-section .sig {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -596,6 +877,64 @@
       </p>
     </div>
   </header>
+
+  <!-- ============ Getting Started ============ -->
+  <section>
+    <div class="wrap">
+      <h2>Getting Started</h2>
+      <p class="desc">Install, import, done. One function call per image.</p>
+
+      <div class="install-tabs" id="install-tabs">
+        <button class="install-tab active" data-pm="npm">npm</button>
+        <button class="install-tab" data-pm="bun">bun</button>
+        <button class="install-tab" data-pm="pnpm">pnpm</button>
+      </div>
+      <div class="code-block" id="install-block">
+        <pre id="install-cmd">npm install slimmage-core</pre>
+        <button class="copy-btn" data-target="install-cmd">Copy</button>
+      </div>
+
+      <div class="code-block rounded-top">
+        <pre id="usage-snippet"><span class="hl-kw">import</span> { <span class="hl-fn">createSlimmage</span> } <span class="hl-kw">from</span> <span class="hl-str">'slimmage-core'</span>;
+
+<span class="hl-kw">const</span> cleanup = <span class="hl-fn">createSlimmage</span>(img, {
+  src: <span class="hl-str">'https://cdn.example.com/photo.jpg?width=160&amp;quality=85'</span>,
+  container: <span class="hl-str">'.card'</span>,
+});
+<span class="hl-cmt">// Later: cleanup();</span></pre>
+        <button class="copy-btn" data-target="usage-snippet">Copy</button>
+      </div>
+
+      <div class="framework-grid">
+        <div class="framework-card">
+          <h4>React</h4>
+          <pre><span class="hl-kw">import</span> { <span class="hl-fn">useSlimmage</span> } <span class="hl-kw">from</span> <span class="hl-str">'slimmage-react'</span>;
+
+<span class="hl-kw">function</span> <span class="hl-fn">Photo</span>({ url }) {
+  <span class="hl-kw">const</span> ref = <span class="hl-fn">useSlimmage</span>({ src: url });
+  <span class="hl-kw">return</span> &lt;<span class="hl-tag">img</span> ref={ref} /&gt;;
+}</pre>
+        </div>
+        <div class="framework-card">
+          <h4>Svelte</h4>
+          <pre>&lt;<span class="hl-tag">script</span>&gt;
+  <span class="hl-kw">import</span> { <span class="hl-fn">SlimmageImg</span> } <span class="hl-kw">from</span> <span class="hl-str">'slimmage-svelte'</span>;
+&lt;/<span class="hl-tag">script</span>&gt;
+
+&lt;<span class="hl-fn">SlimmageImg</span> src={url} /&gt;</pre>
+        </div>
+        <div class="framework-card">
+          <h4>Web Component</h4>
+          <pre><span class="hl-kw">import</span> <span class="hl-str">'slimmage-wc'</span>;
+
+&lt;<span class="hl-tag">slimmage-img</span>
+  src=<span class="hl-str">"https://cdn.example.com/photo.jpg
+       ?width=160&amp;quality=85"</span>
+&gt;&lt;/<span class="hl-tag">slimmage-img</span>&gt;</pre>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ============ Section 1: Interactive Resize ============ -->
   <section>
@@ -725,6 +1064,129 @@
     </div>
   </section>
 
+  <!-- ============ Below-Resolution ============ -->
+  <section>
+    <div class="wrap">
+      <h2>Below-Resolution: maxWidth</h2>
+      <p class="desc">
+        What happens when the container grows past the source image's native resolution?
+        Set <code>maxWidth</code> to your source image's pixel width to cap requests. Without it, the CDN would
+        upscale or serve the original at sizes that add bytes without adding detail.
+      </p>
+
+      <div class="below-res-controls">
+        <label style="font-size:0.8rem;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">maxWidth</label>
+        <div class="maxwidth-btns" id="maxwidth-btns">
+          <button class="maxwidth-btn" data-mw="480">480</button>
+          <button class="maxwidth-btn active" data-mw="800">800</button>
+          <button class="maxwidth-btn" data-mw="1200">1200</button>
+          <button class="maxwidth-btn" data-mw="2400">2400</button>
+          <button class="maxwidth-btn" data-mw="4096">4096</button>
+        </div>
+        <span class="below-res-indicator" id="below-res-indicator">Below source resolution</span>
+      </div>
+
+      <div class="resize-outer" id="belowres-outer">
+        <div class="resize-box" id="belowres-box" style="width:75%">
+          <img id="belowres-img" alt="Below-resolution demo">
+          <div class="resize-handle" id="belowres-handle">
+            <div class="grip"><span></span><span></span><span></span></div>
+            <div class="resize-width-label" id="belowres-width-label"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-grid" id="belowres-info"></div>
+
+      <div class="code-block rounded-top" style="margin-top:20px">
+        <pre id="belowres-code"><span class="hl-fn">createSlimmage</span>(img, {
+  src: <span class="hl-str">'https://cdn.example.com/photo.jpg?width=160&amp;quality=85'</span>,
+  maxWidth: <span class="hl-str">800</span>,  <span class="hl-cmt">// source image is 800px wide</span>
+  onBeforeLoad: (info) =&gt; {
+    el.classList.toggle(<span class="hl-str">'below-res'</span>,
+      info.requestedWidth &gt;= <span class="hl-str">800</span>);
+  },
+});</pre>
+        <button class="copy-btn" data-target="belowres-code">Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Background Images: CSS Container Queries ============ -->
+  <section>
+    <div class="wrap">
+      <h2>Background Images: CSS Container Queries</h2>
+      <p class="desc">
+        For responsive backgrounds, CSS container queries are the right tool.
+        They switch images during the layout pass — zero JS delay, no flash of wrong-size content.
+        Slimmage stays focused on <code>&lt;img&gt;</code> elements where CSS has no solution.
+      </p>
+
+      <div class="cq-demo-outer" id="cq-outer">
+        <div class="cq-demo-resizer" id="cq-resizer" style="width:65%">
+          <span class="cq-breakpoint-label small" id="cq-bp-label">480px</span>
+          <div class="cq-bg-box" id="cq-bg-box"></div>
+          <div class="resize-handle" id="cq-handle">
+            <div class="grip"><span></span><span></span><span></span></div>
+            <div class="resize-width-label" id="cq-width-label"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-grid" id="cq-info" style="margin-top:12px"></div>
+
+      <div class="code-block rounded-top" style="margin-top:20px">
+        <pre id="cq-css-code"><span class="hl-tag">.hero</span> {
+  <span class="hl-kw">container-type</span>: inline-size;
+  <span class="hl-kw">container-name</span>: hero;
+}
+
+<span class="hl-tag">.hero-bg</span> {
+  <span class="hl-kw">background-image</span>: <span class="hl-fn">url</span>(<span class="hl-str">'photo.jpg?width=480'</span>);
+}
+
+<span class="hl-fn">@container</span> hero (<span class="hl-kw">min-width</span>: <span class="hl-str">480px</span>) {
+  <span class="hl-tag">.hero-bg</span> {
+    <span class="hl-kw">background-image</span>: <span class="hl-fn">url</span>(<span class="hl-str">'photo.jpg?width=800'</span>);
+  }
+}
+
+<span class="hl-fn">@container</span> hero (<span class="hl-kw">min-width</span>: <span class="hl-str">800px</span>) {
+  <span class="hl-tag">.hero-bg</span> {
+    <span class="hl-kw">background-image</span>: <span class="hl-fn">url</span>(<span class="hl-str">'photo.jpg?width=1200'</span>);
+  }
+}</pre>
+        <button class="copy-btn" data-target="cq-css-code">Copy</button>
+      </div>
+
+      <div class="tradeoffs">
+        <div class="tradeoff-card css-wins">
+          <h4>CSS container queries</h4>
+          <ul>
+            <li>Zero JS delay — applied during layout pass</li>
+            <li>Ideal for above-the-fold LCP backgrounds</li>
+            <li>No runtime overhead, no observers</li>
+            <li>Works with any image CDN / RIAPI server</li>
+          </ul>
+        </div>
+        <div class="tradeoff-card js-wins">
+          <h4>Slimmage (for &lt;img&gt;)</h4>
+          <ul>
+            <li>Continuous width optimization, not limited to N breakpoints</li>
+            <li>DPR-aware quality reduction saves bytes on retina</li>
+            <li>Format negotiation (AVIF / WebP fallback)</li>
+            <li>Ratchet prevents redundant downloads on shrink</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note">
+        Recommendation: CSS container queries for backgrounds, slimmage for &lt;img&gt; elements.
+        Browser support: Chrome 105+, Firefox 110+, Safari 16+ (&gt;95% global coverage).
+      </p>
+    </div>
+  </section>
+
   <!-- ============ Section 5: How It Works ============ -->
   <section>
     <div class="wrap">
@@ -746,6 +1208,85 @@
           <div class="num">3</div>
           <h3>Load</h3>
           <p><code>img.src</code> is set with optimal RIAPI parameters. The ratchet prevents re-downloading smaller sizes. Format detection picks WebP or AVIF when supported.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ API Reference ============ -->
+  <section>
+    <div class="wrap">
+      <h2>API Reference</h2>
+      <p class="desc">Everything slimmage exports, at a glance.</p>
+
+      <div class="api-section">
+        <h3><code>createSlimmage(img, config)</code></h3>
+        <p class="sig">createSlimmage(img: HTMLImageElement, config: SlimmageConfig): () =&gt; void</p>
+        <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:12px;">
+          Attach slimmage to an <code>&lt;img&gt;</code>. Returns a cleanup function that disconnects all observers.
+        </p>
+
+        <div class="api-table-wrap">
+          <table class="api-table">
+            <thead>
+              <tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>src</td><td>string</td><td>—</td><td>Template URL with RIAPI params (required)</td></tr>
+              <tr><td>container</td><td>string | Element</td><td>parentElement</td><td>CSS selector or element to observe</td></tr>
+              <tr><td>widthStep</td><td>number</td><td>160</td><td>Width snap step (px) for CDN cache efficiency</td></tr>
+              <tr><td>maxWidth</td><td>number</td><td>4096</td><td>Cap on requested pixel width</td></tr>
+              <tr><td>dprAware</td><td>boolean</td><td>true</td><td>Multiply container width by devicePixelRatio</td></tr>
+              <tr><td>maxDpr</td><td>number</td><td>3</td><td>Cap on devicePixelRatio</td></tr>
+              <tr><td>quality</td><td>number</td><td>85</td><td>Base JPEG quality (1-100)</td></tr>
+              <tr><td>qualityDprStep</td><td>number</td><td>10</td><td>Quality reduction per DPR step above 1×</td></tr>
+              <tr><td>preferredFormat</td><td>ImageFormat</td><td>'avif'</td><td>Preferred format if browser supports it</td></tr>
+              <tr><td>lazy</td><td>boolean</td><td>true</td><td>Defer load until image enters viewport</td></tr>
+              <tr><td>lazyMargin</td><td>string</td><td>'200px'</td><td>IntersectionObserver rootMargin</td></tr>
+              <tr><td>aspectRatio</td><td>number</td><td>—</td><td>width/height ratio for CLS prevention</td></tr>
+              <tr><td>fetchPriority</td><td>'high' | 'low' | 'auto'</td><td>'auto'</td><td>Fetch priority hint</td></tr>
+              <tr><td>onBeforeLoad</td><td>(info) =&gt; info | void</td><td>—</td><td>Called before each URL update; can modify or cancel</td></tr>
+              <tr><td>onLoad</td><td>(info) =&gt; void</td><td>—</td><td>Called after image loads</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="api-section">
+        <h3><code>ImageLoadInfo</code></h3>
+        <div class="api-table-wrap">
+          <table class="api-table">
+            <thead>
+              <tr><th>Field</th><th>Type</th><th colspan="2">Description</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>containerWidth</td><td>number</td><td colspan="2">Container's CSS pixel width</td></tr>
+              <tr><td>dpr</td><td>number</td><td colspan="2">Effective devicePixelRatio used</td></tr>
+              <tr><td>requestedWidth</td><td>number</td><td colspan="2">Stepped pixel width being requested</td></tr>
+              <tr><td>quality</td><td>number</td><td colspan="2">JPEG quality being requested</td></tr>
+              <tr><td>format</td><td>ImageFormat</td><td colspan="2">Image format being requested</td></tr>
+              <tr><td>url</td><td>string</td><td colspan="2">Computed URL to load</td></tr>
+              <tr><td>previousUrl</td><td>string | null</td><td colspan="2">Previous URL (null on first load)</td></tr>
+              <tr><td>previousWidth</td><td>number</td><td colspan="2">Previous requested width (0 on first load)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="api-section">
+        <h3>Utilities</h3>
+        <div class="api-table-wrap">
+          <table class="api-table">
+            <thead>
+              <tr><th>Function</th><th colspan="3">Signature</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>stepWidth</td><td colspan="3">(idealWidth: number, step: number, maxWidth: number) =&gt; number</td></tr>
+              <tr><td>effectiveDpr</td><td colspan="3">(dprAware: boolean, maxDpr: number) =&gt; number</td></tr>
+              <tr><td>computeQuality</td><td colspan="3">(baseQuality: number, dpr: number, qualityDprStep: number) =&gt; number</td></tr>
+              <tr><td>buildUrl</td><td colspan="3">(templateUrl: string, requestedWidth: number, quality: number, format: ImageFormat) =&gt; string</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -1184,6 +1725,215 @@
       });
 
       start();
+    })();
+
+    // ================================================================
+    //  Getting Started: Install tabs & copy buttons
+    // ================================================================
+    (function initGettingStarted() {
+      const installCmds = {
+        npm: 'npm install slimmage-core',
+        bun: 'bun add slimmage-core',
+        pnpm: 'pnpm add slimmage-core',
+      };
+
+      const tabs = document.querySelectorAll('#install-tabs .install-tab');
+      const cmdEl = document.getElementById('install-cmd');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          cmdEl.textContent = installCmds[tab.dataset.pm];
+        });
+      });
+
+      // Copy buttons
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = document.getElementById(btn.dataset.target);
+          if (!target) return;
+          navigator.clipboard.writeText(target.textContent).then(() => {
+            btn.textContent = 'Copied';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.textContent = 'Copy';
+              btn.classList.remove('copied');
+            }, 1500);
+          });
+        });
+      });
+    })();
+
+    // ================================================================
+    //  Below-Resolution Demo
+    // ================================================================
+    (function initBelowResDemo() {
+      const outer = document.getElementById('belowres-outer');
+      const box = document.getElementById('belowres-box');
+      const img = document.getElementById('belowres-img');
+      const handle = document.getElementById('belowres-handle');
+      const infoEl = document.getElementById('belowres-info');
+      const indicator = document.getElementById('below-res-indicator');
+      const widthLabel = document.getElementById('belowres-width-label');
+      const btns = document.querySelectorAll('#maxwidth-btns .maxwidth-btn');
+
+      let currentMaxWidth = 800;
+      let cleanup = null;
+      let currentLoadedWidth = 0;
+
+      function renderInfo(containerWidth) {
+        const stepped = stepWidth(containerWidth, 160, currentMaxWidth);
+        const capped = stepped >= currentMaxWidth;
+        const uncapped = stepWidth(containerWidth, 160, 4096);
+
+        indicator.classList.toggle('visible', capped);
+
+        infoEl.innerHTML = `
+          <div class="info-item"><div class="label">Container</div><div class="val">${Math.round(containerWidth)}px</div></div>
+          <div class="info-item"><div class="label">maxWidth</div><div class="val accent">${currentMaxWidth}px</div></div>
+          <div class="info-item"><div class="label">Uncapped</div><div class="val" style="color:${capped ? 'var(--text-dim)' : 'var(--green)'}">${uncapped}px</div></div>
+          <div class="info-item"><div class="label">Requested</div><div class="val ${capped ? 'yellow' : 'green'}">${stepped}px</div></div>
+        `;
+      }
+
+      function start() {
+        if (cleanup) cleanup();
+        currentLoadedWidth = 0;
+
+        cleanup = createSlimmage(img, {
+          src: '/image?width=160&height=90&quality=85&format=jpeg',
+          container: '#belowres-box',
+          preferredFormat: 'jpeg',
+          lazy: false,
+          dprAware: false,
+          maxWidth: currentMaxWidth,
+          aspectRatio: 16 / 9,
+          onBeforeLoad: makeBeforeLoad((info) => {
+            currentLoadedWidth = info.requestedWidth;
+            renderInfo(info.containerWidth);
+          }),
+        });
+      }
+
+      // Observe for continuous info updates
+      const obs = new ResizeObserver(entries => {
+        const w = entries[0].contentRect.width;
+        if (w > 0) {
+          renderInfo(w);
+          if (widthLabel) widthLabel.textContent = `${Math.round(w)}px`;
+        }
+      });
+      obs.observe(box);
+
+      // maxWidth buttons
+      btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          btns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentMaxWidth = parseInt(btn.dataset.mw);
+          start();
+        });
+      });
+
+      // Drag handle
+      let dragging = false;
+      handle.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        handle.setPointerCapture(e.pointerId);
+        handle.classList.add('active');
+        document.body.style.userSelect = 'none';
+      });
+      window.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const rect = outer.getBoundingClientRect();
+        const w = Math.max(240, Math.min(rect.width, e.clientX - rect.left));
+        box.style.width = `${w}px`;
+      });
+      window.addEventListener('pointerup', () => {
+        if (dragging) {
+          dragging = false;
+          handle.classList.remove('active');
+          document.body.style.userSelect = '';
+        }
+      });
+
+      start();
+    })();
+
+    // ================================================================
+    //  Container Query Background Demo
+    // ================================================================
+    (function initCqDemo() {
+      const outer = document.getElementById('cq-outer');
+      const resizer = document.getElementById('cq-resizer');
+      const bgBox = document.getElementById('cq-bg-box');
+      const handle = document.getElementById('cq-handle');
+      const infoEl = document.getElementById('cq-info');
+      const bpLabel = document.getElementById('cq-bp-label');
+      const widthLabel = document.getElementById('cq-width-label');
+
+      // Breakpoints matching our CSS @container rules
+      const breakpoints = [
+        { min: 800, width: 1200, label: '1200px', cls: 'large' },
+        { min: 480, width: 800, label: '800px', cls: 'medium' },
+        { min: 0, width: 480, label: '480px', cls: 'small' },
+      ];
+
+      function getBreakpoint(containerWidth) {
+        return breakpoints.find(bp => containerWidth >= bp.min) || breakpoints[breakpoints.length - 1];
+      }
+
+      function updateBg(containerWidth) {
+        const bp = getBreakpoint(containerWidth);
+        // Generate SVG matching the breakpoint (simulates CDN response)
+        bgBox.style.backgroundImage = `url("${generateSvg(bp.width, Math.round(bp.width * 9 / 16), 85)}")`;
+
+        bpLabel.textContent = bp.label;
+        bpLabel.className = `cq-breakpoint-label ${bp.cls}`;
+
+        infoEl.innerHTML = `
+          <div class="info-item"><div class="label">Container</div><div class="val">${Math.round(containerWidth)}px</div></div>
+          <div class="info-item"><div class="label">Breakpoint</div><div class="val accent">${bp.min > 0 ? '≥ ' + bp.min + 'px' : '< 480px'}</div></div>
+          <div class="info-item"><div class="label">BG Image</div><div class="val green">${bp.width}px</div></div>
+        `;
+      }
+
+      // Observe container size
+      const obs = new ResizeObserver(entries => {
+        const w = entries[0].contentRect.width;
+        if (w > 0) {
+          updateBg(w);
+          if (widthLabel) widthLabel.textContent = `${Math.round(w)}px`;
+        }
+      });
+      obs.observe(resizer);
+
+      // Drag handle
+      let dragging = false;
+      handle.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        handle.setPointerCapture(e.pointerId);
+        handle.classList.add('active');
+        document.body.style.userSelect = 'none';
+      });
+      window.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const rect = outer.getBoundingClientRect();
+        const w = Math.max(240, Math.min(rect.width, e.clientX - rect.left));
+        resizer.style.width = `${w}px`;
+      });
+      window.addEventListener('pointerup', () => {
+        if (dragging) {
+          dragging = false;
+          handle.classList.remove('active');
+          document.body.style.userSelect = '';
+        }
+      });
+
+      // Initial render
+      const rect = resizer.getBoundingClientRect();
+      if (rect.width > 0) updateBg(rect.width);
     })();
   </script>
 </body>

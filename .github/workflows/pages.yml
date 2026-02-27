@@ -27,6 +27,7 @@ jobs:
         run: |
           mkdir -p _site
           cp docs/index.html _site/
+          cp docs/demo.html _site/
           cp packages/slimmage-core/dist/index.js _site/slimmage-core.js
       - uses: actions/upload-pages-artifact@v3
 
